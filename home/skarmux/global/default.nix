@@ -5,7 +5,6 @@
     inputs.catppuccin.homeManagerModules.catppuccin
     inputs.nixvim.homeManagerModules.nixvim
     inputs.sops-nix.homeManagerModules.sops
-    inputs.impermanence.nixosModules.home-manager.impermanence
     ../features/cli
     ../features/helix
     ../features/neovim
@@ -35,21 +34,6 @@
     username = "skarmux";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
     stateVersion = "24.05";
-    persistence = {
-      "/nix/persist/home/skarmux" = {
-        directories = [
-          "Downloads"
-          "Documents"
-          "Pictures"
-          "Music"
-          "Videos"
-          "Projects"
-          ".local/bin"
-          ".local/share/nix"
-          ];
-        allowOther = true;
-      };
-    };
   };
 
   # Catppuccin colorscheme settings

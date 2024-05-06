@@ -36,6 +36,19 @@
    neededForUsers = true;
   };
 
+  environment.persistence."/nix/persist".users.skarmux = {
+    directories = [
+      "Downloads"
+      "Documents"
+      "Pictures"
+      "Music"
+      "Videos"
+      "Projects"
+      ".local/bin"
+      ".local/share/nix"
+    ];
+  };
+
   home-manager.users.skarmux = {
     imports = [ ../../../../home/skarmux/${config.networking.hostName}.nix ];
   };
