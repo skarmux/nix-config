@@ -1,0 +1,3 @@
+{
+  protonvpn = import ./protonvpn.nix;
+}

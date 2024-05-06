@@ -1,0 +1,5 @@
+services:
+  template:
+    image: template:latest
+    env_file: ".env"
+    stop_signal: SIGINT
