@@ -34,7 +34,6 @@
       wrap = false;
       swapfile = false;
       backup = false;
-      undodir = "${config.home.homeDirectory}/.vim/undodir";
       undofile = true;
       hlsearch = false;
       incsearch = true;
