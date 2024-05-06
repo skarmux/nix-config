@@ -24,10 +24,6 @@
 
     hyprlock.url = "github:hyprwm/Hyprlock";
 
-    # Firefox Addons
-    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    firefox-addons.inputs.nixpkgs.follows = "nixpkgs";
-
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
