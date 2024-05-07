@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [
     ./zellij
     ./direnv.nix
@@ -8,6 +9,7 @@
     ./eza.nix
     ./fish.nix
     ./gpg.nix
+    ./ssh.nix
     ./git.nix
     ./starship.nix
     ./nextcloud.nix

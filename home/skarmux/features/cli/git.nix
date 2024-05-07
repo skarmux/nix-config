@@ -25,16 +25,6 @@
     ignores = [ ".direnv/**" "result" "target" ];
   };
 
-  sops.secrets."git/ssh/id_ecdsa_sk" = {
-    sopsFile = ../../secrets.yaml;
-    path = "${config.home.homeDirectory}/.ssh/id_ecdsa_sk";
-  };
-
-  home.file = {
-    ".ssh/id_ecdsa_sk.pub".source = ../../yubikey/id_ecdsa_sk.pub;
-    # ".ssh/id_ecdsa_sk".source = config.sops.secrets."git/ssh/id_ecdsa_sk".path;
-  };
-
   home.packages = with pkgs; [ git-crypt ];
 
   programs.gitui = {
