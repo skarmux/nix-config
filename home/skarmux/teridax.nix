@@ -1,4 +1,3 @@
-{ inputs, lib, ... }:
 {
   imports = [
     ./global 
@@ -47,9 +46,15 @@
       };
     };
 
+    # Builtin keyboard is either/both of those devices
     extraConfig = ''
       device {
         name = fujitsu-fuj02e3
+        kb_layout=de
+        numlock_by_default=false
+      }
+      device {
+        name = at-translated-set-2-keyboard
         kb_layout=de
         numlock_by_default=false
       }

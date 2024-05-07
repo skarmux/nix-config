@@ -112,8 +112,6 @@
         # 2 - Cursor focus will be detached from keyboard focus. Clicking on a window will move keyboard focus to that window.
         # 3 - Cursor focus will be completely separate from keyboard focus. Clicking on a window will not change keyboard focus.
         follow_mouse = 2;
-        kb_layout = "us";
-        kb_variant = "altgr-intl";
         repeat_delay = 250;
         numlock_by_default = true;
       };
