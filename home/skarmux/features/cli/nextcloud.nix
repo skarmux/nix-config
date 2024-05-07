@@ -1,8 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 let
   nextcloud-server = "http://whenua/nextcloud";
   nextcloud-path = "/documents";
-  nextcloud-dir = "${config.home.homeDirectory}/Nextcloud";
+  nextcloud-dir = "${config.home.homeDirectory}/Documents";
 in
 {
   sops.secrets.nextcloud = {
@@ -19,10 +19,7 @@ in
       };
       Service = {
         Type = "simple";
-        ExecStart= lib.concatStrings [
-          "${pkgs.nextcloud-client}/bin/nextcloudcmd -h -n "
-          "--path ${nextcloud-path} ${nextcloud-dir} ${nextcloud-server}"
-        ]; 
+        ExecStart = "${pkgs.nextcloud-client}/bin/nextcloudcmd -h -n --path ${nextcloud-path} ${nextcloud-dir} ${nextcloud-server}";
         TimeoutStopSec = "180";
         KillMode = "process";
         KillSignal = "SIGINT";
@@ -32,17 +29,13 @@ in
 
     timers.nextcloud-autosync = {
       Unit = {
-        Description = lib.concatStrings [
-          "Automatic sync files with Nextcloud when booted "
-          "up after 5 minutes then rerun every 60 minutes"
-        ];
+        Description = "Automatic sync files with Nextcloud when booted up after 5 minutes then rerun every 60 minutes";
       };
       Timer.OnBootSec = "5min";
       Timer.OnUnitActiveSec = "60min";
       Install.WantedBy = [ "multi-user.target" "timers.target" ];
     };
 
-    startServices = "sd-switch";
   };
 
 }
