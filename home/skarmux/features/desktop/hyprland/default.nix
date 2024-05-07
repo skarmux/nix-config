@@ -52,9 +52,9 @@
         # ...also fixes apps taking ~20s to open
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       ]
-      ++ (lib.optionals config.programs.waybar.enable [
-        "${pkgs.waybar}/bin/waybar"
-      ])
+      # ++ (lib.optionals config.programs.waybar.enable [
+      #   "${pkgs.waybar}/bin/waybar"
+      # ])
       ++ (lib.optionals config.services.dunst.enable [
         # launch dunst service
         "systemctl start --user dunst.service"
@@ -98,9 +98,12 @@
         };
       };
 
-      layerrule = [ "blur,waybar" "ignorezero,waybar" ];
+      layerrule = (lib.optionals config.programs.waybar.enable) [
+        "blur,waybar"
+        "ignorezero,waybar"
+      ];
 
-      misc = { vrr = 1; };
+      misc.vrr = 1;
 
       input = {
         # 0 - Cursor movement will not change focus.
