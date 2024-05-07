@@ -46,19 +46,15 @@
 
     settings = {
 
-      exec = [
-        # "${pkgs.swaybg}/bin/swaybg -i  $(find ${config.xdg.userDirs.extraConfig.XDG_WALLPAPER_DIR} -type f | shuf -n1) --mode fill"
-      ]
-      ++ (lib.optionals config.programs.waybar.enable [
-        "${pkgs.waybar}/bin/waybar"
-      ]);
-
       exec-once = [
         # make sure that xdg-desktop-portal-hyprland gets
         # required variables (for screenshare) on startup
         # ...also fixes apps taking ~20s to open
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       ]
+      ++ (lib.optionals config.programs.waybar.enable [
+        "${pkgs.waybar}/bin/waybar"
+      ])
       ++ (lib.optionals config.services.dunst.enable [
         # launch dunst service
         "systemctl start --user dunst.service"
