@@ -1,9 +1,13 @@
-let
-  # whenua_ip = "192.168.178.22";
-in {
+{ config, ... }:
+{
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "client";
+    authKeyFile = config.sops.secrets.tailscale.path;
+  };
+
+  sops.secrets.tailscale = {
+    sopsFile = ../../${config.networking.hostName}/secrets.yaml;
   };
 
   networking.firewall = {
@@ -16,9 +20,9 @@ in {
   networking.search = [ "taile8020.ts.net" ];
 
   # Required for NFS
-  services.rpcbind.enable = true;
-
-  boot.supportedFilesystems = [ "nfs" ];
+  # services.rpcbind.enable = true;
+  #
+  # boot.supportedFilesystems = [ "nfs" ];
 
   # systemd.mounts = [
   #   {
