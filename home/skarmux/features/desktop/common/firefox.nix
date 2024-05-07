@@ -6,7 +6,6 @@
     # Force enable pipewireSupport for wayland screenshare
     package = pkgs.wrapFirefox (pkgs.firefox-unwrapped.override {pipewireSupport = true;}) { 
       
-      # languagePacks = [ "de-DE" "en-US" ];
       extraPolicies = {
         DisableTelemetry = true;
         DisableFirefoxStudies = true;
@@ -66,6 +65,11 @@
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/catppuccin-mocha-mauve-git/latest.xpi";
             installation_mode = "force_installed";
           };
+          # Sidebery
+          "{3c078156-979c-498b-8990-85f7987dd929}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
+            installation_mode = "force_installed";
+          };
           # Default (All other extensions)
           "*" = {
             installation_mode = "blocked"; # blocks all addons except the ones specified below
@@ -117,46 +121,21 @@
     profiles."skarmux" = {
 
       settings = {
-        # "browser.uiCustomization.state" = /* json */ ''
-        # {
-        #   "placements": {
-        #     "widget-overflow-fixed-list":[],
-        #     "nav-bar":[
-        #       "back-button",
-        #       "forward-button",
-        #       "stop-reload-button",
-        #       "home-button",
-        #       "urlbar-container",
-        #       "downloads-button",
-        #       "library-button",
-        #       "ublock0_raymondhill_net-browser-action",
-        #       "_testpilot-containers-browser-action"
-        #     ],
-        #     "toolbar-menubar":["menubar-items"],
-        #     "TabsToolbar":["tabbrowser-tabs","new-tab-button","alltabs-button"],
-        #     "PersonalToolbar":["import-button","personal-bookmarks"]
-        #   },
-        #   "seen":[
-        #     "save-to-pocket-button",
-        #     "developer-button",
-        #     "ublock0_raymondhill_net-browser-action",
-        #     "_testpilot-containers-browser-action"
-        #   ],
-        #   "dirtyAreaCache":[
-        #     "nav-bar",
-        #     "PersonalToolbar",
-        #     "toolbar-menubar",
-        #     "TabsToolbar",
-        #     "widget-overflow-fixed-list"
-        #   ],
-        #   "currentVersion":18,
-        #   "newElementCount":4
-        # }
-        # '';
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        "browser.toolbars.bookmarks.visibility" = "never";
+        "browser.translations.neverTranslateLanguages" = "de";
       };
 
-      userChrome = "";
-      userContent = "";
+      userChrome = ''
+        /* Hide tabs in favor of sidebery extension */
+        #TabsToolbar { display: none; }
+
+        /* Hide header in (sidebery) sidebar */
+        #sidebar-box #sidebar-header { display: none !important; }
+
+        .navigator-toolbox { display: none !important; }
+        .sidebar-splitter { display: none !important; }
+      '';
     };
   };
 

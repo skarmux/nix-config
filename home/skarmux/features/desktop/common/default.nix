@@ -13,7 +13,6 @@
     ./bluetooth.nix
     ./scrcpy.nix
     ./steam.nix
-    ./librewolf
   ];
 
   home.sessionVariables = { XCURSOR_SIZE = "32"; };

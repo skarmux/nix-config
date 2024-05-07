@@ -9,7 +9,7 @@
 
   # userChrome.css
   # TODO: profile name is random and will change
-  home.file.".librewolf/uksotxrd.default/chrome".source = ./chrome;
+  # home.file.".librewolf/uksotxrd.default/chrome".source = ./chrome;
 
   xdg.mimeApps.defaultApplications = {
     "text/html" = [ "librewolf.desktop" ];
