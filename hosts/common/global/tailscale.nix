@@ -1,13 +1,11 @@
-{ config, ... }:
 {
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "client";
-    authKeyFile = config.sops.secrets.tailscale.path;
   };
 
-  sops.secrets.tailscale = {
-    sopsFile = ../../${config.networking.hostName}/secrets.yaml;
+  environment.persistence = {
+    "/nix/persist".directories = [ "/var/lib/tailscale" ];
   };
 
   networking.firewall = {
