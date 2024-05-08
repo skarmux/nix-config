@@ -16,11 +16,9 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
-
     supportedFilesystems = [ "bcachefs" "ntfs" ];
+    loader.systemd-boot.enable = true;
   };
-
-  boot.loader.systemd-boot.enable = true;
 
   # Required binary blobs to boot on this machine
   hardware = {
@@ -31,6 +29,10 @@
       driSupport32Bit = true;
     };
   };
+
+  networking.hostName = "teridax";
+
+  powerManagement.cpuFreqGovernor = "performance ";
 
   # Hyprland
   programs.hyprland = {
@@ -50,14 +52,4 @@
 
     LIBSEAT_BACKEND = "logind";
   };
-
-  # Enable DHCP
-  networking = {
-    hostName = "teridax";
-    interfaces = {
-      enp0s25.useDHCP = true;
-      wlp2s0.useDHCP = true;
-    };
-  };
-
 }
