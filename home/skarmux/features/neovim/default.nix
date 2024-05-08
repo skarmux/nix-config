@@ -39,7 +39,6 @@
       incsearch = true;
       scrolloff = 8;
       signcolumn = "yes";
-      colorcolumn = "80";
       updatetime = 50;
       foldlevelstart = 99;
     };
