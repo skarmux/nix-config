@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs.thunar = {
     enable = true;
     plugins = with pkgs.xfce; [
@@ -9,6 +10,11 @@
   };
   programs.xfconf.enable = true;
 
-  services.gvfs.enable = true; # Mount, trash, and other functionalities
-  services.tumbler.enable = true; # Thumbnail support for images
+  # Mount, trash, and other functionalities
+  services.gvfs = {
+    enable = true;
+  };
+
+  # Thumbnails support
+  services.tumbler.enable = true;
 }
