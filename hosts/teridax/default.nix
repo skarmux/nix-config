@@ -12,6 +12,7 @@
     ../common/optional/wireless.nix
     ../common/optional/bluetooth.nix
     ../common/optional/thunar.nix
+    ../common/optional/nas.nix
   ];
 
   boot = {
