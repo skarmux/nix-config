@@ -1,25 +1,20 @@
 {
   imports = [
     ./global 
-    ./features/desktop/hyprland 
+    ./session/hyprland 
   ];
 
-  monitors = [{ # Builtin Display
-    name = "eDP-1";
-    width = 1600;
-    height = 900;
-    noBar = true;
-    refreshRate = 60;
-    x = 0;
-    workspace = "1";
-    primary = true;
-  }];
-
-  home.sessionVariables = {
-    # Mozilla (firefox,etc.)
-    # Better touchscreen and touchpad support as well as smooth scrolling
-    MOZ_USE_XINPUT2 = "1";
-  };
+  monitors = [
+    {
+      name = "eDP-1";
+      width = 1600;
+      height = 900;
+      refreshRate = 60;
+      x = 0;
+      workspace = "1";
+      primary = true;
+    }
+  ];
 
   wayland.windowManager.hyprland = {
     settings = {
@@ -57,6 +52,7 @@
     '';
   };
 
+  # TODO: Not working. No longer CMB01?
   programs.waybar.settings.primary = {
     modules-right = [ "battery" ];
     battery.bat = "CMB01";

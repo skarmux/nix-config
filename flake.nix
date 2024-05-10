@@ -29,6 +29,9 @@
 
     deploy-rs.url = "github:serokell/deploy-rs";
 
+    nixgl.url = "github:/nix-community/nixGL";
+    nixgl.inputs.nixpkgs.follows = "nixpkgs";
+
     # My own self hosted projects
     feaston.url = "github:skarmux/feaston";
     feaston.inputs.nixpkgs.follows = "nixpkgs";
@@ -41,7 +44,10 @@
       systems = [ "x86_64-linux" "aarch64-linux" ];
       forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
       pkgsFor =
-        lib.genAttrs systems (system: import nixpkgs { inherit system; });
+        lib.genAttrs systems (system: import nixpkgs {
+          inherit system;
+          overlays = [ inputs.nixgl.overlay ];
+        });
     in {
       inherit lib;
 
@@ -75,6 +81,11 @@
       homeConfigurations = {
         "skarmux@ignika" = lib.homeManagerConfiguration {
           modules = [ ./home/skarmux/ignika.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+        };
+        "skarmux@steamdeck" = lib.homeManagerConfiguration {
+          modules = [ ./home/skarmux/steamdeck.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };

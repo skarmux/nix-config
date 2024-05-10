@@ -2,26 +2,13 @@
 {
   imports = [
     ./global
-    # ./features/desktop/plasma
-    ./features/desktop/hyprland
+    ./session/hyprland
+    ./device/monitor/lgcx.nix
   ];
 
   gtk.cursorTheme.size = 32;
 
-  monitors = [{ # LG Electronics LG TV SSCR2 0x01010101
-    name = "HDMI-A-1";
-    width = 3840;
-    height = 2160;
-    refreshRate = 60;
-    noBar = true;
-    x = 0;
-    vrr = true;
-    hdr = true;
-    workspace = "1";
-    workspace_padding = { top = 700; };
-    primary = true;
-  }];
-
+  # Hide static elements from OLED monitor
   programs.waybar.enable = false;
 
   # HOTFIX: Hyprland can't initialize monitor with HDMI 2.1 spec 
