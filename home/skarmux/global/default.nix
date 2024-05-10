@@ -10,7 +10,7 @@
     ./bat.nix
     ./eza.nix
     ./fish.nix
-    ./gpg.nix
+    ./gnupg.nix
     ./ssh.nix
     ./git.nix
     ./starship.nix
