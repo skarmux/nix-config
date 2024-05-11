@@ -2,9 +2,10 @@ keys:
   - &users:
     - &skarmux A6C555DD3AA48325B616A1D8F822D479719EAB61
   - &hosts:
-    -  &teridax age1kmgp8gj6pg6g7k9xhx35yc4zcktqmjwp2pfn5vpmjd09ky3e8avsah4wgg
-    -  &ignika age1nyzjst28ndf5upxyh2c9rfmgsydhuzqxhzt78tkpp5ttd5qyuypsgup3jh
-    -  &pewku age1ms4qq6f3grjtvun4q6zu4qtm7ta6ls5t54urhurvt5q7vp5y7yyqedc3hv
+    - &teridax age1kmgp8gj6pg6g7k9xhx35yc4zcktqmjwp2pfn5vpmjd09ky3e8avsah4wgg
+    - &ignika age1nyzjst28ndf5upxyh2c9rfmgsydhuzqxhzt78tkpp5ttd5qyuypsgup3jh
+    - &pewku age1ms4qq6f3grjtvun4q6zu4qtm7ta6ls5t54urhurvt5q7vp5y7yyqedc3hv
+    - &steamdeck age1x5fyml0wx0z39lf2url60kfm9aqgt3dph3k3hwsl2sv26wju249scul72r
 creation_rules:
   - path_regex: home/skarmux/secrets.ya?ml$
     key_groups:

@@ -11,7 +11,9 @@
     default = pkgs.mkShell {
       NIX_CONFIG =
         "extra-experimental-features = nix-command flakes repl-flake";
-      GPG_TTY="$(tty)";
+      shellHook = ''
+        export GPG_TTY=$(tty)
+      '';
       nativeBuildInputs = with pkgs; [
         nix
         nixfmt-classic

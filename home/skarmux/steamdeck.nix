@@ -27,7 +27,7 @@
   xdg.enable = true;
 
   # TODO: Find a way to use `skarmux` as main user on deck
-  #home.username = "deck";
+  home.username = "deck";
 
   home.packages = with pkgs; [
     nixgl.nixGLIntel
