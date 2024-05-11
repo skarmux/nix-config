@@ -1,32 +1,21 @@
-# Shell for bootstrapping flake-enabled nix and other tooling
-{ pkgs ? # If pkgs is not defined, instanciate nixpkgs from locked commit
-  let
-    lock =
-      (builtins.fromJSON (builtins.readFile ./flake.lock)).nodes.nixpkgs.locked;
-    nixpkgs = fetchTarball {
-      url = "https://github.com/nixos/nixpkgs/archive/${lock.rev}.tar.gz";
-      sha256 = lock.narHash;
-    };
-  in import nixpkgs { overlays = [ ]; }, ... }: {
-    default = pkgs.mkShell {
-      NIX_CONFIG =
-        "extra-experimental-features = nix-command flakes repl-flake";
-      shellHook = ''
-        export GPG_TTY=$(tty)
-      '';
-      nativeBuildInputs = with pkgs; [
-        nix
-        nixfmt-classic
-        home-manager
-        git
-        nil # nix lsp
+{ pkgs }:
+pkgs.mkShell {
 
-        deploy-rs
+  NIX_CONFIG = "extra-experimental-features = nix-command flakes repl-flake";
 
-        sops
-        ssh-to-age
-        gnupg
-        age
-      ];
-    };
-  }
+  shellHook = /* bash */ ''
+    export GPG_TTY=$(tty)
+    chsh -s /usr/bin/fish
+  '';
+
+  nativeBuildInputs = with pkgs; [
+    home-manager
+    git
+
+    openssh
+    sops
+    ssh-to-age
+      # gnupg
+      # age
+  ];
+}

@@ -1,3 +1,5 @@
+[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
+
 # Enable experimental features on installation media
 ```
 export NIX_CONFIG="experimental-features = nix-command flakes"

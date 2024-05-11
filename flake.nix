@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
+    devshell.url = "github:numtide/devshell/main";
     impermanence.url = "github:nix-community/impermanence";
 
     # Manage disk format and partitioning
@@ -46,7 +46,10 @@
       pkgsFor =
         lib.genAttrs systems (system: import nixpkgs {
           inherit system;
-          overlays = [ inputs.nixgl.overlay ];
+          overlays = [
+            inputs.nixgl.overlay
+            inputs.devshell.overlays.default
+          ];
         });
     in {
       inherit lib;
@@ -58,10 +61,8 @@
 
       overlays = import ./overlays { inherit inputs outputs; };
 
-      devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs; });
+      devShell = forEachSystem (pkgs: import ./devshell.nix { inherit pkgs; });
       formatter = forEachSystem (pkgs: pkgs.nixfmt-classic);
-
-      # diskoConfigurations = { root = import ./disks/nixos.nix; };
 
       nixosConfigurations = {
         "ignika" = lib.nixosSystem {
