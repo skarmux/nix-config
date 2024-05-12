@@ -2,15 +2,14 @@
 {
   imports = [
     ./alacritty.nix
-    ./waybar.nix
-    ./hyprlock.nix
-    ./wofi.nix
+    # ./waybar.nix
+    # ./hyprlock.nix
+    # ./wofi.nix
     ./qt.nix
     ./gtk.nix
     ./font.nix
-    ./dunst.nix
-    ./thunar.nix
-    ./hyprlock.nix
+    # ./dunst.nix
+    # ./thunar.nix
   ];
 
   # xdg.portal = {
@@ -20,8 +19,6 @@
 
   home.packages = with pkgs; [ wl-clipboard ];
   
-  home.sessionVariables = { XCURSOR_SIZE = "32"; };
-
   wayland.windowManager.hyprland = {
     enable = true;
     catppuccin.enable = true;
@@ -29,14 +26,14 @@
     xwayland.enable = true;
     # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
 
-    systemd = {
-      enable = true;
-      # Same as default, but stop graphical-session too
-      extraCommands = lib.mkBefore [
-        "systemctl --user stop graphical-session.target"
-        "systemctl --user start hyprland-session.target"
-      ];
-    };
+    # systemd = {
+    #   enable = true;
+    #   # Same as default, but stop graphical-session too
+    #   extraCommands = lib.mkBefore [
+    #     "systemctl --user stop graphical-session.target"
+    #     "systemctl --user start hyprland-session.target"
+    #   ];
+    # };
 
     extraConfig = ''
       device {
@@ -58,7 +55,7 @@
         # make sure that xdg-desktop-portal-hyprland gets
         # required variables (for screenshare) on startup
         # ...also fixes apps taking ~20s to open
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+        # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       ]
       # ++ (lib.optionals config.programs.waybar.enable [
       #   "${pkgs.waybar}/bin/waybar"
@@ -136,9 +133,9 @@
         "float,title:^(File Operation Progress)"
         "float,title:^(Extract archive)"
         "float,title:^(Save File)$"
-        "float,class:(.blueman-manager-wrapped)"
-        "float,class:(pavucontrol)"
-        "float,class:(org.keepassxc.KeePassXC)"
+        # "float,class:(.blueman-manager-wrapped)"
+        # "float,class:(pavucontrol)"
+        # "float,class:(org.keepassxc.KeePassXC)"
       ] ++ (lib.optionals config.programs.wofi.enable [
         "noanim,class:(wofi)"
         "stayfocused,class:(wofi)"
@@ -166,6 +163,7 @@
         "SUPER,F,togglefloating"
         "SUPER,P,fakefullscreen"
         "SUPER,V,workspaceopt,allfloat"
+        "SUPER,M,exit"
 
         # (Generic) Switch workspace
         "SUPER,1,workspace,1"
@@ -217,8 +215,8 @@
       bindm = [ "SUPER,mouse:272,movewindow" "SUPER,mouse:273,resizewindow" ];
 
       misc = {
-        disable_hyprland_logo = true;
-        disable_splash_rendering = true;
+        # disable_hyprland_logo = true;
+        # disable_splash_rendering = true;
         # disable_autoreload = true;
         # background_color = "0x${palette.base00}";
       };
@@ -228,28 +226,28 @@
         force_zero_scaling = true;
       };
 
+      # monitor = builtins.concatMap (m:
+      #   let
+      #     resolution = "${toString m.width}x${toString m.height}@${
+      #         toString m.refreshRate
+      #       }";
+      #     position = "${toString m.x}x${toString m.y}";
+      #     vrr = if m.vrr then ",vrr,1" else "";
+      #     hdr = if m.hdr then ",bitdepth,10" else "";
+      #     top = "${toString m.workspace_padding.top}";
+      #     bottom = "${toString m.workspace_padding.bottom}";
+      #     left = "${toString m.workspace_padding.left}";
+      #     right = "${toString m.workspace_padding.right}";
+      #   in [
+      #     "${m.name},${
+      #       if m.enabled then
+      #         "${resolution},${position},1${vrr}${hdr}"
+      #       else
+      #         "disable"
+      #     }"
+      #     "${m.name},addreserved,${top},${bottom},${left},${right}"
+      #   ]) (config.monitors);
       monitor = ",1280x800,auto,1";
-    #   monitor = builtins.concatMap (m:
-    #     let
-    #       resolution = "${toString m.width}x${toString m.height}@${
-    #           toString m.refreshRate
-    #         }";
-    #       position = "${toString m.x}x${toString m.y}";
-    #       vrr = if m.vrr then ",vrr,1" else "";
-    #       hdr = if m.hdr then ",bitdepth,10" else "";
-    #       top = "${toString m.workspace_padding.top}";
-    #       bottom = "${toString m.workspace_padding.bottom}";
-    #       left = "${toString m.workspace_padding.left}";
-    #       right = "${toString m.workspace_padding.right}";
-    #     in [
-    #       "${m.name},${
-    #         if m.enabled then
-    #           "${resolution},${position},1${vrr}${hdr}"
-    #         else
-    #           "disable"
-    #       }"
-    #       "${m.name},addreserved,${top},${bottom},${left},${right}"
-    #     ]) (config.monitors);
 
     };
   };

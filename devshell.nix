@@ -39,7 +39,7 @@ devshell.mkShell {
   env = [
     {
       name = "NIX_CONFIG";
-      value = "extra-experimental-features = nix-command flakes repl-flake";
+      value = "extra-experimental-features = nix-command flakes";
     }
   ];
 
