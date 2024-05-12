@@ -12,6 +12,8 @@
     # ./application/kdeconnect.nix
   ];
 
+  home.username = "deck";
+
   monitors = [
     {
       name = "X11-1";

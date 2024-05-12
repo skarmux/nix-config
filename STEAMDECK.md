@@ -3,6 +3,17 @@
 gpg --import home/skarmux/device/yubikey/public.gpg
 ```
 
+# Install Decky Plugin Manager for Steam Deck
+```
+curl -L https://github.com/SteamDeckHomebrew/decky-installer/releases/latest/download/install_release.sh | sh
+```
+
+# Change user shell for `deck` to `fish`
+```
+chsh -s /usr/bin/fish deck
+```
+Change goes into effect after rebooting.
+
 # Auto-load XDG_DATA_DIR
 ```
 cp ./nix-datadir.sh /etc/profile.d/nix-datadir.sh
