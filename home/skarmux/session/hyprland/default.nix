@@ -2,14 +2,14 @@
 {
   imports = [
     ./alacritty.nix
-    # ./waybar.nix
-    # ./hyprlock.nix
-    # ./wofi.nix
+    ./waybar.nix
+    ./hyprlock.nix
+    ./wofi.nix
     ./qt.nix
     ./gtk.nix
     ./font.nix
-    # ./dunst.nix
-    # ./thunar.nix
+    ./dunst.nix
+    ./thunar.nix
   ];
 
   # xdg.portal = {

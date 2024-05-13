@@ -31,3 +31,7 @@ sudo systemctl enable nix-daemon --now
 ```
 git remote set-url git@github.com:skarmux/nix-config.git
 ```
+
+sops-nix cannot unlock the Yubikey (PIN entry) on start the pinentry dialogue won't open
+on home-manage switch. A workaround is to unlock the Yubikey with sops path/to/secrets.yaml
+first and call home-manager switch afterwards.

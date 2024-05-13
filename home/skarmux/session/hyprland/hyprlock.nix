@@ -3,7 +3,7 @@
   programs.hyprlock = let
     primary = (builtins.elemAt (lib.filter (m: m.primary) config.monitors) 0);
   in {
-    enable = true;
+    enable = lib.mkDefault true;
     # TODO: Configure wallpapers
     # backgrounds = [{
     #   monitor = primary.name;

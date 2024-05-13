@@ -5,14 +5,14 @@
 
     ./session/hyprland
 
-    # ./application/keepassxc
+    ./application/keepassxc
     # ./application/imv.nix
     ./application/firefox.nix
-    # ./application/nextcloud.nix
-    # ./application/kdeconnect.nix
+    ./application/nextcloud.nix
   ];
 
   home.username = "deck";
+  programs.hyprlock.enable = false;
 
   monitors = [
     {
