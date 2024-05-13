@@ -10,18 +10,13 @@ let
 in {
   home.packages = pinentry.packages;
 
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-  
-  # services.gpg-agent = {
-  #   enable = true;
-  #   enableSshSupport = true;
-  #   sshKeys = [ "" ];
-  #   pinentryPackage = pkgs.pinentry-gnome3;
-  #   enableExtraSocket = true;
-  # };
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+    sshKeys = [ "" ];
+    pinentryPackage = pkgs.pinentry-gnome3;
+    enableExtraSocket = true;
+  };
 
   programs = let
     fixGpg = /* bash */ ''gpgconf --launch gpg-agent'';
