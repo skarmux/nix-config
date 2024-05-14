@@ -7,7 +7,7 @@
     inputs.hyprlock.homeManagerModules.hyprlock
     ./zellij
     ./direnv.nix
-    # ./bash.nix
+    ./bash.nix
     ./sops.nix
     ./nix.nix
     ./bat.nix
@@ -31,11 +31,6 @@
     tree
     unzip
     fzf
-
-    # Yubikey
-    yubikey-personalization
-    yubikey-manager
-    yubikey-agent
 
     # Decoration
     cmatrix

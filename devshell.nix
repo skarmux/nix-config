@@ -24,7 +24,7 @@ devshell.mkShell {
       name = "keyimport";
       help = "";
       category = "";
-      command = "gpg --import home/skarmux/device/yubikey/public.pgp";
+      command = "gpg --import home/skarmux/yubikey/public.pgp";
     }
   ];
 

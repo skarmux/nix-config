@@ -24,9 +24,6 @@
       # Android
       "adbusers"
     ];
-    openssh.authorizedKeys.keys = [
-      (builtins.readFile ../../../../home/skarmux/yubikey/id_ecdsa_sk.pub)
-    ];
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
     packages = [ pkgs.home-manager ];
   };

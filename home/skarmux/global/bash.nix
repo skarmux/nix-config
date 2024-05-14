@@ -6,4 +6,6 @@
     initExtra = "";
     profileExtra = "";
   };
+
+  home.file.".bashrc".force = true;
 }

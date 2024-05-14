@@ -2,8 +2,10 @@
 {
   imports = [
     ./global
+
+    ./yubikey
+
     ./session/hyprland
-    ./device/monitor/lgcx.nix
   ];
 
   gtk.cursorTheme.size = 32;
@@ -28,7 +30,6 @@
   programs.waybar.enable = false;
 
   # HOTFIX: Hyprland can't initialize monitor with HDMI 2.1 spec 
-  home.packages = with pkgs; [ wlr-randr ];
   wayland.windowManager.hyprland = {
     settings = {
       exec-once = [

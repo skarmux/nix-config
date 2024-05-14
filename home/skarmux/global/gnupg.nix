@@ -32,7 +32,7 @@ in {
       enable = true;
       settings = { trust-model = "tofu+pgp"; };
       publicKeys = [{
-        source = ../device/yubikey/public.gpg;
+        source = ../yubikey/public.gpg;
         trust = 5;
       }];
     };
