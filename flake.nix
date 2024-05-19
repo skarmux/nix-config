@@ -95,8 +95,13 @@
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
+        "skarmux@wsl" = lib.homeManagerConfiguration {
+          modules = [ ./home/skarmux/default.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+        };
         "skarmux@pewku" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/pewku.nix ];
+          modules = [ ./home/skarmux/default.nix ];
           pkgs = pkgsFor.aarch64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
