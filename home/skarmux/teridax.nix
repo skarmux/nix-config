@@ -1,6 +1,7 @@
 {
   imports = [
     ./global 
+    ./yubikey
     ./session/hyprland 
   ];
 

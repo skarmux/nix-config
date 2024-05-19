@@ -6,6 +6,6 @@
   };
 
   home.file = {
-    ".ssh/id_ecdsa_sk.pub".source = ../yubikey/id_ecdsa_sk.pub;
+    ".ssh/id_ecdsa_sk.pub".source = ./id_ecdsa_sk.pub;
   };
 }

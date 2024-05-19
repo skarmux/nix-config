@@ -16,10 +16,16 @@ in
     ./thunar.nix
   ];
 
-  # xdg.portal = {
+  
+  xdg.portal = {
+    enable = true;
+    config.common.default = "*";
   #   extraPortals = [ pkgs.inputs.hyprland.xdg-desktop-portal-hyprland ];
   #   configPackages = [ pkgs.inputs.hyprland.hyprland ];
-  # };
+  };
+
+  xdg.mimeApps.enable = true;
+  xdg.configFile."mimeapps.list".force = true;
 
   home.packages = with pkgs; [ wl-clipboard ];
   

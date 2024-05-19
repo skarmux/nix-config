@@ -31,10 +31,6 @@ in {
     gpg = {
       enable = true;
       settings = { trust-model = "tofu+pgp"; };
-      publicKeys = [{
-        source = ../yubikey/public.gpg;
-        trust = 5;
-      }];
     };
   };
 

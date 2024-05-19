@@ -8,13 +8,11 @@
     ./zellij
     ./direnv.nix
     ./bash.nix
-    ./sops.nix
     ./nix.nix
     ./bat.nix
     ./eza.nix
     ./fish.nix
-    ./gnupg.nix
-    ./ssh.nix
+    # ./gnupg.nix
     ./git.nix
     ./starship.nix
     ./btop.nix
@@ -23,6 +21,7 @@
 
   programs = {
     home-manager.enable = true;
+    git.enable = true;
   };
 
   # Everything without a program.* option
@@ -61,16 +60,7 @@
   catppuccin.flavour = "mocha";
   catppuccin.accent = "mauve";
 
-  xdg.portal = {
-    enable = true;
-    config.common.default = "*";
-  };
-
-  # Allow Nix to manage default application list
   xdg.enable = true;
-  xdg.configFile."mimeapps.list".force = true;
-  xdg.mimeApps.enable = true;
-
   xdg.userDirs = {
     enable = true;
 
