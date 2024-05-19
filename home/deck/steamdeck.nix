@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ../skarmux/global 
@@ -12,31 +12,27 @@
 
   home.username = "deck";
 
+  gtk.enable = false;
+  qt.enable = false;
   programs = {
-    gtk.enable = false;
-    qt.enable = false;
     waybar.enable = false;
     hyprlock.enable = false;
   };
-
   services.dunst.enable = false;
 
   wayland.windowManager.hyprland = {
     # `SUPER` key is reserved on SteamOS
-    "$MOD" = "Alt_R";
+    settings."$MOD" = "Alt_R";
   }; 
 
   # https://nixos.wiki/wiki/Nix_Cookbook#Wrapping_packages
-  home.file = {
-    ".local/bin/Hyprland" = {
-      source = lib.writeShellScriptBin /* bash */ ''
-        unset LD_PRELOAD
-        source /etc/profile.d/nix.sh
-        exec ${pkgs.nixGLIntel}/bin/nixGLIntel ${pkgs.hyprland}/bin/Hyprland
-      '';
-      executable = true;
-    };
-  };
+  home.packages = [
+    (pkgs.writeShellScriptBin "Hyprlaunch" /* bash */ ''
+      unset LD_PRELOAD
+      source /etc/profile.d/nix.sh
+      exec ${pkgs.nixgl.nixGLIntel}/bin/nixGLIntel ${config.wayland.windowManager.hyprland.package}/bin/Hyprland
+    '')
+  ];
 
   monitors = [
     {

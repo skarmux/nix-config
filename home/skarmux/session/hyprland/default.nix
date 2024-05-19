@@ -126,13 +126,13 @@ in
         "float,class:(opensnitch_ui),title:^(OpenSnitch Network Statistics)"
         "float,class:(opensnitch_ui),title:^(OpenSnitch)"
       ])
-      ++ (lib.optionals hasPackage "pavucontrol" [
+      ++ (lib.optionals (hasPackage "pavucontrol") [
         "float,class:(pavucontrol)"
       ])
-      ++ (lib.optionals hasPackage "keepassxc" [
+      ++ (lib.optionals (hasPackage "keepassxc") [
         "float,class:(org.keepassxc.KeePassXC)"
       ])
-      ++ (lib.optionals hasPackage "blueman" [
+      ++ (lib.optionals (hasPackage "blueman") [
         "float,class:(.blueman-manager-wrapped)"
       ]);
 

@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   qt = {
-    enable = true;
+    enable = lib.mkDefault true;
     platformTheme = { name = "gtk"; };
     style = {
       name = "gtk2";

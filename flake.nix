@@ -86,7 +86,7 @@
           extraSpecialArgs = { inherit inputs outputs; };
         };
         "deck@steamdeck" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/steamdeck.nix ];
+          modules = [ ./home/deck/steamdeck.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
