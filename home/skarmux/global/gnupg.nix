@@ -10,11 +10,6 @@ let
 in {
   home.packages = pinentry.packages;
 
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-  
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
@@ -37,7 +32,7 @@ in {
       enable = true;
       settings = { trust-model = "tofu+pgp"; };
       publicKeys = [{
-        source = ../device/yubikey/public.gpg;
+        source = ../yubikey/public.gpg;
         trust = 5;
       }];
     };

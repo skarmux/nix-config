@@ -1,6 +1,6 @@
-{ config, ... }: {
+{ config, lib, ... }: {
   services.dunst = {
-    enable = true;
+    enable = lib.mkDefault true;
     catppuccin.enable = true;
     settings = {
       global = {

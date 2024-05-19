@@ -4,13 +4,16 @@
     inputs.catppuccin.homeManagerModules.catppuccin
     inputs.sops-nix.homeManagerModules.sops
     inputs.nixvim.homeManagerModules.nixvim
+    inputs.hyprlock.homeManagerModules.hyprlock
     ./zellij
     ./direnv.nix
     ./bash.nix
+    ./sops.nix
+    ./nix.nix
     ./bat.nix
     ./eza.nix
     ./fish.nix
-    #./gnupg.nix
+    ./gnupg.nix
     ./ssh.nix
     ./git.nix
     ./starship.nix
@@ -20,7 +23,6 @@
 
   programs = {
     home-manager.enable = true;
-    git.enable = true;
   };
 
   # Everything without a program.* option
@@ -46,22 +48,8 @@
     uutils-coreutils
   ];
 
-  nixpkgs = {
-    overlays = builtins.attrValues outputs.overlays;
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = (_: true);
-    };
-  };
-
   # TODO: Add explanation of `sd-switch`
   systemd.user.startServices = "sd-switch";
-
-  sops = {
-    # TODO: Enable OpenSSH service or something
-    gnupg.home = "${config.home.homeDirectory}/.gnupg";
-    defaultSopsFile = ../secrets.yaml;
-  };
 
   home = {
     username = lib.mkDefault "skarmux";

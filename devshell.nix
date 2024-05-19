@@ -24,7 +24,7 @@ devshell.mkShell {
       name = "keyimport";
       help = "";
       category = "";
-      command = "gpg --import home/skarmux/device/yubikey/public.pgp";
+      command = "gpg --import home/skarmux/yubikey/public.pgp";
     }
   ];
 
@@ -39,7 +39,7 @@ devshell.mkShell {
   env = [
     {
       name = "NIX_CONFIG";
-      value = "extra-experimental-features = nix-command flakes repl-flake";
+      value = "extra-experimental-features = nix-command flakes";
     }
   ];
 

@@ -1,6 +1,6 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
   gtk = {
-    enable = true;
+    enable = lib.mkDefault true;
     catppuccin = {
       enable = true;
       cursor.enable = true;

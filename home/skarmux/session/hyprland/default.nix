@@ -1,4 +1,8 @@
 { config, pkgs, lib, ... }:
+let
+  packageNames = map (p: p.pname or p.name or null) config.home.packages;
+  hasPackage = name: lib.any (x: x == name) packageNames;
+in
 {
   imports = [
     ./alacritty.nix
@@ -10,7 +14,6 @@
     ./font.nix
     ./dunst.nix
     ./thunar.nix
-    ./hyprlock.nix
   ];
 
   # xdg.portal = {
@@ -20,23 +23,11 @@
 
   home.packages = with pkgs; [ wl-clipboard ];
   
-  home.sessionVariables = { XCURSOR_SIZE = "32"; };
-
   wayland.windowManager.hyprland = {
     enable = true;
     catppuccin.enable = true;
 
     xwayland.enable = true;
-    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-
-    systemd = {
-      enable = true;
-      # Same as default, but stop graphical-session too
-      extraCommands = lib.mkBefore [
-        "systemctl --user stop graphical-session.target"
-        "systemctl --user start hyprland-session.target"
-      ];
-    };
 
     extraConfig = ''
       device {
@@ -54,17 +45,10 @@
 
     settings = {
 
-      exec-once = [
-        # make sure that xdg-desktop-portal-hyprland gets
-        # required variables (for screenshare) on startup
-        # ...also fixes apps taking ~20s to open
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-      ]
-      # ++ (lib.optionals config.programs.waybar.enable [
-      #   "${pkgs.waybar}/bin/waybar"
-      # ])
+      "$MOD" = lib.mkDefault "SUPER";
+
+      exec-once = []
       ++ (lib.optionals config.services.dunst.enable [
-        # launch dunst service
         "systemctl start --user dunst.service"
       ])
       ++ (lib.optionals config.gtk.enable [
@@ -112,10 +96,6 @@
       ];
 
       input = {
-        # 0 - Cursor movement will not change focus.
-        # 1 - Cursor movement will always change focus to the window under the cursor.
-        # 2 - Cursor focus will be detached from keyboard focus. Clicking on a window will move keyboard focus to that window.
-        # 3 - Cursor focus will be completely separate from keyboard focus. Clicking on a window will not change keyboard focus.
         follow_mouse = 2;
         repeat_delay = 250;
         numlock_by_default = true;
@@ -136,91 +116,100 @@
         "float,title:^(File Operation Progress)"
         "float,title:^(Extract archive)"
         "float,title:^(Save File)$"
-        "float,class:(.blueman-manager-wrapped)"
-        "float,class:(pavucontrol)"
-        "float,class:(org.keepassxc.KeePassXC)"
-      ] ++ (lib.optionals config.programs.wofi.enable [
+      ]
+      ++ (lib.optionals config.programs.wofi.enable [
         "noanim,class:(wofi)"
         "stayfocused,class:(wofi)"
         "pin,class:(wofi)"
-      ]) ++ (lib.optionals config.services.opensnitch-ui.enable [
+      ])
+      ++ (lib.optionals config.services.opensnitch-ui.enable [
         "float,class:(opensnitch_ui),title:^(OpenSnitch Network Statistics)"
         "float,class:(opensnitch_ui),title:^(OpenSnitch)"
-      ]);
-
-      bindr = (lib.optionals config.programs.wofi.enable [
-        "SUPER,SUPER_L,exec,pkill wofi || ${pkgs.wofi}/bin/wofi"
+      ])
+      ++ (lib.optionals (hasPackage "pavucontrol") [
+        "float,class:(pavucontrol)"
+      ])
+      ++ (lib.optionals (hasPackage "keepassxc") [
+        "float,class:(org.keepassxc.KeePassXC)"
+      ])
+      ++ (lib.optionals (hasPackage "blueman") [
+        "float,class:(.blueman-manager-wrapped)"
       ]);
 
       binde = [
         # Resize window
-        "SUPER_CONTROL_L,Left,resizeactive,-20 0"
-        "SUPER_CONTROL_L,Right,resizeactive,20 0"
-        "SUPER_CONTROL_L,Up,resizeactive,0 -20"
-        "SUPER_CONTROL_L,Down,resizeactive,0 20"
+        "$MOD_CONTROL_L,Left,resizeactive,-20 0"
+        "$MOD_CONTROL_L,Right,resizeactive,20 0"
+        "$MOD_CONTROL_L,Up,resizeactive,0 -20"
+        "$MOD_CONTROL_L,Down,resizeactive,0 20"
       ];
 
       bind = [
-        "SUPER,Q,killactive"
-        "SUPER,T,exec,${config.home.sessionVariables.TERMINAL}"
-        "SUPER,F,togglefloating"
-        "SUPER,P,fakefullscreen"
-        "SUPER,V,workspaceopt,allfloat"
+        "$MOD,Q,killactive"
+        "$MOD,T,exec,${config.home.sessionVariables.TERMINAL}"
+        "$MOD,F,togglefloating"
+        "$MOD,P,fakefullscreen"
+        "$MOD,V,workspaceopt,allfloat"
+        "$MOD,M,exit"
 
         # (Generic) Switch workspace
-        "SUPER,1,workspace,1"
-        "SUPER,2,workspace,2"
-        "SUPER,3,workspace,3"
-        "SUPER,4,workspace,4"
-        "SUPER,5,workspace,5"
-        "SUPER,6,workspace,6"
-        "SUPER,7,workspace,7"
-        "SUPER,8,workspace,8"
-        "SUPER,9,workspace,9"
-        "SUPER,0,workspace,10"
+        "$MOD,1,workspace,1"
+        "$MOD,2,workspace,2"
+        "$MOD,3,workspace,3"
+        "$MOD,4,workspace,4"
+        "$MOD,5,workspace,5"
+        "$MOD,6,workspace,6"
+        "$MOD,7,workspace,7"
+        "$MOD,8,workspace,8"
+        "$MOD,9,workspace,9"
+        "$MOD,0,workspace,10"
 
         # (Generic) Move window to workspace
-        "SUPER_SHIFT,1,movetoworkspace,1"
-        "SUPER_SHIFT,2,movetoworkspace,2"
-        "SUPER_SHIFT,3,movetoworkspace,3"
-        "SUPER_SHIFT,4,movetoworkspace,4"
-        "SUPER_SHIFT,5,movetoworkspace,5"
-        "SUPER_SHIFT,6,movetoworkspace,6"
-        "SUPER_SHIFT,7,movetoworkspace,7"
-        "SUPER_SHIFT,8,movetoworkspace,8"
-        "SUPER_SHIFT,9,movetoworkspace,9"
-        "SUPER_SHIFT,0,movetoworkspace,10"
+        "$MOD_SHIFT,1,movetoworkspace,1"
+        "$MOD_SHIFT,2,movetoworkspace,2"
+        "$MOD_SHIFT,3,movetoworkspace,3"
+        "$MOD_SHIFT,4,movetoworkspace,4"
+        "$MOD_SHIFT,5,movetoworkspace,5"
+        "$MOD_SHIFT,6,movetoworkspace,6"
+        "$MOD_SHIFT,7,movetoworkspace,7"
+        "$MOD_SHIFT,8,movetoworkspace,8"
+        "$MOD_SHIFT,9,movetoworkspace,9"
+        "$MOD_SHIFT,0,movetoworkspace,10"
 
         # Relative movement
-        "SUPER,Home,workspace,-1"
-        "SUPER,End,workspace,+1"
-        "SUPER_SHIFT,Home,movetoworkspace,-1"
-        "SUPER_SHIFT,End,movetoworkspace,+1"
+        "$MOD,Home,workspace,-1"
+        "$MOD,End,workspace,+1"
+        "$MOD_SHIFT,Home,movetoworkspace,-1"
+        "$MOD_SHIFT,End,movetoworkspace,+1"
 
         # Move focus
-        "SUPER,Left,movefocus,l"
-        "SUPER,Down,movefocus,d"
-        "SUPER,Up,movefocus,u"
-        "SUPER,Right,movefocus,r"
+        "$MOD,Left,movefocus,l"
+        "$MOD,Down,movefocus,d"
+        "$MOD,Up,movefocus,u"
+        "$MOD,Right,movefocus,r"
 
         # Swap window
-        "SUPER_SHIFT,Left,swapwindow,l"
-        "SUPER_SHIFT,Down,swapwindow,d"
-        "SUPER_SHIFT,Up,swapwindow,u"
-        "SUPER_SHIFT,Right,swapwindow,r"
+        "$MOD_SHIFT,Left,swapwindow,l"
+        "$MOD_SHIFT,Down,swapwindow,d"
+        "$MOD_SHIFT,Up,swapwindow,u"
+        "$MOD_SHIFT,Right,swapwindow,r"
 
-      ] ++ (lib.optionals config.programs.hyprlock.enable
-        [ "SUPER,H,exec,${pkgs.hyprlock}/bin/hyprlock" ])
-        ++ (lib.optionals config.programs.wlogout.enable
-        [ "SUPER, P, exec, pkill wlogout || ${pkgs.wlogout}/bin/wlogout" ]);
+      ]
+      ++ (lib.optionals config.programs.wofi.enable [
+        "$MOD,R,exec,pkill wofi || ${pkgs.wofi}/bin/wofi"
+      ])
+      ++ (lib.optionals config.programs.hyprlock.enable [ 
+        "$MOD,H,exec,${pkgs.hyprlock}/bin/hyprlock"
+      ])
+      ++ (lib.optionals config.programs.wlogout.enable [
+        "$MOD, P, exec, pkill wlogout || ${pkgs.wlogout}/bin/wlogout"
+      ]);
 
-      bindm = [ "SUPER,mouse:272,movewindow" "SUPER,mouse:273,resizewindow" ];
+      bindm = [ "$MOD,mouse:272,movewindow" "$MOD,mouse:273,resizewindow" ];
 
       misc = {
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
-        # disable_autoreload = true;
-        # background_color = "0x${palette.base00}";
       };
 
       xwayland = {
@@ -228,28 +217,27 @@
         force_zero_scaling = true;
       };
 
-      monitor = ",1280x800,auto,1";
-    #   monitor = builtins.concatMap (m:
-    #     let
-    #       resolution = "${toString m.width}x${toString m.height}@${
-    #           toString m.refreshRate
-    #         }";
-    #       position = "${toString m.x}x${toString m.y}";
-    #       vrr = if m.vrr then ",vrr,1" else "";
-    #       hdr = if m.hdr then ",bitdepth,10" else "";
-    #       top = "${toString m.workspace_padding.top}";
-    #       bottom = "${toString m.workspace_padding.bottom}";
-    #       left = "${toString m.workspace_padding.left}";
-    #       right = "${toString m.workspace_padding.right}";
-    #     in [
-    #       "${m.name},${
-    #         if m.enabled then
-    #           "${resolution},${position},1${vrr}${hdr}"
-    #         else
-    #           "disable"
-    #       }"
-    #       "${m.name},addreserved,${top},${bottom},${left},${right}"
-    #     ]) (config.monitors);
+      monitor = builtins.concatMap (m:
+        let
+          resolution = "${toString m.width}x${toString m.height}@${
+              toString m.refreshRate
+            }";
+          position = "${toString m.x}x${toString m.y}";
+          vrr = if m.vrr then ",vrr,1" else "";
+          hdr = if m.hdr then ",bitdepth,10" else "";
+          top = "${toString m.workspace_padding.top}";
+          bottom = "${toString m.workspace_padding.bottom}";
+          left = "${toString m.workspace_padding.left}";
+          right = "${toString m.workspace_padding.right}";
+        in [
+          "${m.name},${
+            if m.enabled then
+              "${resolution},${position},1${vrr}${hdr}"
+            else
+              "disable"
+          }"
+          "${m.name},addreserved,${top},${bottom},${left},${right}"
+        ]) (config.monitors);
 
     };
   };

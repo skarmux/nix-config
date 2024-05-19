@@ -26,11 +26,13 @@
       ignores = [ ".direnv/**" "result" "target" ];
     };
 
-    gitui = {
-      enable = true;
-      catppuccin.enable = true;
-    };
+    # NOTE: gitui is not compatible with SSH keys yet.
+    # gitui = {
+    #   enable = true;
+    #   catppuccin.enable = true;
+    # };
 
+    # Improve `git diff` syntax highlighting and styling
     git.delta = {
       enable = true;
       catppuccin.enable = true;

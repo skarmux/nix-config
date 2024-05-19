@@ -8,7 +8,7 @@
     };
     settings = {
       trusted-users = [ "root" "@wheel" ];
-      experimental-features = "nix-command flakes repl-flake";
+      experimental-features = "nix-command flakes";
 
       builders-use-substitutes = true;
       substituters = [
