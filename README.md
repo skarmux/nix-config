@@ -67,6 +67,13 @@ sops updatekeys **/secrets.yaml
 ```
 nixos-install --flake .#teridax --no-root-passwd
 ```
+When there is tmpfs mounted that is too small for the nix-build temporary files,
+you can temporarily increase its size using remount:
+```
+mount -o remount,size=new_size /path/to/tmpfs
+```
+
+
 # Change /mnt/etc/nixos permissions back
 ```
 chmod -v 755 /mnt/etc/nixos
