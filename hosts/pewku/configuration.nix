@@ -28,13 +28,13 @@
     openssh = {
       enable = true;
       allowSFTP = false;
-      challengeResponseAuthentication = false;
       settings = {
         Compression = "yes";
         AllowTcpForwarding = "yes";
         AllowAgentForwarding = "no";
         AllowStreamLocalForwarding = "no";
         AuthenticationMethods = "publickey";
+        KbdInteractiveAuthentication = false;
         X11Forwarding = false;
         PasswordAuthentication = false;
         PermitRootLogin = "no";
@@ -47,7 +47,8 @@
 
   nixpkgs.hostPlatform.system = "aarch64-linux";
 
-  nix.allowedUsers = [ "@wheel" ];
+  # Only users of wheels group can use nix package manager daemon
+  nix.settings.allowed-users = [ "@wheel" ];
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
@@ -102,4 +103,6 @@
     "/etc/nixos".options = [ "noexec" ];
     "/srv".options = [ "noexec" ];
   };
+
+  system.stateVersion = "24.05";
 }
