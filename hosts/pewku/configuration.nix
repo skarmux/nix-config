@@ -5,6 +5,7 @@
     inputs.impermanence.nixosModules.impermanence
     inputs.disko.nixosModules.disko
     ./disk-configuration.nix
+    ../common/global/locale.nix
   ];
 
   users = {
