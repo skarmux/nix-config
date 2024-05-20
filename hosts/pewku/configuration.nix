@@ -78,7 +78,10 @@
 
   environment = {
     # Prevent default packages from being installed
-    systemPackages = lib.mkForce [ pkgs.bash ];
+    systemPackages = lib.mkForce [
+      pkgs.libraspberrypi
+      pkgs.raspberrypi-eeprom
+    ];
 
     etc = {
       "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
