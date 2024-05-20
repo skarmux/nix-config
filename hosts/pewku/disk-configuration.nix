@@ -18,23 +18,19 @@
       content.partitions = {
 
         boot = {
+          name = "boot";
+          start = "4MiB";
           size = "512M";
-          type = "EF00";
+          # type = "EF00";
           content = {
             type = "filesystem";
-            format = "vfat";
+            format = "fat32";
             mountpoint = "/boot";
           };
         };
 
-        swap = {
-          size = "4G";
-          content = {
-            type = "swap";
-          };
-        };
-
-        rootfs = {
+        nixos = {
+          name = "rootfs";
           size = "100%";
           content = {
             type = "filesystem";
