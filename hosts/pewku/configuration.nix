@@ -3,6 +3,7 @@
   imports = [
     inputs.hardware.nixosModules.raspberry-pi-4
     inputs.impermanence.nixosModules.impermanence
+    ./disk-configuration.nix
   ];
 
   users = {
@@ -95,11 +96,6 @@
   };
 
   fileSystems = {
-    "/" = {
-      device = "none";
-      fsType = "tmpfs";
-      options = [ "defaults" "size=512M" "mode=755" "noexec" ];
-    };
     "/var/lib".options = [ "noexec" ];
     "/var/log".options = [ "noexec" ];
     "/etc/nixos".options = [ "noexec" ];

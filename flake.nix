@@ -67,15 +67,15 @@
       nixosConfigurations = {
         "ignika" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/ignika ];
+          modules = [ ./hosts/ignika/configuration.nix ];
         };
         "teridax" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/teridax ];
+          modules = [ ./hosts/teridax/configuration.nix ];
         };
         "pewku" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/pewku ];
+          modules = [ ./hosts/pewku/configuration.nix ];
         };
       };
 
@@ -98,11 +98,6 @@
         "skarmux@wsl" = lib.homeManagerConfiguration {
           modules = [ ./home/skarmux/default.nix ];
           pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-        };
-        "skarmux@pewku" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/default.nix ];
-          pkgs = pkgsFor.aarch64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
       };
