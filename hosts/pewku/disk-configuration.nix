@@ -14,10 +14,11 @@
     disk.main = {
       type = "disk";
       device = "/dev/sda";
-      content.type = "mbr";
+      content.type = "table";
+      content.format = "msdos";
       content.partitions = {
 
-        ESP = {
+        boot = {
           size = "512M";
           type = "EF00";
           content = {
@@ -34,7 +35,7 @@
           };
         };
 
-        nixos = {
+        rootfs = {
           size = "100%";
           content = {
             type = "filesystem";
