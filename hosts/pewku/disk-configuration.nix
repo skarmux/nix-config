@@ -14,7 +14,7 @@
     disk.main = {
       type = "disk";
       device = "/dev/sda";
-      content.type = "gpt";
+      content.type = "mbr";
       content.partitions = {
 
         ESP = {
