@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }: {
+{
   users.users.feaston = {
     description = "Feaston daemon user";
     isNormalUser = true;
