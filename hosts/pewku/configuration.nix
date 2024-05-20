@@ -1,4 +1,4 @@
-{ inputs, config, lib, ... }:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
     inputs.hardware.nixosModules.raspberry-pi-4
@@ -78,7 +78,7 @@
 
   environment = {
     # Prevent default packages from being installed
-    systemPackages = lib.mkForce [];
+    systemPackages = lib.mkForce [ pkgs.bash ];
 
     etc = {
       "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
