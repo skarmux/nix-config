@@ -27,6 +27,13 @@
           };
         };
 
+        swap = {
+          size = "4G";
+          content = {
+            type = "swap";
+          };
+        };
+
         nixos = {
           size = "100%";
           content = {
