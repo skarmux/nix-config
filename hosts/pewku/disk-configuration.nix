@@ -14,8 +14,7 @@
     disk.main = {
       type = "disk";
       device = "/dev/sda";
-      content.type = "table";
-      content.format = "msdos";
+      content.type = "gpt";
       content.partitions = {
 
         boot = {
