@@ -3,6 +3,7 @@
   imports = [
     inputs.hardware.nixosModules.raspberry-pi-4
     inputs.impermanence.nixosModules.impermanence
+    inputs.disko.nixosModules.disko
     ./disk-configuration.nix
   ];
 
