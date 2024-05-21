@@ -108,5 +108,14 @@
     "/srv".options = [ "noexec" ];
   };
 
+  # swapDevices = [
+  #   {
+  #     device = "/swap/swapfile";
+  #     size = 4096;
+  #   }
+  # ];
+
+  hardware.raspberry-pi."4".i2c1.enable = true;
+
   system.stateVersion = "24.05";
 }

@@ -23,14 +23,15 @@
           type = "EF00"; # bootable
           content = {
             type = "filesystem";
-            format = "vfat";
+            format = "fat32";
             mountpoint = "/boot";
           };
         };
 
         nixos = {
           name = "rootfs";
-          end = "-4G";
+          size = "100%";
+          # end = "-4G";
           content = {
             type = "filesystem";
             format = "ext4";
@@ -38,12 +39,12 @@
           };
         };
 
-        swap = {
-          size = "100%";
-          content = {
-            type = "swap";
-          };
-        };
+        # swap = {
+        #   size = "100%";
+        #   content = {
+        #     type = "swap";
+        #   };
+        # };
 
       };
     };
