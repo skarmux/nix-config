@@ -22,6 +22,7 @@
           start = "4MiB";
           size = "512M";
           # type = "EF00";
+          bootable = true;
           content = {
             type = "filesystem";
             format = "fat32";
