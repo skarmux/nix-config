@@ -19,8 +19,8 @@ mount -v -o remount,size=2G /mnt
 
 cp -r ./** /mnt/etc/nixos && cd /mnt/etc/nixos
 
-mkdir -v /firmware
-mount -v /dev/mmcblk0p1 /firmware
+mkdir -v -p /firmware
+mount -v /dev/mmcblk1p1 /firmware
 cp -v /firmware/* /mnt/boot
 
 nixos-install --flake .#$HOST

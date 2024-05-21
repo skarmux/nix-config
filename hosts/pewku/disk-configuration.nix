@@ -23,7 +23,7 @@
           type = "EF00"; # bootable
           content = {
             type = "filesystem";
-            format = "fat32";
+            format = "vfat";
             mountpoint = "/boot";
           };
         };
