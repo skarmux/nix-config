@@ -39,7 +39,7 @@
         };
 
         swap = {
-          size = "-4G 100%";
+          size = "100%";
           content = {
             type = "swap";
           };
