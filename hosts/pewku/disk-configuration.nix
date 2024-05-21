@@ -19,10 +19,8 @@
 
         boot = {
           name = "boot";
-          start = "4MiB";
           size = "512M";
-          # type = "EF00";
-          bootable = true;
+          type = "EF00";
           content = {
             type = "filesystem";
             format = "fat32";
@@ -32,11 +30,18 @@
 
         nixos = {
           name = "rootfs";
-          size = "100%";
+          size = "-4G";
           content = {
             type = "filesystem";
             format = "ext4";
             mountpoint = "/nix";
+          };
+        };
+
+        swap = {
+          size = "-4G 100%";
+          content = {
+            type = "swap";
           };
         };
 
