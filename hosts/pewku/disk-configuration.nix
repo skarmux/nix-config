@@ -20,7 +20,7 @@
         boot = {
           name = "boot";
           size = "512M";
-          type = "EF00";
+          type = "EF00"; # bootable
           content = {
             type = "filesystem";
             format = "fat32";
@@ -30,7 +30,7 @@
 
         nixos = {
           name = "rootfs";
-          size = "-4G";
+          end = "-4G";
           content = {
             type = "filesystem";
             format = "ext4";
