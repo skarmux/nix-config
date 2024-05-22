@@ -1,7 +1,7 @@
 { inputs, config, lib, pkgs, ... }:
 {
   imports = [
-    inputs.hardware.nixosModules.raspberry-pi-4
+    # inputs.hardware.nixosModules.raspberry-pi-4
     inputs.impermanence.nixosModules.impermanence
     inputs.disko.nixosModules.disko
     ./disk-configuration.nix
@@ -21,6 +21,31 @@
         ];
       };
     };
+  };
+
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+      grub.enable = true;
+    };
+    kernelPrams = [ 
+      "console=ttyS0,115200n8" "console=ttyAMA0,115200n8" "console=tty0" "cma=64M"
+    ];
+    initrd.availableKernelModules = [
+      # Allows early (earlier) modesetting for the Raspberry Pi
+      "vc4"
+      "bcm2835_dma"
+      "i2c_bcm2835"
+      
+      # Maybe needed for SSD boot?
+      "usb_storage"
+      "xhci_pci"
+      "usbhid"
+      "uas"
+    ];
+    supportedFilesystems = [ "bcachefs" ];
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   services = {
@@ -105,7 +130,7 @@
     "/srv".options = [ "noexec" ];
   };
 
-  hardware.raspberry-pi."4".i2c1.enable = true;
+  # hardware.raspberry-pi."4".i2c1.enable = true;
 
   system.stateVersion = "24.05";
 }
