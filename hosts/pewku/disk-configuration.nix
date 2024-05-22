@@ -17,21 +17,19 @@
       content.type = "gpt";
       content.partitions = {
 
-        boot = {
-          name = "boot";
+        EFI = {
           size = "512M";
           type = "EF00"; # bootable
           content = {
             type = "filesystem";
-            format = "fat32";
+            format = "vfat";
             mountpoint = "/boot";
           };
         };
 
         nixos = {
-          name = "rootfs";
           size = "100%";
-          # end = "-4G";
+          end = "-4G";
           content = {
             type = "filesystem";
             format = "ext4";
@@ -39,12 +37,12 @@
           };
         };
 
-        # swap = {
-        #   size = "100%";
-        #   content = {
-        #     type = "swap";
-        #   };
-        # };
+        swap = {
+          size = "100%";
+          content = {
+            type = "swap";
+          };
+        };
 
       };
     };

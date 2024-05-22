@@ -78,10 +78,7 @@
 
   environment = {
     # Prevent default packages from being installed
-    systemPackages = lib.mkForce [
-      pkgs.libraspberrypi
-      pkgs.raspberrypi-eeprom
-    ];
+    systemPackages = lib.mkForce [ ];
 
     etc = {
       "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
@@ -107,13 +104,6 @@
     "/etc/nixos".options = [ "noexec" ];
     "/srv".options = [ "noexec" ];
   };
-
-  # swapDevices = [
-  #   {
-  #     device = "/swap/swapfile";
-  #     size = 4096;
-  #   }
-  # ];
 
   hardware.raspberry-pi."4".i2c1.enable = true;
 
