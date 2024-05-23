@@ -66,8 +66,8 @@
     wireless.enable = false;
     firewall = {
       enable = true;
-      trustedInterfaces = [ config.services.tailscale.interfaceName ];
-      allowedTCPPorts = [ 80 ];
+      # trustedInterfaces = [ config.services.tailscale.interfaceName ];
+      allowedTCPPorts = [ 80 443 ];
     };
   };
 
