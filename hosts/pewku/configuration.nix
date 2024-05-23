@@ -1,10 +1,7 @@
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, ... }:
 {
   imports = [
-    # inputs.hardware.nixosModules.raspberry-pi-4
     # inputs.impermanence.nixosModules.impermanence
-    # inputs.disko.nixosModules.disko
-    # ./disk-configuration.nix
     ../common/global/locale.nix
   ];
 
@@ -29,23 +26,6 @@
       systemd-boot.enable = true;
       grub.enable = false;
     };
-    kernelParams = [ 
-      "console=ttyS0,115200n8" "console=ttyAMA0,115200n8" "console=tty0" "cma=64M"
-    ];
-    initrd.availableKernelModules = [
-      # Allows early (earlier) modesetting for the Raspberry Pi
-      "vc4"
-      "bcm2835_dma"
-      "i2c_bcm2835"
-      
-      # Maybe needed for SSD boot?
-      "usb_storage"
-      "xhci_pci"
-      "usbhid"
-      "uas"
-    ];
-    supportedFilesystems = [ "bcachefs" ];
-    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   services = {
@@ -70,8 +50,6 @@
     };
     tailscale.enable = true;
   };
-
-  nixpkgs.hostPlatform.system = "aarch64-linux";
 
   # Only users of wheels group can use nix package manager daemon
   nix.settings.allowed-users = [ "@wheel" ];
@@ -103,7 +81,7 @@
 
   environment = {
     # Prevent default packages from being installed
-    systemPackages = lib.mkForce [ ];
+    # systemPackages = lib.mkForce [ ];
 
     # etc = {
     #   "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
@@ -123,22 +101,6 @@
     # };
   };
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/sda2";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      device = "/dev/sda1";
-      fsType = "fat32";
-    };
-    # "/var/lib".options = [ "noexec" ];
-    # "/var/log".options = [ "noexec" ];
-    # "/etc/nixos".options = [ "noexec" ];
-    # "/srv".options = [ "noexec" ];
-  };
-
-  # hardware.raspberry-pi."4".i2c1.enable = true;
 
   system.stateVersion = "24.05";
 }
