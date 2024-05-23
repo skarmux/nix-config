@@ -7,12 +7,12 @@ export NIX_CONFIG="experimental-features = nix-command flakes"
 parted -a optimal /dev/sda -- mklabel gpt
 parted -a optimal /dev/sda -- mkpart ESP fat32 1MiB 513MiB
 parted -a optimal /dev/sda -- set 1 esp on
-parted -a optimal /dev/sda -- mkpart primary 100%
+parted -a optimal /dev/sda -- mkpart primary 513MiB 100%
 
 mkfs.fat -F 32 -n boot /dev/sda1
-mkfs.ext4 -n nixos /dev/sda2
+mkfs.ext4 /dev/sda2
 
-mount -t ext4 /dev/sda2 /mnt
+mount /dev/sda2 /mnt
 mkdir -p /mnt/boot
 mount /dev/sda1 /mnt/boot 
 
