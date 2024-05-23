@@ -53,7 +53,7 @@
         AllowUsers = [ "skarmux" ];
       };
     };
-    tailscale.enable = true;
+    # tailscale.enable = true;
   };
 
   # Only users of wheels group can use nix package manager daemon
