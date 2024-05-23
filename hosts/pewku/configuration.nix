@@ -1,11 +1,8 @@
-{ inputs, config, lib, pkgs, ... }:
+{ pkgs, config, lib, ... }:
 {
   imports = [
-    # inputs.hardware.nixosModules.raspberry-pi-4
-    inputs.impermanence.nixosModules.impermanence
-    inputs.disko.nixosModules.disko
-    ./disk-configuration.nix
     ../common/global/locale.nix
+    ./hardware-configuration.nix
   ];
 
   users = {
@@ -13,12 +10,13 @@
     users = {
       skarmux = {
         isNormalUser = true;
-        extraGroups = [ "wheel" ];
+        extraGroups = [ "wheel" "network" ];
         initialPassword = "monster6";
         openssh.authorizedKeys.keyFiles = [
           ../../home/skarmux/yubikey/id_ed25519.pub
           ../../home/skarmux/yubikey/id_ecdsa_sk.pub
         ];
+        linger = true;
       };
     };
   };
@@ -27,30 +25,24 @@
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
-      grub.enable = true;
+      grub.enable = false;
+      generic-extlinux-compatible.enable = false;
     };
-    kernelPrams = [ 
-      "console=ttyS0,115200n8" "console=ttyAMA0,115200n8" "console=tty0" "cma=64M"
-    ];
-    initrd.availableKernelModules = [
-      # Allows early (earlier) modesetting for the Raspberry Pi
-      "vc4"
-      "bcm2835_dma"
-      "i2c_bcm2835"
-      
-      # Maybe needed for SSD boot?
-      "usb_storage"
-      "xhci_pci"
-      "usbhid"
-      "uas"
-    ];
-    supportedFilesystems = [ "bcachefs" ];
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
   services = {
     # Enable fan controller from Argon One Case
+    # TODO: Fan not spinning up... :(
     hardware.argonone.enable = true;
+    nginx = {
+      enable = true;
+      virtualHosts = {
+        "feaston.ddns.net" = {
+          locations."/".proxyPass = "http://localhost:5000";
+        };
+      };
+    };
     openssh = {
       enable = true;
       allowSFTP = false;
@@ -68,13 +60,19 @@
         AllowUsers = [ "skarmux" ];
       };
     };
-    tailscale.enable = true;
+    # tailscale.enable = true;
   };
 
-  nixpkgs.hostPlatform.system = "aarch64-linux";
-
   # Only users of wheels group can use nix package manager daemon
-  nix.settings.allowed-users = [ "@wheel" ];
+  nix.settings = {
+    allowed-users = [ "@wheel" ];
+    experimental-features = "nix-command flakes";
+  };
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
@@ -83,8 +81,8 @@
     wireless.enable = false;
     firewall = {
       enable = true;
-      trustedInterfaces = [ config.services.tailscale.interfaceName ];
-      # allowedTCPPorts = [ 80 443 ];
+      # trustedInterfaces = [ config.services.tailscale.interfaceName ];
+      allowedTCPPorts = [ 80 443 ];
     };
   };
 
@@ -103,34 +101,27 @@
 
   environment = {
     # Prevent default packages from being installed
-    systemPackages = lib.mkForce [ ];
+    # systemPackages = lib.mkForce [ ];
+    systemPackages = [ pkgs.git ];
 
-    etc = {
-      "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
-      "ssh/ssh_host_rsa_key.pub".source = "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
-      "ssh/ssh_host_ed25519_key".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key";
-      "ssh/ssh_host_ed25519_key.pub".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key.pub";
-      "machine-id".source = "/nix/persist/etc/machine-id";
-    };
+    # etc = {
+    #   "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
+    #   "ssh/ssh_host_rsa_key.pub".source = "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
+    #   "ssh/ssh_host_ed25519_key".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key";
+    #   "ssh/ssh_host_ed25519_key.pub".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key.pub";
+    #   "machine-id".source = "/nix/persist/etc/machine-id";
+    # };
 
-    persistence."/nix/persist" = {
-      directories = [
-        "/var/lib"
-        "/var/log"
-        "/etc/nixos"
-        "/srv"
-      ];
-    };
+    # persistence."/nix/persist" = {
+    #   directories = [
+    #     "/var/lib"
+    #     "/var/log"
+    #     "/etc/nixos"
+    #     "/srv"
+    #   ];
+    # };
   };
 
-  fileSystems = {
-    "/var/lib".options = [ "noexec" ];
-    "/var/log".options = [ "noexec" ];
-    "/etc/nixos".options = [ "noexec" ];
-    "/srv".options = [ "noexec" ];
-  };
-
-  # hardware.raspberry-pi."4".i2c1.enable = true;
 
   system.stateVersion = "24.05";
 }
