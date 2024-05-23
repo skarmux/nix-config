@@ -75,7 +75,7 @@
     firewall = {
       enable = true;
       # trustedInterfaces = [ config.services.tailscale.interfaceName ];
-      allowedTCPPorts = [ 80 443 ];
+      allowedTCPPorts = [ 80 443 5000 ];
     };
   };
 
