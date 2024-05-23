@@ -1,7 +1,6 @@
-{ config, lib, ... }:
+{ pkgs, config, lib, ... }:
 {
   imports = [
-    # inputs.impermanence.nixosModules.impermanence
     ../common/global/locale.nix
     ./hardware-configuration.nix
   ];
@@ -26,11 +25,14 @@
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
       grub.enable = false;
+      generic-extlinux-compatible.enable = false;
     };
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   services = {
     # Enable fan controller from Argon One Case
+    # TODO: Fan not spinning up... :(
     hardware.argonone.enable = true;
     openssh = {
       enable = true;

@@ -1,12 +1,15 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 {
   imports = [
+    inputs.hardware.nixosModules.raspberry-pi-4
     # ./disk-configuration.nix
   ];
 
+  hardware.raspberry-pi."4".i2c1.enable = true;
+
   boot = {
     initrd = {
-      availableKernelModules = [ "xhci_pci" "uas" ];
+      availableKernelModules = [ "xhci_pci" "uas" "pcie_brcmstb" "usbhid" ];
       kernelModules = [];
     };
     kernelModules = [];
