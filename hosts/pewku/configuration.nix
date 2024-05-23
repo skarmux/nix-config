@@ -3,6 +3,7 @@
   imports = [
     # inputs.impermanence.nixosModules.impermanence
     ../common/global/locale.nix
+    ./hardware-configuration.nix
   ];
 
   users = {
