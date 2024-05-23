@@ -57,7 +57,15 @@
   };
 
   # Only users of wheels group can use nix package manager daemon
-  nix.settings.allowed-users = [ "@wheel" ];
+  nix.settings = {
+    allowed-users = [ "@wheel" ];
+    experimental-features = "nix-command flakes";
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+  };
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
@@ -87,6 +95,7 @@
   environment = {
     # Prevent default packages from being installed
     # systemPackages = lib.mkForce [ ];
+    systemPackages = [ pkgs.git ];
 
     # etc = {
     #   "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
