@@ -10,7 +10,8 @@
     users = {
       skarmux = {
         isNormalUser = true;
-        extraGroups = [ "wheel" ];
+        shell = pkgs.fish;
+        extraGroups = [ "wheel" "network" ];
         initialPassword = "monster6";
         openssh.authorizedKeys.keyFiles = [
           ../../home/skarmux/yubikey/id_ed25519.pub
