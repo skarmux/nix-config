@@ -16,6 +16,7 @@
           ../../home/skarmux/yubikey/id_ed25519.pub
           ../../home/skarmux/yubikey/id_ecdsa_sk.pub
         ];
+        linger = true;
       };
     };
   };
