@@ -4,7 +4,7 @@
     # inputs.hardware.nixosModules.raspberry-pi-4
     # inputs.impermanence.nixosModules.impermanence
     # inputs.disko.nixosModules.disko
-    ./disk-configuration.nix
+    # ./disk-configuration.nix
     ../common/global/locale.nix
   ];
 
@@ -124,6 +124,14 @@
   };
 
   fileSystems = {
+    "/" = {
+      device = "/dev/sda2";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      device = "/dev/sda1";
+      fsType = "fat32";
+    };
     # "/var/lib".options = [ "noexec" ];
     # "/var/log".options = [ "noexec" ];
     # "/etc/nixos".options = [ "noexec" ];
