@@ -1,8 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 {
   imports = [
     # inputs.hardware.nixosModules.raspberry-pi-4
     # inputs.impermanence.nixosModules.impermanence
+    # inputs.disko.nixosModules.disko
     ./disk-configuration.nix
     ../common/global/locale.nix
   ];
@@ -26,7 +27,7 @@
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
-      grub.enable = true;
+      grub.enable = false;
     };
     kernelParams = [ 
       "console=ttyS0,115200n8" "console=ttyAMA0,115200n8" "console=tty0" "cma=64M"
@@ -123,10 +124,10 @@
   };
 
   fileSystems = {
-    "/var/lib".options = [ "noexec" ];
-    "/var/log".options = [ "noexec" ];
-    "/etc/nixos".options = [ "noexec" ];
-    "/srv".options = [ "noexec" ];
+    # "/var/lib".options = [ "noexec" ];
+    # "/var/log".options = [ "noexec" ];
+    # "/etc/nixos".options = [ "noexec" ];
+    # "/srv".options = [ "noexec" ];
   };
 
   # hardware.raspberry-pi."4".i2c1.enable = true;

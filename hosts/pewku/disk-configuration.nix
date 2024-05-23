@@ -12,7 +12,7 @@
       content.type = "gpt";
       content.partitions = {
 
-        EFI = {
+        ESP = {
           size = "512M";
           type = "EF00"; # bootable
           content = {
@@ -22,12 +22,12 @@
           };
         };
 
-        nixos = {
+        root = {
           size = "100%";
           content = {
             type = "filesystem";
             format = "ext4";
-            mountpoint = "/nix";
+            mountpoint = "/";
           };
         };
 
