@@ -28,7 +28,7 @@
       systemd-boot.enable = true;
       grub.enable = true;
     };
-    kernelPrams = [ 
+    kernelParams = [ 
       "console=ttyS0,115200n8" "console=ttyAMA0,115200n8" "console=tty0" "cma=64M"
     ];
     initrd.availableKernelModules = [
