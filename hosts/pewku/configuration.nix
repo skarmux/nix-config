@@ -34,6 +34,7 @@
     # Enable fan controller from Argon One Case
     # TODO: Fan not spinning up... :(
     hardware.argonone.enable = true;
+    nginx.enable = true;
     openssh = {
       enable = true;
       allowSFTP = false;
@@ -65,7 +66,7 @@
     firewall = {
       enable = true;
       trustedInterfaces = [ config.services.tailscale.interfaceName ];
-      # allowedTCPPorts = [ 80 443 ];
+      allowedTCPPorts = [ 80 ];
     };
   };
 
