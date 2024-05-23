@@ -1,15 +1,10 @@
+{ inputs, ... }:
 {
-  disko.devices = {
+  imports = [
+    inputs.disko.nixosModules.disko
+  ];
 
-    nodev."/" = {
-      fsType = "tmpfs";
-      mountOptions = [
-        "defaults"
-        "size=512M"
-        "mode=755"
-        "noexec"
-      ];
-    };
+  disko.devices = {
 
     disk.main = {
       type = "disk";
@@ -29,18 +24,10 @@
 
         nixos = {
           size = "100%";
-          end = "-4G";
           content = {
             type = "filesystem";
             format = "ext4";
             mountpoint = "/nix";
-          };
-        };
-
-        swap = {
-          size = "100%";
-          content = {
-            type = "swap";
           };
         };
 

@@ -1,9 +1,8 @@
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   imports = [
     # inputs.hardware.nixosModules.raspberry-pi-4
-    inputs.impermanence.nixosModules.impermanence
-    inputs.disko.nixosModules.disko
+    # inputs.impermanence.nixosModules.impermanence
     ./disk-configuration.nix
     ../common/global/locale.nix
   ];
@@ -105,22 +104,22 @@
     # Prevent default packages from being installed
     systemPackages = lib.mkForce [ ];
 
-    etc = {
-      "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
-      "ssh/ssh_host_rsa_key.pub".source = "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
-      "ssh/ssh_host_ed25519_key".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key";
-      "ssh/ssh_host_ed25519_key.pub".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key.pub";
-      "machine-id".source = "/nix/persist/etc/machine-id";
-    };
+    # etc = {
+    #   "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
+    #   "ssh/ssh_host_rsa_key.pub".source = "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
+    #   "ssh/ssh_host_ed25519_key".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key";
+    #   "ssh/ssh_host_ed25519_key.pub".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key.pub";
+    #   "machine-id".source = "/nix/persist/etc/machine-id";
+    # };
 
-    persistence."/nix/persist" = {
-      directories = [
-        "/var/lib"
-        "/var/log"
-        "/etc/nixos"
-        "/srv"
-      ];
-    };
+    # persistence."/nix/persist" = {
+    #   directories = [
+    #     "/var/lib"
+    #     "/var/log"
+    #     "/etc/nixos"
+    #     "/srv"
+    #   ];
+    # };
   };
 
   fileSystems = {
