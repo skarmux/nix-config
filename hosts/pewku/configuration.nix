@@ -60,11 +60,11 @@
   nix.settings = {
     allowed-users = [ "@wheel" ];
     experimental-features = "nix-command flakes";
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
+  };
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
   };
 
   powerManagement.cpuFreqGovernor = "ondemand";
