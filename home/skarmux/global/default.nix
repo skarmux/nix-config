@@ -12,7 +12,7 @@
     ./bat.nix
     ./eza.nix
     ./fish.nix
-    # ./gnupg.nix
+    ./yazi.nix
     ./git.nix
     ./starship.nix
     ./btop.nix
@@ -26,8 +26,8 @@
 
   # Everything without a program.* option
   home.packages = with pkgs; [
-    vimv # basically oil.nvim with nested edits
-    tree
+    #vimv # replaced by yazi
+    #tree # replaced by eza
     unzip
     fzf
 
@@ -57,8 +57,11 @@
   };
 
   # Catppuccin colorscheme settings
-  catppuccin.flavour = "mocha";
-  catppuccin.accent = "mauve";
+  catppuccin = {
+    enable = true; # Apply to all available applications
+    flavour = "mocha";
+    accent = "mauve";
+  };
 
   xdg.enable = true;
   xdg.userDirs = {
