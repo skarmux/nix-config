@@ -15,7 +15,6 @@
         ESP = {
           size = "500M";
           type = "EF00";
-          bootable = true;
           content = {
             type = "filesystem";
             format = "vfat";
