@@ -13,7 +13,7 @@
     # TODO: Not part of catppuccin-nix
     colorschemes.catppuccin = {
       enable = true;
-      settings.flavour = config.catppuccin.flavour;
+      settings.flavor = config.catppuccin.flavor;
     };
 
     filetype = {

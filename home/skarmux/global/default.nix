@@ -59,7 +59,7 @@
   # Catppuccin colorscheme settings
   catppuccin = {
     enable = true; # Apply to all available applications
-    flavour = "mocha";
+    flavor = "mocha";
     accent = "mauve";
   };
 

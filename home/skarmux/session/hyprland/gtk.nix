@@ -12,10 +12,11 @@
       size = 12;
     };
     # https://github.com/catppuccin/papirus-folders
-    iconTheme = {
-      name = "Papirus";
-      package = pkgs.papirus-icon-theme;
-    };
+    # Set by catppuccin/nix
+    # iconTheme = {
+    #   name = lib.mkDefault "Papirus";
+    #   package = pkgs.papirus-icon-theme;
+    # };
   };
 
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
