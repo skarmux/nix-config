@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, ... }:
 let
   packageNames = map (p: p.pname or p.name or null) config.home.packages;
   hasPackage = name: lib.any (x: x == name) packageNames;
@@ -7,7 +7,7 @@ in
   imports = [
     ./alacritty.nix
     ./waybar.nix
-    ./hyprlock.nix
+    # ./hyprlock.nix
     ./wofi.nix
     ./qt.nix
     ./gtk.nix
@@ -32,6 +32,8 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     catppuccin.enable = true;
+
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
 
     xwayland.enable = true;
 
@@ -69,8 +71,8 @@ in
         border_size = lib.mkDefault 3;
         "col.active_border" = "$mauve";
         "col.inactive_border" = "$mantle";
-        cursor_inactive_timeout = lib.mkDefault 0; # seconds
-        no_cursor_warps = true;
+        # cursor_inactive_timeout = lib.mkDefault 0; # seconds
+        # no_cursor_warps = true;
         resize_on_border = true;
         extend_border_grab_area = true;
         layout = lib.mkDefault "master";
@@ -208,7 +210,7 @@ in
         "$MOD,H,exec,${pkgs.hyprlock}/bin/hyprlock"
       ])
       ++ (lib.optionals config.programs.wlogout.enable [
-        "$MOD, P, exec, pkill wlogout || ${pkgs.wlogout}/bin/wlogout"
+        "$MOD,P,exec,pkill wlogout || ${pkgs.wlogout}/bin/wlogout"
       ]);
 
       bindm = [ "$MOD,mouse:272,movewindow" "$MOD,mouse:273,resizewindow" ];

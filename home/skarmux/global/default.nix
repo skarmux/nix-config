@@ -4,7 +4,6 @@
     inputs.catppuccin.homeManagerModules.catppuccin
     inputs.sops-nix.homeManagerModules.sops
     inputs.nixvim.homeManagerModules.nixvim
-    inputs.hyprlock.homeManagerModules.hyprlock
     ./zellij
     ./direnv.nix
     ./bash.nix

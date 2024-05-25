@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     devshell.url = "github:numtide/devshell/main";
     impermanence.url = "github:nix-community/impermanence";
 
@@ -18,26 +18,22 @@
     sops-nix.url = "github:mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Home-Manager module
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
-    hyprlock.url = "github:hyprwm/Hyprlock";
+    # Home-Manager module
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
-    deploy-rs.url = "github:serokell/deploy-rs";
+    # deploy-rs.url = "github:serokell/deploy-rs";
 
     nixgl.url = "github:/nix-community/nixGL";
     nixgl.inputs.nixpkgs.follows = "nixpkgs";
-
-    # My own self hosted projects
-    feaston.url = "github:skarmux/feaston";
-    feaston.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, deploy-rs, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
@@ -102,29 +98,29 @@
         };
       };
 
-      deploy.nodes."pewku" = {
-        hostname = "pewku";
-        fastConnection = true;
-        interactiveSudo = true;
-        confirmTimeout = 60;
-        remoteBuild = false;
+      # deploy.nodes."pewku" = {
+      #   hostname = "pewku";
+      #   fastConnection = true;
+      #   interactiveSudo = true;
+      #   confirmTimeout = 60;
+      #   remoteBuild = false;
+      #
+      #   profiles.system = {
+      #     user = "root";
+      #     sshUser = "skarmux";
+      #     path = deploy-rs.lib.aarch64-linux.activate.nixos
+      #       self.nixosConfigurations."pewku";
+      #   };
+      #
+      #   profiles.feaston = {
+      #     user = "feaston";
+      #     sshUser = "skarmux";
+      #     path = deploy-rs.lib.aarch64-linux.activate.custom
+      #       inputs.feaston.packages.aarch64-linux.default "./bin/activate";
+      #   };
+      # };
 
-        profiles.system = {
-          user = "root";
-          sshUser = "skarmux";
-          path = deploy-rs.lib.aarch64-linux.activate.nixos
-            self.nixosConfigurations."pewku";
-        };
-
-        profiles.feaston = {
-          user = "feaston";
-          sshUser = "skarmux";
-          path = deploy-rs.lib.aarch64-linux.activate.custom
-            inputs.feaston.packages.aarch64-linux.default "./bin/activate";
-        };
-      };
-
-      checks = builtins.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      # checks = builtins.mapAttrs
+      #   (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     };
 }
