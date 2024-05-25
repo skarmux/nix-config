@@ -46,14 +46,12 @@
       ];
 
       modules-right = [
-        # "custom/tailscale-ping"
         "tray"
         "cpu"
         "memory"
         "pulseaudio"
         "network"
         "battery"
-        # "custom/hostname"
       ];
 
       clock = {
@@ -66,7 +64,7 @@
 
       battery = {
         bat = lib.mkDefault "BAT0";
-        interval = 120;
+        interval = 20;
         format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
         format = "{icon}";
         format-charging = "󰂄";

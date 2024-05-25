@@ -61,9 +61,7 @@
     '';
   };
 
-  # TODO: Not working. No longer CMB01?
   programs.waybar.settings.primary = {
-    modules-right = [ "battery" ];
-    battery.bat = "CMB01";
+    battery.bat = "CMB1";
   };
 }
