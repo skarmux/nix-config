@@ -32,6 +32,8 @@
     #   catppuccin.enable = true;
     # };
 
+    lazygit.enable = true;
+
     # Improve `git diff` syntax highlighting and styling
     git.delta = {
       enable = true;
