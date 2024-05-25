@@ -3,6 +3,14 @@
     ./global 
     ./yubikey
     ./session/hyprland 
+
+    ./application/firefox.nix
+    ./application/nextcloud.nix
+    ./application/kdeconnect.nix
+    ./application/imv.nix
+    ./application/zathura.nix
+    ./application/keepassxc
+    ./application/wezterm.nix
   ];
 
   monitors = [
