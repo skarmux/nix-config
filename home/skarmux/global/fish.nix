@@ -46,6 +46,8 @@
       mv = "mv -i";
       rm = "rm -i";
 
+      tree = "eza --tree";
+
       # Power cycling
       ssn = "sudo shutdown now";
       sr = "sudo reboot";
