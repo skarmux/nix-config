@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ../common/global/locale.nix
@@ -10,13 +10,12 @@
     users = {
       skarmux = {
         isNormalUser = true;
-        extraGroups = [ "wheel" "network" ];
+        extraGroups = [ "wheel" ];
         initialPassword = "monster6";
         openssh.authorizedKeys.keyFiles = [
           ../../home/skarmux/yubikey/id_ed25519.pub
           ../../home/skarmux/yubikey/id_ecdsa_sk.pub
         ];
-        linger = true;
       };
     };
   };

@@ -72,7 +72,10 @@
         };
         "pewku" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/pewku/configuration.nix ];
+          modules = [
+            inputs.feaston.nixosModules.default
+            ./hosts/pewku/configuration.nix
+          ];
         };
       };
 
