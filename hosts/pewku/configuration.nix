@@ -64,14 +64,20 @@
   };
 
   # Only users of wheels group can use nix package manager daemon
-  nix.settings = {
-    allowed-users = [ "@wheel" ];
-    experimental-features = "nix-command flakes";
-  };
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
+  nix = {
+    settings = {
+      allowed-users = [ "@wheel" ];
+      experimental-features = "nix-command flakes";
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
+    binaryCachePublicKeys = [
+      # serokell/deploy-rs
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
   };
 
   powerManagement.cpuFreqGovernor = "ondemand";

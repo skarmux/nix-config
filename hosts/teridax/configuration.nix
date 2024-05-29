@@ -19,6 +19,7 @@
     kernelPackages = pkgs.linuxPackages_zen;
     supportedFilesystems = [ "bcachefs" "ntfs" ];
     loader.systemd-boot.enable = true;
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 
   # Required binary blobs to boot on this machine
