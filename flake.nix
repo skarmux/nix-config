@@ -27,7 +27,8 @@
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
-    # deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.url = "github:serokell/deploy-rs";
+    feaston.url = "github:skarmux/feaston";
 
     nixgl.url = "github:/nix-community/nixGL";
     nixgl.inputs.nixpkgs.follows = "nixpkgs";
@@ -98,29 +99,31 @@
         };
       };
 
-      # deploy.nodes."pewku" = {
-      #   hostname = "pewku";
-      #   fastConnection = true;
-      #   interactiveSudo = true;
-      #   confirmTimeout = 60;
-      #   remoteBuild = false;
-      #
-      #   profiles.system = {
-      #     user = "root";
-      #     sshUser = "skarmux";
-      #     path = deploy-rs.lib.aarch64-linux.activate.nixos
-      #       self.nixosConfigurations."pewku";
-      #   };
-      #
-      #   profiles.feaston = {
-      #     user = "feaston";
-      #     sshUser = "skarmux";
-      #     path = deploy-rs.lib.aarch64-linux.activate.custom
-      #       inputs.feaston.packages.aarch64-linux.default "./bin/activate";
-      #   };
-      # };
+      deploy.nodes.pewku = {
+        hostname = "192.168.178.99";
+        fastConnection = true;
+        interactiveSudo = true;
+        confirmTimeout = 60;
+        remoteBuild = false;
 
-      # checks = builtins.mapAttrs
-      #   (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+        # profiles.system = {
+        #   user = "root";
+        #   sshUser = "skarmux";
+        #   path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos
+        #     self.nixosConfigurations."pewku";
+        # };
+
+        profiles.feaston = {
+          user = "feaston";
+          sshUser = "skarmux";
+          sshOpts = [ "-i" "/home/skarmux/.ssh/id_ecdsa_sk"];
+          # path = inputs.deploy-rs.lib.aarch64-linux.activate.custom
+          #   inputs.feaston.packages.aarch64-linux.default "./bin/activate";
+          path = inputs.deploy-rs.lib.aarch64-linux.activate.custom nixpkgs.legacyPackages.aarch64-linux.hello "./bin/activate";
+        };
+      };
+
+      checks = builtins.mapAttrs
+        (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
     };
 }

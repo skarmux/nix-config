@@ -47,6 +47,8 @@ devshell.mkShell {
     home-manager
     git
 
+    deploy-rs
+
     openssh
     sops
     ssh-to-age
