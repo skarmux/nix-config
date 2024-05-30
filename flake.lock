@@ -126,11 +126,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1716897537,
-        "narHash": "sha256-U+lYzk5F25RQreXorjvr3x4iFVCwu02yAQrBL98//e0=",
+        "lastModified": 1717016511,
+        "narHash": "sha256-uBK3LUQlpOZvOQcDPigCgJBbVzDrqadetKtjsyLc370=",
         "owner": "skarmux",
         "repo": "feaston",
-        "rev": "e970634300d110b3d37c38362507bbcc6faac388",
+        "rev": "27568bdbbe5b20abb14b05a670f31c4f80c3f001",
         "type": "github"
       },
       "original": {
