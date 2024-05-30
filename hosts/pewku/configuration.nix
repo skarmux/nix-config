@@ -33,7 +33,7 @@
   services = {
     # Enable fan controller from Argon One Case
     # TODO: Fan not spinning up... :(
-    hardware.argonone.enable = true;
+    # hardware.argonone.enable = true;
     nginx = {
       enable = true;
       virtualHosts = {
@@ -67,11 +67,14 @@
     settings = {
       allowed-users = [ "@wheel" ];
       experimental-features = "nix-command flakes";
+      # trusted-users = [ "nix-ssh" ];
+      require-sigs = false;
       trusted-public-keys = [
         # serokell/deploy-rs
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
     };
+    # sshServe.write = true;
     gc = {
       automatic = true;
       dates = "weekly";
@@ -93,21 +96,21 @@
 
   security = {
     sudo.execWheelOnly = true;
-    auditd.enable = true;
+    # auditd.enable = true;
     # Use `journalctl -f` to see audit logs
-    audit = {
-      enable = true;
-      rules = [
-        # Log every time a program is attempted to be run.
-        "-a exit,always -F arch=b64 -S execve"
-      ];
-    };
+    # audit = {
+    #   enable = true;
+    #   rules = [
+    #     # Log every time a program is attempted to be run.
+    #     "-a exit,always -F arch=b64 -S execve"
+    #   ];
+    # };
   };
 
   environment = {
     # Prevent default packages from being installed
     # systemPackages = lib.mkForce [ ];
-    systemPackages = [ pkgs.git ];
+    systemPackages = with pkgs; [ git vim ];
 
     # etc = {
     #   "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
