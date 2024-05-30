@@ -5,6 +5,8 @@
     ./hardware-configuration.nix
   ];
 
+  feaston.enable = true;
+
   users = {
     mutableUsers = false;
     users = {
@@ -34,14 +36,6 @@
     # Enable fan controller from Argon One Case
     # TODO: Fan not spinning up... :(
     # hardware.argonone.enable = true;
-    nginx = {
-      enable = true;
-      virtualHosts = {
-        "feaston.ddns.net" = {
-          locations."/".proxyPass = "http://localhost:5000";
-        };
-      };
-    };
     openssh = {
       enable = true;
       allowSFTP = false;
