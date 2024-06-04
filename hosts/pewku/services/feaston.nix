@@ -1,29 +1,63 @@
+{ inputs, pkgs, ... }:
+let
+  port = 5000;
+  databaseURL = "/home/feaston/db.sqlite?mode=rwc";
+in
 {
   users.users.feaston = {
-    description = "Feaston daemon user";
     isNormalUser = true;
     password = "";
-    group = "feaston";
-
-    # Whether to enable lingering for this user. If true, systemd user units
-    # will start at boot, rather than starting at login and stopping at logout.
-    # This is the declarative equivalent of running loginctl enable-linger for 
-    # this user.
     linger = true;
-
-    openssh.authorizedKeys.keys =
-      [ (builtins.readFile ../../../home/skarmux/id_ed25519.pub) ];
+    openssh.authorizedKeys.keyFiles = [
+      ../../../home/skarmux/yubikey/id_ed25519.pub
+      ../../../home/skarmux/yubikey/id_ecdsa_sk.pub
+    ];
   };
 
-  users.groups."feaston" = { };
+  services.nginx = {
+      enable = true;
+      virtualHosts = {
+          "feaston.ddns.net" = {
+              root = "${inputs.feaston.packages.${pkgs.system}.default}/www";
+              locations."/" = {
+                tryFiles = "$uri $uri/ /index.html";
+              };
+              locations."~\.css" = {
+                extraConfig = ''
+                  add_header Content-Type text/css ;
+                '';
+              };
+              locations."~\.js" = {
+                extraConfig = ''
+                  add_header Content-Type application/x-javascript ;
+                '';
+              };
+              locations."/api/" = {
+                proxyPass = "http://127.0.0.1:${toString port}";
+              };
+          };
+      };
+  };
 
   home-manager.users.feaston = {
-    home.stateVersion = "24.05";
-    systemd.user.services."feaston" = {
-
-      Install.WantedBy = [ "multi-user.target" ];
-      # path = inputs.feaston.packages.${pkgs.system}.default; 
-      # script = "feaston";
+    systemd.user = {
+      startServices = "sd-switch";
+      services."feaston" = {
+        Unit = {
+          Description = "Serve Feast-On web service.";
+        };
+        Service = {
+          ExecStart = "${inputs.feaston.packages.${pkgs.system}.default}/bin/feaston --database-url ${databaseURL} --port ${toString port}";
+          Restart = "always";
+        };
+        Install = {
+          WantedBy = [ "multi-user.target" ];
+        };
+      };
     };
+    home.stateVersion = "24.05";
   };
+
+  nix.settings.trusted-users = [ "feaston" ];
+  services.openssh.settings.AllowUsers = [ "feaston" ];
 }

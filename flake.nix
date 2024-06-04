@@ -1,4 +1,13 @@
 {
+  nixConfig = {
+    extra-substituters = [
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     devshell.url = "github:numtide/devshell/main";
@@ -39,15 +48,22 @@
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
       systems = [ "x86_64-linux" "aarch64-linux" ];
-      forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
       pkgsFor =
         lib.genAttrs systems (system: import nixpkgs {
           inherit system;
           overlays = [
             inputs.nixgl.overlay
             inputs.devshell.overlays.default
+            # inputs.deploy-rs.overlays.default
+            # (self: super: { 
+            #   deploy-rs = { 
+            #     inherit (super) deploy-rs; 
+            #     lib = super.deploy-rs.lib; 
+            #   }; 
+            # })
           ];
         });
+      forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
     in {
       inherit lib;
 
@@ -59,7 +75,7 @@
       overlays = import ./overlays { inherit inputs outputs; };
 
       devShell = forEachSystem (pkgs: import ./devshell.nix { inherit pkgs; });
-      formatter = forEachSystem (pkgs: pkgs.nixfmt-classic);
+      # formatter = forEachSystem (pkgs: pkgs.nixfmt-classic);
 
       nixosConfigurations = {
         "ignika" = lib.nixosSystem {
@@ -73,7 +89,6 @@
         "pewku" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            inputs.feaston.nixosModules.default
             ./hosts/pewku/configuration.nix
           ];
         };
@@ -109,21 +124,18 @@
         confirmTimeout = 60;
         remoteBuild = false;
 
-        # profiles.system = {
-        #   user = "root";
-        #   sshUser = "skarmux";
-        #   path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos
-        #     self.nixosConfigurations."pewku";
-        # };
-
-        profiles.feaston = {
-          user = "feaston";
+        profiles.system = {
           sshUser = "skarmux";
-          sshOpts = [ "-i" "/home/skarmux/.ssh/id_ecdsa_sk"];
-          # path = inputs.deploy-rs.lib.aarch64-linux.activate.custom
-          #   inputs.feaston.packages.aarch64-linux.default "./bin/activate";
-          path = inputs.deploy-rs.lib.aarch64-linux.activate.custom nixpkgs.legacyPackages.aarch64-linux.hello "./bin/activate";
+          path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations."pewku";
+          user = "root";
         };
+
+        # profiles.feaston = {
+        #   sshUser = "feaston";
+        #   path = inputs.deploy-rs.lib.aarch64-linux.activate.custom
+        #     self.defaultPackage.aarch64-linux "./bin/activate";
+        #   user = "feaston";
+        # };
       };
 
       checks = builtins.mapAttrs

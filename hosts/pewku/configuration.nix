@@ -1,11 +1,13 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
+    inputs.home-manager.nixosModules.home-manager
     ../common/global/locale.nix
     ./hardware-configuration.nix
-  ];
 
-  feaston.enable = true;
+    ./services/feaston.nix
+    ./services/panamax.nix
+  ];
 
   users = {
     mutableUsers = false;
@@ -32,6 +34,9 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
+  # From NGINX performance optimization guide
+  # sudo sysctl -w net.core.somaxconn=4096
+
   services = {
     # Enable fan controller from Argon One Case
     # TODO: Fan not spinning up... :(
@@ -54,6 +59,7 @@
       };
     };
     # tailscale.enable = true;
+    # resolved.enable = true;
   };
 
   # Only users of wheels group can use nix package manager daemon
@@ -61,14 +67,9 @@
     settings = {
       allowed-users = [ "@wheel" ];
       experimental-features = "nix-command flakes";
-      # trusted-users = [ "nix-ssh" ];
+      trusted-users = [ "skarmux" "nix-ssh" ];
       require-sigs = false;
-      trusted-public-keys = [
-        # serokell/deploy-rs
-        # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      ];
     };
-    # sshServe.write = true;
     gc = {
       automatic = true;
       dates = "weekly";
@@ -89,7 +90,10 @@
   };
 
   security = {
-    sudo.execWheelOnly = true;
+    sudo = {
+      # TODO: Check if feaston can start user service with this one set to 'true'
+      execWheelOnly = false;
+    };
     # auditd.enable = true;
     # Use `journalctl -f` to see audit logs
     # audit = {
@@ -100,6 +104,16 @@
     #   ];
     # };
   };
+
+  # NOTE: This snippet from the deploy-rs example is required for the deployment activation
+  # Another option would be root on the server
+  security.sudo.extraRules = [{
+    groups = [ "wheel" ];
+    commands = [{
+      command = "ALL";
+      options = [ "NOPASSWD" ];
+    }];
+  }];
 
   environment = {
     # Prevent default packages from being installed

@@ -1,8 +1,7 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 {
   imports = [
     inputs.hardware.nixosModules.raspberry-pi-4
-    # ./disk-configuration.nix
   ];
 
   hardware.raspberry-pi."4".i2c1.enable = true;
@@ -30,7 +29,11 @@
 
   swapDevices = [];
 
-  networking.useDHCP = lib.mkDefault true;
+  networking = {
+    useDHCP = true;
+    # useNetworkd = true;
+    # interfaces.enabcm6e4ei0.useDHCP = true;
+  };
 
   nixpkgs.hostPlatform.system = "aarch64-linux";
 }
