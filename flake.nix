@@ -122,7 +122,7 @@
       deploy.nodes.pewku = {
         hostname = "192.168.178.99";
         fastConnection = true;
-        interactiveSudo = true;
+        # interactiveSudo = true;
         confirmTimeout = 60;
         remoteBuild = false;
 
