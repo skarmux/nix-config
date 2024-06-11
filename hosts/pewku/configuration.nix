@@ -3,6 +3,7 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     ../common/global/locale.nix
+    ../common/global/sops.nix
     ./hardware-configuration.nix
 
     ./services/feaston.nix
@@ -41,6 +42,13 @@
     # Enable fan controller from Argon One Case
     # TODO: Fan not spinning up... :(
     # hardware.argonone.enable = true;
+    nginx = {
+      enable = true;
+      recommendedProxySettings = true;
+      recommendedOptimisation = true;
+      recommendedGzipSettings = true;
+      recommendedBrotliSettings = true;
+    };
     openssh = {
       enable = true;
       allowSFTP = false;

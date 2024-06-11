@@ -5,7 +5,6 @@ let
 in
 {
   imports = [
-    ./alacritty.nix
     ./waybar.nix
     # ./hyprlock.nix
     ./wofi.nix

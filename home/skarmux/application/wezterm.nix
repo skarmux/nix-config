@@ -1,4 +1,6 @@
+{ pkgs, ... }:
 {
+  home.sessionVariables.TERMINAL = "${pkgs.wezterm}/bin/wezterm";
   programs.wezterm = {
     enable = true;
     extraConfig = /* lua */ ''

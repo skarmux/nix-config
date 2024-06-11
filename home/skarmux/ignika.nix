@@ -6,6 +6,7 @@
     ./yubikey
 
     ./session/hyprland
+    ./application/wezterm.nix
   ];
 
   gtk.cursorTheme.size = 32;

@@ -4,7 +4,7 @@ keys:
   - &hosts:
     - &teridax age1kmgp8gj6pg6g7k9xhx35yc4zcktqmjwp2pfn5vpmjd09ky3e8avsah4wgg
     - &ignika age1nyzjst28ndf5upxyh2c9rfmgsydhuzqxhzt78tkpp5ttd5qyuypsgup3jh
-    - &pewku age1ms4qq6f3grjtvun4q6zu4qtm7ta6ls5t54urhurvt5q7vp5y7yyqedc3hv
+    - &pewku age1uh2hsdffutrymarqtsdhk3qcn5fvj3455mzjpqfcxvn7h4ey2axq9xjh7j
     - &steamdeck age1x5fyml0wx0z39lf2url60kfm9aqgt3dph3k3hwsl2sv26wju249scul72r
 creation_rules:
   - path_regex: home/skarmux/secrets.ya?ml$
@@ -23,6 +23,12 @@ creation_rules:
       - *skarmux
       age:
       - *ignika
+  - path_regex: hosts/pewku/secrets.ya?ml$
+    key_groups:
+    - pgp:
+      - *skarmux
+      age:
+      - *pewku
   - path_regex: hosts/common/secrets.ya?ml$
     key_groups:
     - pgp:
