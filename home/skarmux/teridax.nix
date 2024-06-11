@@ -11,6 +11,7 @@
     ./application/zathura.nix
     ./application/keepassxc
     ./application/wezterm.nix
+    ./application/nextcloud.nix
   ];
 
   monitors = [
