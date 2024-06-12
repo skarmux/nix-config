@@ -1,5 +1,6 @@
-{ inputs, pkgs, config, ... }:
+{ inputs, pkgs, ... }:
 let
+  domain = "feaston.skarmux.tech";
   port = 5000;
   databaseURL = "/home/feaston/db.sqlite?mode=rwc";
 in
@@ -15,16 +16,18 @@ in
   };
 
   security.pam.loginLimits = [{
-    domain = "feaston.skarmux.tech";
+    domain = "${domain}";
     type = "soft";
     item = "nofile";
     value = "2048";
   }];
 
-  sops.secrets."skarmux_tech/certificate_key" = {
-    owner = "nginx";
-    sopsFile = ../secrets.yaml; 
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "admin@skarmux.tech";
   };
+
+  # users.users.nginx.extraGroups = [ "acme" ];
 
   services.nginx = {
       upstreams."feaston-api" = {
@@ -38,28 +41,26 @@ in
         };
       };
       virtualHosts = {
-          "feaston.skarmux.tech" = {
-              root = "${inputs.feaston.packages.${pkgs.system}.default}/www";
-              onlySSL = true;
-              sslCertificate = ../nginx/ssl/skarmux_tech/ssl-bundle.crt;
-              sslTrustedCertificate = ../nginx/ssl/skarmux_tech/SectigoRSADomainValidationSecureServerCA.crt;
-              sslCertificateKey = config.sops.secrets."skarmux_tech/certificate_key".path;
-              # extraConfig = ''
-              #   worker_connections = 1024 ;
-              # '';
-              locations."/" = {
-                tryFiles = "$uri $uri/ =404";
-                extraConfig = ''
-                  add_header Cache-Control "public, max-age=31536000" ;
-                '';
-              };
-              locations."/api/" = {
-                proxyPass = "http://feaston-api/";
-                extraConfig = ''
-                  proxy_next_upstream error timeout http_500 ;
-                '';
-              };
+        "${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          root = "${inputs.feaston.packages.${pkgs.system}.default}/www";
+          # extraConfig = ''
+          #   worker_connections = 1024 ;
+          # '';
+          locations."/" = {
+            tryFiles = "$uri $uri/ =404";
+            extraConfig = ''
+              add_header Cache-Control "public, max-age=31536000" ;
+            '';
           };
+          locations."/api/" = {
+            proxyPass = "http://feaston-api/";
+            extraConfig = ''
+              proxy_next_upstream error timeout http_500 ;
+            '';
+          };
+        };
       };
   };
 
