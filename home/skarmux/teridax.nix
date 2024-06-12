@@ -12,6 +12,7 @@
     ./application/keepassxc
     ./application/wezterm.nix
     ./application/nextcloud.nix
+    ./application/ticker.nix
   ];
 
   monitors = [
