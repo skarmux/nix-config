@@ -8,6 +8,7 @@
 
     ./services/feaston.nix
     ./services/panamax.nix
+    ./services/syncstorage.nix
   ];
 
   users = {

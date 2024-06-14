@@ -4,7 +4,7 @@
     ./yubikey
     ./session/hyprland 
 
-    ./application/firefox.nix
+    ./application/firefox
     ./application/nextcloud.nix
     ./application/kdeconnect.nix
     ./application/imv.nix

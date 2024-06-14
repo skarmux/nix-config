@@ -6,7 +6,7 @@
     ../skarmux/session/hyprland
 
     ../skarmux/application/keepassxc
-    ../skarmux/application/firefox.nix
+    ../skarmux/application/firefox
     ../skarmux/application/nextcloud.nix
   ];
 

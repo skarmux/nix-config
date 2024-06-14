@@ -1,14 +1,14 @@
 {
-  nixConfig = {
-    extra-substituters = [
-      "https://nix-community.cachix.org"
-      "https://hyprland.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-    ];
-  };
+  # nixConfig = {
+  #   extra-substituters = [
+  #     "https://nix-community.cachix.org"
+  #     "https://hyprland.cachix.org"
+  #   ];
+  #   extra-trusted-public-keys = [
+  #     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  #     "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+  #   ];
+  # };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
@@ -56,13 +56,6 @@
           overlays = [
             inputs.nixgl.overlay
             inputs.devshell.overlays.default
-            # inputs.deploy-rs.overlays.default
-            # (self: super: { 
-            #   deploy-rs = { 
-            #     inherit (super) deploy-rs; 
-            #     lib = super.deploy-rs.lib; 
-            #   }; 
-            # })
           ];
         });
       forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
@@ -80,20 +73,20 @@
       # formatter = forEachSystem (pkgs: pkgs.nixfmt-classic);
 
       nixosConfigurations = {
-        "ignika" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/ignika/configuration.nix ];
-        };
+        # "ignika" = lib.nixosSystem {
+        #   specialArgs = { inherit inputs outputs; };
+        #   modules = [ ./hosts/ignika/configuration.nix ];
+        # };
         "teridax" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [ ./hosts/teridax/configuration.nix ];
         };
-        "pewku" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ./hosts/pewku/configuration.nix
-          ];
-        };
+        # "pewku" = lib.nixosSystem {
+        #   specialArgs = { inherit inputs outputs; };
+        #   modules = [
+        #     ./hosts/pewku/configuration.nix
+        #   ];
+        # };
       };
 
       homeConfigurations = {
@@ -120,6 +113,7 @@
       };
 
       deploy.nodes.pewku = {
+        # hostname = "${outputs.nixosConfigurations."pewku".config.networking.hostName}";
         hostname = "192.168.178.99";
         fastConnection = true;
         # interactiveSudo = true;
