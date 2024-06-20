@@ -6,7 +6,6 @@ in
 {
   imports = [
     ./waybar.nix
-    # ./hyprlock.nix
     ./wofi.nix
     ./qt.nix
     ./gtk.nix
@@ -30,7 +29,6 @@ in
   
   wayland.windowManager.hyprland = {
     enable = true;
-    catppuccin.enable = true;
 
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
 
@@ -115,7 +113,6 @@ in
 
       master = {
         orientation = "center";
-        new_is_master = false;
       };
 
       windowrulev2 = [

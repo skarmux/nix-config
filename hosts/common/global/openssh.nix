@@ -5,33 +5,34 @@ let
 
   # Sops needs acess to the keys before the persist dirs are even mounted; so
   # just persisting the keys won't work, we must point at /persist
-  hasOptinPersistence = config.environment.persistence ? "/nix/persist";
+  hasPersistence = config.environment.persistence ? "/nix/persist";
 in {
   services.openssh = {
     enable = true;
 
-    ports = [ 22 ];
+    # ports = [ 22 ];
     allowSFTP = false;
     
     settings = {
       Compression = "yes";
-
+      AllowTcpForwarding = "yes";
+      AllowAgentForwarding = "no";
+      AllowStreamLocalForwarding = "no";
+      AuthenticationMethods = "publickey";
+      KbdInteractiveAuthentication = false;
       X11Forwarding = false;
-
-      # Harden
       PasswordAuthentication = false;
       PermitRootLogin = "no";
-
-      # Automatically remove stale sockets
       StreamLocalBindUnlink = "yes";
+      ChallengeResponseAuthentication = false;
 
       # Allow forwarding ports to everywhere
-      GatewayPorts = "clientspecified";
+      # GatewayPorts = "clientspecified";
     };
 
     hostKeys = [
       {
-        path = "${lib.optionalString hasOptinPersistence "/nix/persist"}/etc/ssh/ssh_host_ed25519_key";
+        path = "${lib.optionalString hasPersistence "/nix/persist"}/etc/ssh/ssh_host_ed25519_key";
         type = "ed25519";
       }
     ];
@@ -40,13 +41,9 @@ in {
   programs.ssh = {
     knownHosts = builtins.mapAttrs (name: cfg: {
       publicKeyFile = ../../${name}/ssh_host_ed25519_key.pub;
-      extraHostNames = 
-        []
-        ++
-        # Alias for localhost if it's the same host
-        (lib.optional (name == hostName) "localhost");
-      })
-      hosts;
+      # Alias for localhost if it's the same host
+      extraHostNames = [] ++ (lib.optional (name == hostName) "localhost");
+    }) hosts;
   };
 
   # Implement a simple fail2ban service for sshd

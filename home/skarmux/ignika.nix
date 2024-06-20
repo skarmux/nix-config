@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, lib, ... }:
 {
   imports = [
     ./global
@@ -6,7 +6,8 @@
     ./yubikey
 
     ./session/hyprland
-    ./application/wezterm.nix
+    (import ./application/wezterm.nix { inherit config lib; })
+    (import ./application/alacritty.nix { inherit config lib; default = true; })
   ];
 
   gtk.cursorTheme.size = 32;

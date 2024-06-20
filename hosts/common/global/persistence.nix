@@ -1,9 +1,5 @@
-{ inputs, lib, config, ... }:
+{ lib, config, ... }:
 {
-  imports = [
-    inputs.impermanence.nixosModules.impermanence
-  ];
-
   environment.persistence."/nix/persist" = {
     # Prevent the bind mounts from showing up
     # as mounted drives in the file manager.

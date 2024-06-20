@@ -1,10 +1,6 @@
 { pkgs, ... }: {
   programs.helix = {
     enable = true;
-    catppuccin = {
-      enable = true;
-      useItalics = true;
-    };
 
     # configuration written to ~/helix/config.toml
     settings = {

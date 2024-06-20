@@ -10,10 +10,17 @@
     ../common/optional/greetd.nix
     ../common/optional/pipewire.nix
     ../common/optional/wireless.nix
-    ../common/optional/bluetooth.nix
     ../common/optional/thunar.nix
     ../common/optional/nas.nix
+    ../common/optional/gpg.nix
   ];
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+
+  services.blueman.enable = true;
 
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;

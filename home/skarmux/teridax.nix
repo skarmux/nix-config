@@ -1,19 +1,20 @@
+{ pkgs, config, lib, ... }:
 {
   imports = [
     ./global 
     ./yubikey
     ./session/hyprland 
-
     ./application/firefox
-    ./application/nextcloud.nix
     ./application/kdeconnect.nix
     ./application/imv.nix
     ./application/zathura.nix
     ./application/keepassxc
-    ./application/wezterm.nix
-    ./application/nextcloud.nix
+    (import ./application/wezterm.nix { inherit config lib; })
+    (import ./application/alacritty.nix { inherit config lib; default = true; })
     ./application/ticker.nix
   ];
+
+  home.sessionVariables.TERMINAL = "${pkgs.alacritty}/bin/alacritty";
 
   monitors = [
     {
@@ -24,6 +25,15 @@
       x = 0;
       workspace = "1";
       primary = true;
+    }
+    {
+      name = "HDMI-A-2";
+      width = 1920;
+      height = 1080;
+      refreshRate = 60;
+      x = 0;
+      workspace = "2";
+      primary = false;
     }
   ];
 

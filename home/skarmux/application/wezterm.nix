@@ -1,6 +1,13 @@
-{ pkgs, ... }:
+{ config
+, lib
+, default ? false
+, ...
+}:
 {
-  home.sessionVariables.TERMINAL = "${pkgs.wezterm}/bin/wezterm";
+  home.sessionVariables.TERMINAL = lib.mkIf default "${config.programs.wezterm.package}/bin/alacritty";
+
+  # TODO: Opening multiple instances of wezterm
+  #       causes it to slow down to a crawl :(
   programs.wezterm = {
     enable = true;
     extraConfig = /* lua */ ''

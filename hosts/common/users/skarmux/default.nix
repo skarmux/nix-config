@@ -1,4 +1,8 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+let 
+  ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+in
+{
   users.users."skarmux" = {
     isNormalUser = true;
     shell = pkgs.fish;
@@ -7,9 +11,10 @@
     uid = 1026;
     extraGroups = [
       "wheel" # (sudo)
-      "audio"
-      "sound"
+    ]
+    ++ ifTheyExist [
       "video"
+      "audio"
       "network" # (access to settings)
       "i2c" # (access external devices like monitors)
       "plugdev"
@@ -29,22 +34,13 @@
   };
 
   sops.secrets.skarmux-password = {
-   sopsFile = ../../secrets.yaml;
-   neededForUsers = true;
+    sopsFile = ../../secrets.yaml;
+    neededForUsers = true;
   };
 
-  environment.persistence."/nix/persist".users.skarmux = {
-    directories = [
-      "Downloads"
-      "Documents"
-      "Pictures"
-      "Music"
-      "Videos"
-      "Projects"
-      ".local/bin"
-      ".local/share/nix"
-    ];
-  };
+  services.openssh.settings.AllowUsers = ["skarmux"];
+
+  nix.settings.trusted-users = ["skarmux"];
 
   home-manager.users.skarmux = {
     imports = [ ../../../../home/skarmux/${config.networking.hostName}.nix ];

@@ -1,26 +1,28 @@
 {
   nix = {
-    optimise.automatic = true;
+
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
+    
     settings = {
-      trusted-users = [ "root" "@wheel" ];
-      experimental-features = "nix-command flakes";
+      allowed-users = [ "@wheel" ];
+      trusted-users = [ "skarmux" ];
 
-      builders-use-substitutes = true;
+      experimental-features = "nix-command flakes";
+      
       substituters = [
         "https://nix-community.cachix.org"
-        "https://hyprland.cachix.org"
-        "https://anyrun.cachix.org"
+        "https://cache.skarmux.tech"
       ];
+
       trusted-public-keys = [
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "cache.skarmux.tech:IkJHXpLsX5SxtSiBjkQ+MZzjR5ZImNV/wiItHTYSjV0="
       ];
-      auto-optimise-store = true;
+
     };
   };
 }

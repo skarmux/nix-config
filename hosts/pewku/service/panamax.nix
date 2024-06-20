@@ -1,4 +1,3 @@
-{ pkgs, config, ... }:
 {
   users.users.panamax = {
     isNormalUser = true;
@@ -10,41 +9,43 @@
     ];
   };
 
-  home-manager.users.panamax = {
-    home = {
-      stateVersion = "24.05";
-      packages = [ pkgs.panamax ];
-    };
-    systemd.user = {
-      startServices = "sd-switch";
-      services."panamax-sync" = {
-        Unit = {
-          Description = "Synchronize crates.io mirror with latest crates";
-          Wants = "panamax-sync.timer";
-        };
-        Service = {
-          Type = "onehsot";
-          ExecStart = "${pkgs.panamax}/bin/panamax sync ${config.home-manager.users.panamax.home.homeDirectory}/mirror";
-        };
-        Install = {
-          WantedBy = [ "multi-user.target" ];
-        };
-      };
-      timers."panamax-sync" = {
-        Unit = {
-          Description = "Synchronize crates.io mirror with latest crates";
-          Requires = "panamax-sync.service";
-        };
-        Timer = {
-          Unit = "panamax-sync.service";
-          OnCalendar = "*-*-* 01:00:00";
-        };
-        Install = {
-          WantedBy = [ "timers.target" ];
-        };
-      };
-    };
-  };
+  # TODO: do not need home-manager
+  # home-manager.users.panamax = {
+  #   home = {
+  #     stateVersion = "24.05";
+  #     packages = [ pkgs.panamax ];
+  #   };
+  #   # TODO: system service run with system user is fine
+  #   systemd.user = {
+  #     startServices = "sd-switch";
+  #     services."panamax-sync" = {
+  #       Unit = {
+  #         Description = "Synchronize crates.io mirror with latest crates";
+  #         Wants = "panamax-sync.timer";
+  #       };
+  #       Service = {
+  #         Type = "onehsot";
+  #         ExecStart = "${pkgs.panamax}/bin/panamax sync ${config.home-manager.users.panamax.home.homeDirectory}/mirror";
+  #       };
+  #       Install = {
+  #         WantedBy = [ "multi-user.target" ];
+  #       };
+  #     };
+  #     timers."panamax-sync" = {
+  #       Unit = {
+  #         Description = "Synchronize crates.io mirror with latest crates";
+  #         Requires = "panamax-sync.service";
+  #       };
+  #       Timer = {
+  #         Unit = "panamax-sync.service";
+  #         OnCalendar = "*-*-* 01:00:00";
+  #       };
+  #       Install = {
+  #         WantedBy = [ "timers.target" ];
+  #       };
+  #     };
+  #   };
+  # };
 
   services.nginx = {
     enable = true;
@@ -77,7 +78,4 @@
     #   };
     # };
   };
-
-  nix.settings.trusted-users = [ "panamax" ];
-  services.openssh.settings.AllowUsers = [ "panamax" ];
 }

@@ -1,7 +1,6 @@
 { config, lib, ... }: {
   services.dunst = {
     enable = lib.mkDefault true;
-    catppuccin.enable = true;
     settings = {
       global = {
         # %a appname

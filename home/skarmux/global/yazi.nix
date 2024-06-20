@@ -1,7 +1,6 @@
 {
   programs.yazi = {
     enable = true;
-    catppuccin.enable = true;
     enableFishIntegration = true;
     settings = {
       manager = {

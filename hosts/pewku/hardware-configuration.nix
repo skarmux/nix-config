@@ -24,15 +24,16 @@
     "/" = {
       device = "/dev/sda2";
       fsType = "ext4";
+      # options = [ "noexec" ];
     };
   };
 
-  swapDevices = [];
-
   networking = {
-    useDHCP = true;
-    # useNetworkd = true;
-    # interfaces.enabcm6e4ei0.useDHCP = true;
+    wireless.enable = false;
+    # Disable DHCP by default and enable it per interface
+    # to make tailscale work properly
+    useDHCP = false;
+    interfaces.enabcm6e4ei0.useDHCP = true;
   };
 
   nixpkgs.hostPlatform.system = "aarch64-linux";

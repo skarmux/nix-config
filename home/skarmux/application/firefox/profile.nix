@@ -40,8 +40,10 @@
       "extensions.pocket.enabled" = false;
       "extensions.screenshots.disabled" = true;
       "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      "identity.sync.tokenserver.uri" = "https://syncstorage.skarmux.tech/1.0/sync/1.5";
-      # "identity.fxaccounts.enabled" = false;
+
+      # Linked to firefox-sync.nix and requires Tailscale to be enabled in
+      # order for the domain name 'pewki' to be reachable via MagicDNS
+      "identity.sync.tokenserver.uri" = "http://pewku:8000/1.0/sync/1.5";
     };
 
     userChrome = ''

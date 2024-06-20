@@ -1,18 +1,22 @@
 { inputs, outputs, pkgs, ... }: {
   imports = [
     inputs.home-manager.nixosModules.home-manager
+    inputs.impermanence.nixosModules.impermanence
     ./nix.nix
+    ./nix-ssh-serve.nix
     ./fish.nix
     ./protonvpn.nix
-    ./gpg.nix
     ./openssh.nix
-    ./optin-persistence.nix
+    ./persistence.nix
     ./sops.nix
     ./locale.nix
     ./tailscale.nix
   ] ++ (builtins.attrValues outputs.nixosModules);
 
-  environment.systemPackages = with pkgs; [ vim ];
+  environment.systemPackages = with pkgs; [
+    vim 
+    git
+  ];
 
   home-manager.extraSpecialArgs = { inherit inputs outputs; };
 

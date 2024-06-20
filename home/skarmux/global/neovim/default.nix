@@ -1,8 +1,11 @@
-{ inputs, config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   imports = [
     ./completion
     ./ollama
     ./rust
+    ./git.nix
+    ./typst.nix
   ];
 
   programs.nixvim = {
@@ -10,15 +13,9 @@
 
     defaultEditor = true;
 
-    # TODO: Not part of catppuccin-nix
     colorschemes.catppuccin = {
       enable = true;
       settings.flavor = config.catppuccin.flavor;
-    };
-
-    filetype = {
-      # Neovim does associate typst files with sql for some reason. Force typst.
-      extension.typ = "typst";
     };
 
     opts = {
@@ -62,7 +59,6 @@
           fzf-native.enable = true;
           undo.enable = true;
         };
-        keymapsSilent = true;
         keymaps = {
           # Search files
           "<leader>f" = {
@@ -185,8 +181,8 @@
       # Neovim native lsp support
       lsp = {
         enable = true;
+        inlayHints = true; # since Neovim 0.10.0
         servers = {
-          gdscript.enable = true;
           html.enable = true;
           htmx.enable = true;
           # intelephense.enable = true;
@@ -199,16 +195,17 @@
           pylsp.enable = true;
           sqls.enable = true;
           tailwindcss.enable = true;
-          typst-lsp = {
-            enable = true;
-            filetypes = [ "typst" ];
-          };
         };
       };
-      lsp-format.enable = true;
+
+      # Disabled for now to not mess up git commits accidentally.
+      lsp-format.enable = false;
 
       # Render diagnostics results inline
-      lsp-lines.enable = true;
+      lsp-lines = {
+        enable = true;
+        currentLine = true;
+      };
 
       # Syntax highlighting for Nix
       # Filetype detection for .nix files
@@ -216,126 +213,57 @@
       # NixEdit command: navigate nixpkgs by attribute name
       nix.enable = true;
 
-      # Per line git status symbols in extra column
-      gitsigns.enable = true;
-
       # Styled status line at the bottom
       lualine.enable = true;
 
       # LSP process status messages
       fidget.enable = true;
+      lsp-status.enable = false;
 
       # Git command integration
       fugitive.enable = true;
 
       # Manipulate brackets and quotations
       surround.enable = true;
-
-      # multicursors.enable = true;
-
-      # pretty-fold-nvim
-      # formatter-nvim
-      # vim-abolish
     };
 
     keymaps = [
-      {
-        mode = "n";
-        key = "<leader>w";
-        options.silent = true;
-        action = ":w<CR>";
-      }
-      {
-        mode = "n";
-        key = "<leader>q";
-        options.silent = true;
-        action = ":wq<CR>";
-      }
-      {
-        mode = "n";
-        key = "<leader>e";
-        options.silent = true;
-        action = ":Oil<CR>";
-      }
+      # LSP Actions
+      { mode = "n"; key = "gd"; action = "vim.lsp.buf.definition()"; }
+      { mode = "n"; key = "<S-k>"; action = "vim.lsp.buf.hover()"; }
+      { mode = "n"; key = "<leader>vca"; action = "vim.lsp.buf.code_action()"; }
+      { mode = "n"; key = "<leader>vrr"; action = "vim.lsp.buf.references()"; }
+      { mode = "n"; key = "<leader>vrn"; action = "vim.lsp.buf.rename()"; }
+      { mode = "i"; key = "<C-h>"; action = "vim.lsp.buf.signature_help()"; }
+
+      # Save / Quit
+      { mode = "n"; key = "<leader>w"; options.silent = true; action = ":w<CR>"; }
+      { mode = "n"; key = "<leader>q"; options.silent = true; action = ":q<CR>"; }
+      { mode = "n"; key = "<leader>e"; options.silent = true; action = ":Oil<CR>"; }
 
       # Move highlighted line(s) up and down
-      {
-        mode = "n";
-        key = "J";
-        options.silent = true;
-        action = ":m '>+1<CR>gv=gv";
-      }
-      {
-        mode = "n";
-        key = "K";
-        options.silent = true;
-        action = ":m '<-2<CR>gv=gv";
-      }
+      { mode = "v"; key = "J"; options.silent = true; action = ":m '>+1<CR>gv=gv"; }
+      { mode = "v"; key = "K"; options.silent = true; action = ":m '<-2<CR>gv=gv"; }
 
       # Keep cursor in place after `J`
       # TODO: This removes leading `/*` from current line
-      {
-        mode = "n";
-        key = "J";
-        options.silent = true;
-        action = "mzJ`z";
-      }
+      { mode = "n"; key = "J"; action = "mzJ`z"; }
 
       # Keep cursor in the middle during half page jumps
-      {
-        mode = "n";
-        key = "<C-d>";
-        options.silent = true;
-        action = "<C-d>zz";
-      }
-      {
-        mode = "n";
-        key = "<C-u>";
-        options.silent = true;
-        action = "<C-u>zz";
-      }
+      { mode = "n"; key = "<C-d>"; options.silent = true; action = "<C-d>zz"; }
+      { mode = "n"; key = "<C-u>"; options.silent = true; action = "<C-u>zz"; }
 
       # Keep search matches centered
-      {
-        mode = "n";
-        key = "n";
-        options.silent = true;
-        action = "nzzzv";
-      }
-      {
-        mode = "n";
-        key = "N";
-        options.silent = true;
-        action = "Nzzzv";
-      }
+      { mode = "n"; key = "n"; options.silent = true; action = "nzzzv"; }
+      { mode = "n"; key = "N"; options.silent = true; action = "Nzzzv"; }
 
       # Preserve copy buffer on override
-      {
-        mode = "x";
-        key = "<leader>p";
-        options.silent = true;
-        action = ''"_dP'';
-      }
+      { mode = "x"; key = "<leader>p"; options.silent = true; action = ''"_dP''; }
 
       # Copy to clipboard
-      {
-        mode = "n";
-        key = "<leader>y";
-        options.silent = true;
-        action = ''"+y'';
-      }
-      {
-        mode = "v";
-        key = "<leader>y";
-        options.silent = true;
-        action = ''"+y'';
-      }
-      {
-        mode = "n";
-        key = "<leader>Y";
-        options.silent = true;
-        action = ''"+Y'';
-      }
+      { mode = "n"; key = "<leader>y"; options.silent = true; action = ''"+y''; }
+      { mode = "v"; key = "<leader>y"; options.silent = true; action = ''"+y''; }
+      { mode = "n"; key = "<leader>Y"; options.silent = true; action = ''"+Y''; }
 
       # Search and replace word under cursor in current buffer
       {
@@ -357,35 +285,4 @@
     ];
   };
 
-  # TODO: Only for desktop environments
-  # xdg.desktopEntries.nvim = {
-  #   name = "Neovim";
-  #   genericName = "Text Editor";
-  #   exec = "${config.home.sessionVariables.TERMINAL} -e nvim %F";
-  #   icon = "nvim";
-  #   mimeType = [
-  #     "text/english"
-  #     "text/plain"
-  #     "text/x-makefile"
-  #     "text/x-c++hdr"
-  #     "text/x-c++src"
-  #     "text/x-chdr"
-  #     "text/x-csrc"
-  #     "text/x-java"
-  #     "text/x-moc"
-  #     "text/x-pascal"
-  #     "text/x-tcl"
-  #     "text/x-tex"
-  #     "application/x-shellscript"
-  #     "text/x-c"
-  #     "text/x-c++"
-  #   ];
-  #   # terminal = true;
-  #   type = "Application";
-  # };
-
-  # xdg.mimeApps.defaultApplications = {
-  #   "text/plain" = [ "nvim.desktop" ];
-  #   "text/markdown" = [ "nvim.desktop" ];
-  # };
 }

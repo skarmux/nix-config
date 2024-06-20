@@ -6,22 +6,24 @@
     ../common/users/skarmux
 
     ../common/optional/greetd.nix
-
     ../common/optional/pipewire.nix
     ../common/optional/gamemode.nix
-    ../common/optional/bluetooth.nix
     ../common/optional/steam-hardware.nix
     ../common/optional/thunar.nix
     ../common/optional/ollama.nix
-    # ../common/optional/deluge.nix
-
     ../common/optional/hyprland.nix
-    # ../common/optional/plasma.nix
+    ../common/optional/gpg.nix
 
     ./kvm.nix
     ./nvidia
   ];
 
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+
+  services.blueman.enable = true;
   # services.protonvpn.enable = true;
 
   # Turn on all features related to desktop and graphical applications
@@ -102,20 +104,11 @@
     kdeconnect.enable = true;
   };
 
-  # Device rules and user group for Voyager
-  # services.udev.extraRules = # rules
-  #   ''
-  #     # Rules for Oryx web flashing and live training
-  #     KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", GROUP="plugdev"
-  #     KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", GROUP="plugdev"
-  #     # Keymapp Flashing rules for the Voyager
-  #     SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", MODE:="0666", SYMLINK+="ignition_dfu"
-  #   '';
-  # users.groups."plugdev" = { };
   environment.systemPackages = with pkgs; [ 
     android-udev-rules 
     deluge
   ];
+
   hardware.keyboard.zsa.enable = true;
 
   # Prioritize performance over efficiency
@@ -124,6 +117,7 @@
   # Enable DHCP
   networking = {
     hostName = "ignika";
+    useDHCP = false;
     interfaces = {
       # With intel wireless disabled
       # enp4s0.useDHCP = true;

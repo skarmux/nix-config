@@ -4,6 +4,7 @@
     inputs.catppuccin.homeManagerModules.catppuccin
     inputs.sops-nix.homeManagerModules.sops
     inputs.nixvim.homeManagerModules.nixvim
+    inputs.impermanence.nixosModules.home-manager.impermanence
     ./zellij
     ./direnv.nix
     ./bash.nix
@@ -12,15 +13,15 @@
     ./eza.nix
     ./fish.nix
     ./yazi.nix
-    ./git.nix
+    ./git
     ./starship.nix
     ./btop.nix
     ./neovim
+    ./ssh.nix
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 
   programs = {
     home-manager.enable = true;
-    git.enable = true;
   };
 
   # Everything without a program.* option
@@ -52,6 +53,21 @@
   home = {
     username = lib.mkDefault "skarmux";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
+    persistence = {
+      "/nix/persist/home/skarmux" = {
+        directories = [
+          "Downloads"
+          "Documents"
+          "Pictures"
+          "Music"
+          "Videos"
+          "Projects"
+          ".local/bin"
+          ".local/share/nix"
+        ];
+        allowOther = true;
+      };
+    };
     stateVersion = "24.05";
   };
 
