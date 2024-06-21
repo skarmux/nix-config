@@ -31,6 +31,10 @@ in
     ];
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
     packages = [ pkgs.home-manager ];
+    openssh.authorizedKeys.keyFiles = [
+      ../../../../home/skarmux/yubikey/id_ed25519.pub
+      ../../../../home/skarmux/yubikey/id_ecdsa_sk.pub
+    ];
   };
 
   sops.secrets.skarmux-password = {
@@ -42,7 +46,7 @@ in
 
   nix.settings.trusted-users = ["skarmux"];
 
-  # home-manager.users.skarmux = {
-  #   imports = [ ../../../../home/skarmux/${config.networking.hostName}.nix ];
-  # };
+  home-manager.users.skarmux = {
+    imports = [ ../../../../home/skarmux/${config.networking.hostName}.nix ];
+  };
 }

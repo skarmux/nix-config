@@ -18,7 +18,10 @@
     git
   ];
 
-  home-manager.extraSpecialArgs = { inherit inputs outputs; };
+  home-manager = {
+    extraSpecialArgs = { inherit inputs outputs; };
+    backupFileExtension = "backup";
+  };
 
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
