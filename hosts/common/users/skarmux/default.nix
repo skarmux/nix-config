@@ -7,8 +7,8 @@ in
     isNormalUser = true;
     shell = pkgs.fish;
     description = "Nils Harbke";
-    # Same as user `skarmux` on NAS for `nfs` rights mapping
-    uid = 1026;
+    # # Same as user `skarmux` on NAS for `nfs` rights mapping
+    # uid = 1026;
     extraGroups = [
       "wheel" # (sudo)
     ]
@@ -42,7 +42,7 @@ in
 
   nix.settings.trusted-users = ["skarmux"];
 
-  home-manager.users.skarmux = {
-    imports = [ ../../../../home/skarmux/${config.networking.hostName}.nix ];
-  };
+  # home-manager.users.skarmux = {
+  #   imports = [ ../../../../home/skarmux/${config.networking.hostName}.nix ];
+  # };
 }

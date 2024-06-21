@@ -7,7 +7,6 @@
 
     ../common/global
     ../common/users/skarmux
-    ../common/optional/syncthing.nix # TODO: should run in user session
 
     (import ./service/firefox-sync.nix {
       inherit config;
@@ -40,7 +39,7 @@
 
   services = {
 
-    hardware.argonone.enable = true; # TODO: Fan not spinning up... :(
+    # hardware.argonone.enable = true; # TODO: Fan not spinning up... :(
 
     mysql = {
       enable = true;
@@ -110,25 +109,4 @@
     };
   };
 
-  environment = {
-    # Prevent default packages from being installed
-    # systemPackages = lib.mkForce [ ];
-
-    # etc = {
-    #   "ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
-    #   "ssh/ssh_host_rsa_key.pub".source = "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
-    #   "ssh/ssh_host_ed25519_key".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key";
-    #   "ssh/ssh_host_ed25519_key.pub".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key.pub";
-    #   "machine-id".source = "/nix/persist/etc/machine-id";
-    # };
-
-    # persistence."/nix/persist" = {
-    #   directories = [
-    #     "/var/lib"
-    #     "/var/log"
-    #     "/etc/nixos"
-    #     "/srv"
-    #   ];
-    # };
-  };
 }

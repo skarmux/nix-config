@@ -16,7 +16,7 @@
     ./git
     ./starship.nix
     ./btop.nix
-    ./neovim
+    ./syncthing.nix
     ./ssh.nix
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 

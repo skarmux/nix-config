@@ -5,6 +5,7 @@
     ./yubikey
     ./session/hyprland 
     ./application/firefox
+    ./application/neovim
     ./application/kdeconnect.nix
     ./application/imv.nix
     ./application/zathura.nix
