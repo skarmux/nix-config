@@ -46,9 +46,9 @@
     };
   };
 
-  # environment.persistence = {
-  #   "/nix/persist".directories = [
-  #     "/var/lib/headscale"
-  #   ];
-  # };
+  environment.persistence."/nix/persist" = {
+    directories = [
+      "/var/lib/headscale"
+    ];
+  };
 }

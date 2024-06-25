@@ -1,4 +1,5 @@
 { config
+, pkgs
 , port ? 8000 
 , ...
 }:
@@ -10,25 +11,39 @@
     };
   };
 
-  services.firefox-syncserver = {
-    enable = true;
-    database = {
-      host = "localhost"; # runs locally
-    };
-    secrets = config.sops.secrets."firefox-sync/env".path;
-    singleNode = {
+  services = {
+
+    mysql = {
       enable = true;
-      enableTLS = false;
-      enableNginx = false; # already accessible via tailnet0 interface
-      # TODO: make sure the hostname is the one given by
-      #       tailscale MagicDNS
-      hostname = config.networking.hostName;
-      capacity = 1;
+      package = pkgs.mariadb;
     };
-    settings = {
-      port = port;
+
+    firefox-syncserver = {
+      enable = true;
+      database = {
+        host = "localhost"; # runs locally
+      };
+      secrets = config.sops.secrets."firefox-sync/env".path;
+      singleNode = {
+        enable = true;
+        enableTLS = false;
+        enableNginx = false; # already accessible via tailnet0 interface
+
+        # TODO: make sure the hostname is the one given by
+        #       tailscale MagicDNS
+        hostname = config.networking.hostName;
+        
+        capacity = 1;
+      };
+      settings = {
+        port = port;
+      };
     };
   };
 
   # TODO: make assertion that tailscale is configured
+
+  environment.persistence."/nix/persist" = {
+    directories = ["/var/lib/mysql"];
+  };
 }

@@ -2,7 +2,9 @@
 {
   services.syncthing = {
     enable = true;
-    extraOptions = []; # default
+    extraOptions = [
+      "--gui-address=0.0.0.0:8384"
+    ];
   };
 
   home.persistence."/nix/persist/home/skarmux" = {

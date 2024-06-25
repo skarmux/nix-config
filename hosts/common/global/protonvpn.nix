@@ -1,5 +1,6 @@
-{ config, ... }: {
-
+{ config, ... }:
+{
+  # hosts/common/secrets.yaml
   sops.secrets.protonvpn = {
     sopsFile = ../secrets.yaml;
   };
@@ -7,7 +8,7 @@
   services.protonvpn = {
     autostart = true;
     interface = {
-      dns.enable = true;
+      dns.enable = false;
       privateKeyFile = config.sops.secrets.protonvpn.path;
     };
     endpoint = {

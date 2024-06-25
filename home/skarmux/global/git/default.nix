@@ -7,12 +7,6 @@
       userName = "Nils Harbke";
       userEmail = "nils.harbke@proton.me";
 
-      # aliases = {
-      #   ci = "commit";
-      #   co = "checkout";
-      #   s = "status";
-      # };
-
       extraConfig = {
         user.signing.key = "A6C555DD3AA48325B616A1D8F822D479719EAB61";
         pager = { branch = "false"; };
@@ -47,9 +41,11 @@
     lazygit.enable = true;
   };
 
-  home.file.".gitmessage".source = ./gitmessage.txt;
-  home.packages = with pkgs; [
-    git-crypt 
-    gitleaks
-  ];
+  home = {
+    file.".gitmessage".source = ./gitmessage.txt;
+    packages = with pkgs; [
+      git-crypt 
+      gitleaks
+    ];
+  };
 }

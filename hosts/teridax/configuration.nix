@@ -1,9 +1,6 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, ... }:
+{
   imports = [
-    inputs.disko.nixosModules.disko
-    ./disk-configuration.nix
-    ./hardware-configuration.nix
-
     ../common/global
     ../common/users/skarmux
 
@@ -11,21 +8,20 @@
     ../common/optional/pipewire.nix
     ../common/optional/wireless.nix
     ../common/optional/thunar.nix
-    ../common/optional/nas.nix
     ../common/optional/gpg.nix
+
+    ./hardware-configuration.nix
+    ./disk-configuration.nix
   ];
 
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
-
-  services.blueman.enable = true;
+  networking.hostName = "teridax";
 
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
     supportedFilesystems = [ "bcachefs" "ntfs" ];
     loader.systemd-boot.enable = true;
+
+    # Enable deployment to Raspberry Pi 4 (ARM64)
     binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 
@@ -39,9 +35,8 @@
     };
   };
 
-  networking.hostName = "teridax";
-
-  powerManagement.cpuFreqGovernor = "performance ";
+  # Save power on idle and boost for compiles
+  powerManagement.cpuFreqGovernor = "ondemand";
 
   # Hyprland
   programs.hyprland = {
@@ -61,4 +56,5 @@
 
     LIBSEAT_BACKEND = "logind";
   };
+  # End Hyprland
 }

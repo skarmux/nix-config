@@ -16,6 +16,7 @@
   environment.systemPackages = with pkgs; [
     vim 
     git
+    home-manager
   ];
 
   home-manager.extraSpecialArgs = { inherit inputs outputs; };

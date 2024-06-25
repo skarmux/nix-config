@@ -46,7 +46,7 @@ in
 
   nix.settings.trusted-users = ["skarmux"];
 
-  # home-manager.users.skarmux = {
-  #   imports = [ ../../../../home/skarmux/${config.networking.hostName}.nix ];
-  # };
+  home-manager.users.skarmux = {
+    imports = [ ../../../../home/skarmux/${config.networking.hostName}.nix ];
+  };
 }

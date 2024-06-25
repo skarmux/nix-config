@@ -1,15 +1,20 @@
 { inputs, pkgs, config, ... }:
 {
   imports = [
-    inputs.feaston.nixosModules.default
-    
     ./hardware-configuration.nix
 
     ../common/global
     ../common/users/skarmux
+    
+    # TODO: Keep nginx hosted services available whilst
+    #       running the wireguard vpn
+    # (import ../common/optional/deluge.nix {
+    #   inherit config;
+    #   port = 8112;
+    # })
 
     (import ./service/firefox-sync.nix {
-      inherit config;
+      inherit config pkgs;
       port = 8000; 
     })
 
@@ -25,6 +30,12 @@
       port = 3337; 
       domain = "cache.skarmux.tech";
     })
+
+    (import ./service/feaston.nix { 
+      inherit inputs;
+      port = 6000; 
+      domain = "feaston.skarmux.tech";
+    })
   ];
 
   boot = {
@@ -39,20 +50,9 @@
 
   services = {
 
+    tox-node.enable = true;
+
     # hardware.argonone.enable = true; # TODO: Fan not spinning up... :(
-
-    mysql = {
-      enable = true;
-      package = pkgs.mariadb;
-    };
-
-    feaston = {
-      enable = true;
-      domain = "feaston.skarmux.tech";
-      port = 6000;
-      enableNginx = true;
-      enableTLS = true;
-    };
 
     # Use this system as exit-node
     tailscale.useRoutingFeatures = "server";
@@ -107,6 +107,10 @@
         }];
       }];
     };
+  };
+
+  environment.persistence."/nix/persist" = {
+    directories = ["/var/lib/acme"];
   };
 
 }

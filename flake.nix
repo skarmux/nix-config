@@ -98,26 +98,18 @@
       };
 
       homeConfigurations = {
-        "skarmux@ignika" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/ignika.nix ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-        };
-        "deck@steamdeck" = lib.homeManagerConfiguration {
-          modules = [ ./home/deck/steamdeck.nix ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-        };
         "skarmux@teridax" = lib.homeManagerConfiguration {
           modules = [ ./home/skarmux/teridax.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
-        "skarmux@wsl" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/default.nix ];
+
+        "deck@steamdeck" = lib.homeManagerConfiguration {
+          modules = [ ./home/deck/steamdeck.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
+
       };
 
       deploy.nodes.pewku = {

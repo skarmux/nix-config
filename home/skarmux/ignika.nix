@@ -5,11 +5,11 @@
 
     ./yubikey
 
-    ./application/neovim
+    ./app/neovim
 
     ./session/hyprland
-    (import ./application/wezterm.nix { inherit config lib; })
-    (import ./application/alacritty.nix { inherit config lib; default = true; })
+    (import ./app/wezterm.nix { inherit config lib; })
+    (import ./app/alacritty.nix { inherit config lib; default = true; })
   ];
 
   gtk.cursorTheme.size = 32;

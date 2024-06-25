@@ -4,15 +4,17 @@
     ./global 
     ./yubikey
     ./session/hyprland 
-    ./application/firefox
-    ./application/neovim
-    ./application/kdeconnect.nix
-    ./application/imv.nix
-    ./application/zathura.nix
-    ./application/keepassxc
-    (import ./application/wezterm.nix { inherit config lib; })
-    (import ./application/alacritty.nix { inherit config lib; default = true; })
-    ./application/ticker.nix
+    ./app/firefox
+    ./app/neovim
+    ./app/kdeconnect.nix
+    ./app/imv.nix
+    ./app/zathura.nix
+    ./app/keepassxc
+    ./app/signal.nix
+    ./app/plex.nix
+    (import ./app/wezterm.nix { inherit config lib; })
+    (import ./app/alacritty.nix { inherit config lib; default = true; })
+    ./app/ticker.nix
   ];
 
   home.sessionVariables.TERMINAL = "${pkgs.alacritty}/bin/alacritty";

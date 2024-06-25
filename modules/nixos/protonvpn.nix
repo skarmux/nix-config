@@ -103,7 +103,7 @@ in {
       peers = [
         {
           publicKey = cfg.endpoint.publicKey;
-          allowedIPs = [ "0.0.0.0/0" "::/0" ];
+          allowedIPs = [ "10.192.122.0/0" ];
           endpoint = "${cfg.endpoint.ip}:${builtins.toString cfg.endpoint.port}";
         }
       ];
