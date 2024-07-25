@@ -13,6 +13,7 @@
       window = {
         dynamic_padding = true;
         padding.x = 15;
+        opacity = 0.9;
       };
       cursor = {
         style = "Block";

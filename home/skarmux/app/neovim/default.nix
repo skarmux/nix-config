@@ -6,6 +6,7 @@
     ./rust
     ./git.nix
     ./typst.nix
+    ./lsp.nix
   ];
 
   programs.nixvim = {
@@ -15,7 +16,10 @@
 
     colorschemes.catppuccin = {
       enable = true;
-      settings.flavor = config.catppuccin.flavor;
+      settings = {
+        flavor = config.catppuccin.flavor;
+        transparent_background = true;
+      };
     };
 
     opts = {
@@ -94,7 +98,8 @@
 
       # Keep current context header line visible
       treesitter-context = {
-        enable = true;
+        # NOTE: Disabled in favor of lspsaga breadcrumbs
+        enable = false;
         settings = {
           separator = "";
           line_numbers = false;
@@ -178,35 +183,6 @@
       # TODO: Test if more configuration is needed for nixvim
       lazy.enable = true;
 
-      # Neovim native lsp support
-      lsp = {
-        enable = true;
-        inlayHints = true; # since Neovim 0.10.0
-        servers = {
-          html.enable = true;
-          htmx.enable = true;
-          # intelephense.enable = true;
-          java-language-server.enable = true;
-          jsonls.enable = true;
-          lua-ls.enable = true;
-          marksman.enable = true;
-          nixd.enable = true;
-          phpactor.enable = true;
-          pylsp.enable = true;
-          sqls.enable = true;
-          tailwindcss.enable = true;
-        };
-      };
-
-      # Disabled for now to not mess up git commits accidentally.
-      lsp-format.enable = false;
-
-      # Render diagnostics results inline
-      lsp-lines = {
-        enable = true;
-        currentLine = true;
-      };
-
       # Syntax highlighting for Nix
       # Filetype detection for .nix files
       # Automatic indentation
@@ -216,26 +192,14 @@
       # Styled status line at the bottom
       lualine.enable = true;
 
-      # LSP process status messages
-      fidget.enable = true;
-      lsp-status.enable = false;
-
-      # Git command integration
-      fugitive.enable = true;
-
       # Manipulate brackets and quotations
       surround.enable = true;
+
+      # Notification bubbles, hide cmdline, etc
+      noice.enable = true;
     };
 
     keymaps = [
-      # LSP Actions
-      { mode = "n"; key = "gd"; action = "vim.lsp.buf.definition()"; }
-      { mode = "n"; key = "<S-k>"; action = "vim.lsp.buf.hover()"; }
-      { mode = "n"; key = "<leader>vca"; action = "vim.lsp.buf.code_action()"; }
-      { mode = "n"; key = "<leader>vrr"; action = "vim.lsp.buf.references()"; }
-      { mode = "n"; key = "<leader>vrn"; action = "vim.lsp.buf.rename()"; }
-      { mode = "i"; key = "<C-h>"; action = "vim.lsp.buf.signature_help()"; }
-
       # Save / Quit
       { mode = "n"; key = "<leader>w"; options.silent = true; action = ":w<CR>"; }
       { mode = "n"; key = "<leader>q"; options.silent = true; action = ":q<CR>"; }

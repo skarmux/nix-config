@@ -13,6 +13,11 @@
     #   port = 8112;
     # })
 
+    (import ./service/vikunja.nix {
+      port = 3456;
+      domain = "vikunja.skarmux.tech";
+    })
+
     (import ./service/firefox-sync.nix {
       inherit config pkgs;
       port = 8000; 
@@ -36,7 +41,16 @@
       port = 6000; 
       domain = "feaston.skarmux.tech";
     })
+
+    (import ./service/homepage.nix { 
+      inherit inputs;
+      domain = "skarmux.tech";
+    })
   ];
+
+  # To keep the syncthing user service active 24/7
+  # NOTE: This is a small security risk!
+  users.users.skarmux.linger = true;
 
   boot = {
     loader = {
@@ -48,11 +62,11 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
+  virtualisation.docker.enable = true;
+
   services = {
 
     tox-node.enable = true;
-
-    # hardware.argonone.enable = true; # TODO: Fan not spinning up... :(
 
     # Use this system as exit-node
     tailscale.useRoutingFeatures = "server";

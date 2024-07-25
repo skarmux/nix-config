@@ -9,16 +9,13 @@
       "/var/lib/systemd/coredump"
       "/var/log"
       "/etc/nixos"
+      "/etc/ssh"
     ];
 
     files = [
       # TODO: nixos-rebuild keeps regenerating the machine id before
       # attempting the bind mount on host pewku, and therefore errors...
       # "/etc/machine-id"
-      "/etc/ssh/ssh_host_ed25519_key"
-      "/etc/ssh/ssh_host_ed25519_key.pub"
-      "/etc/ssh/ssh_host_rsa_key"
-      "/etc/ssh/ssh_host_rsa_key.pub"
     ];
   };
 

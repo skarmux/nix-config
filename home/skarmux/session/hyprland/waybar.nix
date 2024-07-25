@@ -89,10 +89,10 @@
         format = "{icon}";
         format-muted = " ";
         format-icons = {
-          headphone = "󰋋";
-          headset = "󰋎";
+          headphone = "󰋋 ";
+          headset = "󰋎 ";
           portable = "";
-          default = [ "" "" "" ];
+          default = [ " " " " " " ];
         };
         tooltip-format = "{volume}%";
         on-click = "${pkgs.pavucontrol}/bin/pavucontrol";
@@ -101,7 +101,7 @@
       network = {
         interval = 3;
         format-wifi = "  {essid}";
-        format-ethernet = "󰈀";
+        format-ethernet = "󰈀 ";
         format-disconnected = "";
         tooltip-format = ''
           {ifname}
@@ -183,10 +183,12 @@
         font-size: 12pt;
         padding: 0;
         margin: 0 0.4em;
+        color: #cdd6f4;
       }
 
       window#waybar {
         padding: 0;
+        opacity: 0.9;
       }
 
       .modules-left {
@@ -199,8 +201,10 @@
       #workspaces button.hidden {
       }
       #workspaces button.visible {
+        color: #cba6f7;
       }
       #workspaces button.active {
+        color: #cba6f7;
       }
 
       #clock {

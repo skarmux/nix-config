@@ -49,6 +49,7 @@
     impermanence.url = "github:nix-community/impermanence";
     deploy-rs.url = "github:serokell/deploy-rs";
     feaston.url = "github:skarmux/feaston";
+    homepage.url = "github:skarmux/skarmux";
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -113,8 +114,8 @@
       };
 
       deploy.nodes.pewku = {
-        # hostname = "${outputs.nixosConfigurations."pewku".config.networking.hostName}";
-        hostname = "192.168.178.99";
+        hostname = "${outputs.nixosConfigurations."pewku".config.networking.hostName}";
+        # hostname = "192.168.178.99";
         fastConnection = true;
         interactiveSudo = false;
         confirmTimeout = 60;
