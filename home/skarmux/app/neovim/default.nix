@@ -1,6 +1,7 @@
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 {
   imports = [
+    inputs.nixvim.homeManagerModules.nixvim
     ./completion
     ./ollama
     ./rust
@@ -221,10 +222,21 @@
       lsp-status.enable = false;
 
       # Git command integration
-      fugitive.enable = true;
+      # fugitive.enable = true;
+      neogit.enable = true;
 
       # Manipulate brackets and quotations
       surround.enable = true;
+
+      noice.enable = true;
+      notify = {
+        enable = true;
+        maxWidth = 30;
+        stages = "static";
+        fps = null;
+      };
+
+      trouble.enable = true;
     };
 
     keymaps = [

@@ -8,6 +8,7 @@
 
       # Per line git status symbols in extra column
       gitsigns.enable = true;
+      diffview.enable = true;
     };
   };
 }
