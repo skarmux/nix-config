@@ -1,19 +1,23 @@
+{ config, ... }:
 {
   programs.eza = {
     enable = true;
 
     # Whether to enable recommended eza aliases
     # ls, ll, la, lt & lla
-    enableBashIntegration = true;
-    enableFishIntegration = true;
-    enableZshIntegration = true;
+    enableBashIntegration = config.programs.bash.enable;
+    enableFishIntegration = config.programs.fish.enable;
+    enableZshIntegration = config.programs.zsh.enable;
 
     # List each file’s Git status if tracked or ignored
-    git = true;
+    git = config.programs.git.enable;
 
     # Display icons next to filenames
     icons = true;
 
-    extraOptions = [ "--time-style=iso" "--group-directories-first" ];
+    extraOptions = [
+      "--time-style=iso"
+      "--group-directories-first"
+    ];
   };
 }

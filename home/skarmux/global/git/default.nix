@@ -35,10 +35,10 @@
       lfs.enable = true;
 
       # Improve `git diff` syntax highlighting and styling
-      delta.enable = true;
+      # delta.enable = true;
     };
 
-    lazygit.enable = true;
+    # lazygit.enable = true;
   };
 
   home = {

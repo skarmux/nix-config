@@ -1,17 +1,24 @@
+{ config, lib, ... }:
 {
-  programs.direnv = {
-    enable = true;
+  programs = {
+    direnv = {
+      enable = true;
+      # Prevent project dependencies from being
+      # garbage collected and speed up execution
+      nix-direnv.enable = true;
+    };
 
-    # Prevent project dependencies from being
-    # garbage collected and speed up execution
-    nix-direnv.enable = true;
+    git.ignores = [ ".direnv/**" ];
   };
 
-  programs.git.ignores = [ ".direnv/**" ];
-
-  home.persistence."/nix/persist/home/skarmux" = {
-    directories = [
-      ".local/share/direnv/allow"
-    ];
+  home.persistence = {
+   "/nix/persist/home/skarmux" = {
+     directories = [
+       {
+         directory = ".local/share/direnv/allow";
+         method = "symlink"; 
+       } 
+     ];
+    };
   };
 }
