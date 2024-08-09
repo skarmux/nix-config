@@ -48,6 +48,13 @@
     })
   ];
 
+  sops.secrets = {
+    "skarmux_tech/certificate_key" = {
+      owner = "nginx";
+      sopsFile = ./secrets.yaml; 
+    };
+  };
+
   # To keep the syncthing user service active 24/7
   # NOTE: This is a small security risk!
   users.users.skarmux.linger = true;
