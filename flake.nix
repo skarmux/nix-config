@@ -110,6 +110,12 @@
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
+        
+        "skarmux@wsl" = lib.homeManagerConfiguration {
+          modules = [ ./home/skarmux/wsl.nix ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+        };
 
       };
 

@@ -10,5 +10,7 @@
     # Git command integration
     fugitive.enable = true;
 
+    # Per line git status symbols in extra column
+    diffview.enable = true;
   };
 }

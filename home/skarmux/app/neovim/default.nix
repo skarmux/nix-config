@@ -1,12 +1,14 @@
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 {
   imports = [
+    inputs.nixvim.homeManagerModules.nixvim
     ./completion
     ./ollama
     ./rust
     ./git.nix
     ./typst.nix
     ./lsp.nix
+    # ./obsidian.nix
   ];
 
   programs.nixvim = {
@@ -99,9 +101,10 @@
       # Keep current context header line visible
       treesitter-context = {
         # NOTE: Disabled in favor of lspsaga breadcrumbs
+        # Some .nix files use too many lines for inputs declaration
         enable = false;
         settings = {
-          separator = "";
+          # separator = ""; # Attempt to remove the underline separator
           line_numbers = false;
         };
       };
@@ -153,17 +156,6 @@
       # Center text on screen
       zen-mode.enable = true;
 
-      # Obsidian integration
-      #obsidian = {
-      #  enable = true;
-      #  settings = {
-      #    workspaces = [{
-      #      name = "personal";
-      #      path = "${config.xdg.userDirs.documents}/obsidian/personal";
-      #    }];
-      #  };
-      #};
-
       # Replace `.netrw`
       oil.enable = true;
 
@@ -197,6 +189,25 @@
 
       # Notification bubbles, hide cmdline, etc
       noice.enable = true;
+
+      notify = {
+        enable = true;
+        maxWidth = 50;
+
+        # Reduce network usage for remote sessions
+        stages = "static";
+        fps = null;
+      };
+
+      # Show breadcrumbs on the first line
+      navic = {
+        enable = true;
+        highlight = true;
+      };
+
+      navbuddy.enable = true;
+
+      trouble.enable = true;
     };
 
     keymaps = [

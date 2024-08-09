@@ -21,13 +21,16 @@
         servers = {
           html.enable = true;
           htmx.enable = true;
-        # intelephense.enable = true;
         java-language-server.enable = true;
         jsonls.enable = true;
         lua-ls.enable = true;
         marksman.enable = true;
         nixd.enable = true;
+
+        # PHP
         phpactor.enable = true;
+        # intelephense.enable = true;
+
         pylsp.enable = true;
         sqls.enable = true;
         tailwindcss.enable = true;
@@ -44,8 +47,8 @@
     };
 
     # LSP process status messages
-    # fidget.enable = true;
-    lsp-status.enable = true;
+    fidget.enable = true;
+    lsp-status.enable = false;
 
     lspsaga = {
       enable = true;

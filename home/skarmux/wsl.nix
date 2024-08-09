@@ -1,0 +1,6 @@
+{
+  imports = [
+    ./app/neovim
+    ./global
+  ];
+}

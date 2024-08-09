@@ -1,96 +1,109 @@
 { inputs, outputs, pkgs, lib, config, ... }:
+let
+  persistHomeDirectory = "/nix/persist/home/skarmux";
+in
 {
   imports = [
     inputs.catppuccin.homeManagerModules.catppuccin
     inputs.sops-nix.homeManagerModules.sops
-    inputs.nixvim.homeManagerModules.nixvim
     inputs.impermanence.nixosModules.home-manager.impermanence
-    ./zellij
     ./direnv.nix
-    ./bash.nix
     ./nix.nix
-    ./bat.nix
-    ./eza.nix
-    ./fish.nix
-    ./yazi.nix
-    ./git
-    ./starship.nix
-    ./btop.nix
-    ./syncthing.nix
     ./ssh.nix
+    ./git
+    ./bash.nix
+    ./fish.nix
+    ./zellij
+    ./yazi.nix
+    ./eza.nix
+    ./starship.nix
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 
   programs = {
     home-manager.enable = true;
+    btop.enable = true;
+    bat.enable = true;
   };
 
-  # Everything without a program.* option
-  home.packages = with pkgs; [
-    #vimv # replaced by yazi
-    #tree # replaced by eza
-    unzip
-    fzf
-
-    # Decoration
-    cmatrix
-    asciiquarium
-    tty-clock
-
-    du-dust # disk usage analyzer
-    mprocs # TODO: zellij comparison 
-    ripgrep
-    speedtest-rs
-    wiki-tui
-    slides
-
-    # Cross-platform Rust rewrite of the GNU coreutils
-    uutils-coreutils
-  ];
-
-  # TODO: Add explanation of `sd-switch`
   systemd.user.startServices = "sd-switch";
 
   home = {
+    stateVersion = "24.05";
+
     username = lib.mkDefault "skarmux";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
+
     persistence = {
-      "/nix/persist/home/skarmux" = {
+      "${persistHomeDirectory}" = {
         directories = [
-          "Downloads"
-          "Documents"
-          "Pictures"
-          "Music"
-          "Videos"
-          "Projects"
-          ".local/bin"
-          ".local/share/nix"
+          {
+            directory = "Downloads";
+            method = "symlink";
+          }
+          {
+            directory = "Repositories";
+            method = "symlink";
+          }
+          {
+            directory = "Documents";
+            method = "symlink";
+          }
+          {
+            directory = ".local/bin";
+            method = "symlink";
+          }
+          {
+            directory = ".local/share/nix";
+            method = "symlink";
+          }
         ];
+        # allow users such as root to see home directories
         allowOther = true;
       };
     };
-    stateVersion = "24.05";
+
+    packages = with pkgs; [
+      uutils-coreutils
+      vimv-rs
+      fzf
+      du-dust # disk usage analyzer
+      ripgrep
+      jq 
+      grc 
+
+      # Compression
+      p7zip 
+      unzip
+      unrar 
+    ];
   };
 
-  # Catppuccin colorscheme settings
+  # Theming
   catppuccin = {
     enable = true; # Apply to all available applications
     flavor = "mocha";
     accent = "mauve";
   };
 
-  xdg.enable = true;
-  xdg.userDirs = {
+  xdg = {
     enable = true;
+    userDirs = {
+      enable = true;
+      
+      publicShare = "${persistHomeDirectory}/PublicShare";
+      templates = "${persistHomeDirectory}/Templates";
+      videos = "${persistHomeDirectory}/Videos";
+      music = "${persistHomeDirectory}/Music";
+      pictures = "${persistHomeDirectory}/Pictures";
+      desktop = "${persistHomeDirectory}/Desktop";
+      documents = "${persistHomeDirectory}/Documents";
+      download = "${persistHomeDirectory}/Downloads";
 
-    createDirectories = true;
+      extraConfig = {
+        XDG_REPO_DIR = "${persistHomeDirectory}/Repositories"; 
+      };
 
-    # Disable unwanted dirs
-    #desktop = null;
-    #publicShare = null;
-    #templates = null;
-
-    extraConfig = {
-      XDG_PROJECTS_DIR = "${config.home.homeDirectory}/Projects";
+      createDirectories = true;
     };
   };
 }

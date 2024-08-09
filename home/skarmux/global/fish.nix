@@ -1,8 +1,5 @@
 { config, lib, pkgs, ... }:
 {
-  # Packages used in abbreviations and aliases
-  home.packages = with pkgs; [ jq p7zip unrar unzip grc ];
-
   programs.fish = {
     enable = true;
 
@@ -24,7 +21,7 @@
       hm = "home-manager --flake .";
       hms = "home-manager --flake . switch";
 
-      n = lib.mkIf (config.programs.neovim.enable || config.programs.nixvim.enable) "nvim";
+      n = lib.mkIf config.programs.nixvim.enable "nvim .";
       h = lib.mkIf config.programs.helix.enable "hx";
     };
 
@@ -46,7 +43,7 @@
       mv = "mv -i";
       rm = "rm -i";
 
-      tree = "eza --tree";
+      tree = lib.mkIf config.programs.eza.enable "eza --tree";
 
       # Power cycling
       ssn = "sudo shutdown now";
@@ -62,6 +59,7 @@
     ];
 
     functions = {
+      # Disable greeting message
       fish_greeting = "";
 
       # Combine all extraction commands

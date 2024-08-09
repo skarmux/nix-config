@@ -1,3 +1,4 @@
+{ config, ... }:
 # Connect devices using the cli: https://gist.github.com/Jonny-exe/9bad76c3adc6e916434005755ea70389
 {
   services.syncthing = {
@@ -7,9 +8,9 @@
     ];
   };
 
-  home.persistence."/nix/persist/home/skarmux" = {
-    directories = [
-      ".local/state/syncthing"
-    ];
+  home.persistence = {
+    "/nix/persist${config.home.homeDirectory}" = {
+      # directories = [ ".local/state/syncthing" ];
+    };
   };
 }
