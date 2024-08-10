@@ -30,11 +30,20 @@
       primary = true;
     }
     {
+      name = "HDMI-A-1";
+      width = 1920;
+      height = 1080;
+      refreshRate = 60;
+      x = 1600;
+      workspace = "2";
+      primary = false;
+    }
+    {
       name = "HDMI-A-2";
       width = 1920;
       height = 1080;
       refreshRate = 60;
-      x = 0;
+      x = 1600;
       workspace = "2";
       primary = false;
     }

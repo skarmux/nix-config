@@ -7,6 +7,7 @@
     ./rust
     ./git.nix
     ./typst.nix
+    ./lsp.nix
     # ./obsidian.nix
   ];
 
@@ -17,7 +18,10 @@
 
     colorschemes.catppuccin = {
       enable = true;
-      settings.flavor = config.catppuccin.flavor;
+      settings = {
+        flavor = config.catppuccin.flavor;
+        transparent_background = true;
+      };
     };
 
     opts = {
@@ -96,6 +100,7 @@
 
       # Keep current context header line visible
       treesitter-context = {
+        # NOTE: Disabled in favor of lspsaga breadcrumbs
         # Some .nix files use too many lines for inputs declaration
         enable = false;
         settings = {
@@ -182,9 +187,8 @@
       # Manipulate brackets and quotations
       surround.enable = true;
 
-      noice = {
-        enable = true;
-      };
+      # Notification bubbles, hide cmdline, etc
+      noice.enable = true;
 
       notify = {
         enable = true;
@@ -207,14 +211,6 @@
     };
 
     keymaps = [
-      # LSP Actions
-      { mode = "n"; key = "gd"; action = "vim.lsp.buf.definition()"; }
-      { mode = "n"; key = "<S-k>"; action = "vim.lsp.buf.hover()"; }
-      { mode = "n"; key = "<leader>vca"; action = "vim.lsp.buf.code_action()"; }
-      { mode = "n"; key = "<leader>vrr"; action = "vim.lsp.buf.references()"; }
-      { mode = "n"; key = "<leader>vrn"; action = "vim.lsp.buf.rename()"; }
-      { mode = "i"; key = "<C-h>"; action = "vim.lsp.buf.signature_help()"; }
-
       # Save / Quit
       { mode = "n"; key = "<leader>w"; options.silent = true; action = ":w<CR>"; }
       { mode = "n"; key = "<leader>q"; options.silent = true; action = ":q<CR>"; }

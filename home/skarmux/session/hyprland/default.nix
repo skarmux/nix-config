@@ -120,6 +120,8 @@ in
         "float,title:^(File Operation Progress)"
         "float,title:^(Extract archive)"
         "float,title:^(Save File)$"
+        # NOTE: Window without rule setting opens above screen size
+        "size 50% 80%,class:firefox,title:^(Enter name of file to save to...)$"
       ]
       ++ (lib.optionals config.programs.wofi.enable [
         "noanim,class:(wofi)"
@@ -212,8 +214,10 @@ in
       bindm = [ "$MOD,mouse:272,movewindow" "$MOD,mouse:273,resizewindow" ];
 
       misc = {
-        disable_hyprland_logo = true;
-        disable_splash_rendering = true;
+        disable_hyprland_logo = false;
+        disable_splash_rendering = false;
+        force_default_wallpaper = 3;
+        background_color = "0x1e1e2e";
       };
 
       xwayland = {

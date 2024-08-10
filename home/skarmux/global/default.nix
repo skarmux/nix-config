@@ -17,11 +17,11 @@ in
     ./yazi.nix
     ./eza.nix
     ./starship.nix
+    ./btop.nix
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 
   programs = {
     home-manager.enable = true;
-    btop.enable = true;
     bat.enable = true;
   };
 
