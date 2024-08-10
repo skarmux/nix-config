@@ -69,7 +69,8 @@ in
       du-dust # disk usage analyzer
       ripgrep
       jq 
-      grc 
+      grc # Semantic coloring of stdout
+      tealdeer
 
       # Compression
       p7zip 
