@@ -2,7 +2,7 @@
 {
   programs.bash = {
     enable = true;
-    shellAliases = config.programs.fish.shellAliases;
+    shellAliases = config.programs.fish.shellAliases // config.programs.fish.shellAbbrs;
     initExtra = "";
     profileExtra = "";
   };

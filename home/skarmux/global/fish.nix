@@ -25,6 +25,7 @@
       h = lib.mkIf config.programs.helix.enable "hx";
     };
 
+    # NOTE Used by programs.bash as well!
     shellAliases = {
       bash = "${pkgs.bashInteractive}/bin/bash";
 
