@@ -105,13 +105,13 @@
         };
 
         "deck@steamdeck" = lib.homeManagerConfiguration {
-          modules = [ ./home/deck/steamdeck.nix ];
+          modules = [ ./home/skarmux/steamdeck ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
         
         "skarmux@wsl" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/wsl.nix ];
+          modules = [ ./home/skarmux/wsl ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
