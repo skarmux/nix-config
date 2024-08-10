@@ -30,7 +30,11 @@ in {
 
     gpg = {
       enable = true;
-      settings = { trust-model = "tofu+pgp"; };
+      settings.trust-model = "tofu+pgp";
+      publicKeys = [{
+        source = ./public.gpg;
+        trust = 5; # Ultimate trust level. My precious!!
+      }];
     };
   };
 

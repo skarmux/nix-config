@@ -2,7 +2,8 @@
 {
   imports = [
     ./ssh.nix
-    ./gnupg.nix
+    ./gpg.nix
+    ./sops.nix
   ];
 
   home.packages = with pkgs; [
@@ -11,13 +12,4 @@
     yubikey-agent
   ];
 
-  programs.gpg.publicKeys = [{
-    source = ./public.gpg;
-    trust = 5;
-  }];
-
-  sops = {
-    gnupg.home = "${config.home.homeDirectory}/.gnupg";
-    defaultSopsFile = ../secrets.yaml;
-  };
 }
