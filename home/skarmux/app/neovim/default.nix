@@ -1,7 +1,6 @@
 { inputs, config, pkgs, ... }:
 {
   imports = [
-    inputs.nixvim.homeManagerModules.nixvim
     ./completion
     ./ollama
     ./rust

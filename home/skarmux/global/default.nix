@@ -7,6 +7,7 @@ in
     inputs.catppuccin.homeManagerModules.catppuccin
     inputs.sops-nix.homeManagerModules.sops
     inputs.impermanence.nixosModules.home-manager.impermanence
+    inputs.nixvim.homeManagerModules.nixvim
     ./direnv.nix
     ./nix.nix
     ./ssh.nix
