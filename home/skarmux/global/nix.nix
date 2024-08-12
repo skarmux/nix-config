@@ -1,4 +1,4 @@
-{ outputs, pkgs, ... }:
+{ outputs, lib, pkgs, ... }:
 {
   nixpkgs = {
     overlays = builtins.attrValues outputs.overlays;
@@ -6,12 +6,15 @@
   };
 
   nix = {
-    package = pkgs.nix;
+
+    package = lib.mkDefault pkgs.nix;
+
     gc = {
       automatic = true;
       frequency = "weekly";
       options = "--delete-older-than 7d";
     };
+
     settings = {
       experimental-features = "nix-command flakes";
     };

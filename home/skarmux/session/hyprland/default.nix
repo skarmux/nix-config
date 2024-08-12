@@ -154,7 +154,6 @@ in
         "$MOD,Q,killactive"
         "$MOD,T,exec,${config.home.sessionVariables.TERMINAL}"
         "$MOD,F,togglefloating"
-        "$MOD,P,fakefullscreen"
         "$MOD,V,workspaceopt,allfloat"
         "$MOD,M,exit"
 

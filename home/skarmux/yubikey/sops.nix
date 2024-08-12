@@ -1,7 +1,7 @@
 { config, ... }:
 {
   sops = {
-    gnupg.home = "${config.gpg.homeDir}";
+    gnupg.home = "${config.programs.gpg.homedir}";
     defaultSopsFile = ../secrets.yaml;
   };
 }

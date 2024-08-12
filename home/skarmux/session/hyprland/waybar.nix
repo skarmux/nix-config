@@ -184,6 +184,7 @@
         padding: 0;
         margin: 0 0.4em;
         color: #cdd6f4;
+        background-color: #1e1e2e;
       }
 
       window#waybar {
