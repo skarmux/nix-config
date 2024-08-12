@@ -85,9 +85,9 @@
     };
   };
 
-  home.persistence."/nix/persist/home/skarmux" = {
-    directories = [ ".mozilla/firefox" ];
-  };
+  # home.persistence."/nix/persist/home/skarmux" = {
+  #   directories = [ ".mozilla/firefox" ];
+  # };
 
   xdg.mimeApps.defaultApplications = {
     "text/html" = [ "firefox.desktop" ];
