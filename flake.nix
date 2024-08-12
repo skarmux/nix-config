@@ -93,8 +93,8 @@
           extraSpecialArgs = { inherit inputs outputs; };
         };
         
-        "wsl" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/wsl.nix ];
+        "skarmux" = lib.homeManagerConfiguration {
+          modules = [ ./home/skarmux/default.nix ];
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
