@@ -11,14 +11,14 @@
     git.ignores = [ ".direnv/**" ];
   };
 
-  home.persistence = {
-   "/nix/persist/home/skarmux" = {
-     directories = [
-       {
-         directory = ".local/share/direnv/allow";
-         method = "symlink"; 
-       } 
-     ];
-    };
-  };
+  # home.persistence = {
+  #  "/nix/persist/home/skarmux" = {
+  #    directories = [
+  #      {
+  #        directory = ".local/share/direnv/allow";
+  #        method = "symlink"; 
+  #      } 
+  #    ];
+  #   };
+  # };
 }

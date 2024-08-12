@@ -1,11 +1,7 @@
 { inputs, outputs, pkgs, lib, config, ... }:
-let
-  persistHomeDirectory = "/nix/persist/home/skarmux";
-in
 {
   imports = [
     inputs.catppuccin.homeManagerModules.catppuccin
-    inputs.sops-nix.homeManagerModules.sops
     inputs.impermanence.nixosModules.home-manager.impermanence
     ./direnv.nix
     ./nix.nix
@@ -32,35 +28,6 @@ in
 
     username = lib.mkDefault "skarmux";
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
-
-    persistence = {
-      "${persistHomeDirectory}" = {
-        directories = [
-          {
-            directory = "Downloads";
-            method = "symlink";
-          }
-          {
-            directory = "Repositories";
-            method = "symlink";
-          }
-          {
-            directory = "Documents";
-            method = "symlink";
-          }
-          {
-            directory = ".local/bin";
-            method = "symlink";
-          }
-          {
-            directory = ".local/share/nix";
-            method = "symlink";
-          }
-        ];
-        # allow users such as root to see home directories
-        allowOther = true;
-      };
-    };
 
     packages = with pkgs; [
       uutils-coreutils
@@ -91,15 +58,6 @@ in
     userDirs = {
       enable = true;
       
-      publicShare = "${persistHomeDirectory}/PublicShare";
-      templates = "${persistHomeDirectory}/Templates";
-      videos = "${persistHomeDirectory}/Videos";
-      music = "${persistHomeDirectory}/Music";
-      pictures = "${persistHomeDirectory}/Pictures";
-      desktop = "${persistHomeDirectory}/Desktop";
-      documents = "${persistHomeDirectory}/Documents";
-      download = "${persistHomeDirectory}/Downloads";
-
       extraConfig = {
         XDG_REPO_DIR = "${persistHomeDirectory}/Repositories"; 
       };
