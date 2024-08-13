@@ -7,10 +7,4 @@
       "--gui-address=0.0.0.0:8384"
     ];
   };
-
-  home.persistence = {
-    "/nix/persist${config.home.homeDirectory}" = {
-      # directories = [ ".local/state/syncthing" ];
-    };
-  };
 }

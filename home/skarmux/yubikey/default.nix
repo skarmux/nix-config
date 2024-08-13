@@ -1,9 +1,7 @@
 { pkgs, config, ... }:
 {
   imports = [
-    ./ssh.nix
     ./gpg.nix
-    ./sops.nix
   ];
 
   home.packages = with pkgs; [
@@ -12,4 +10,9 @@
     yubikey-agent
   ];
 
+  # SSH keys
+  home.file = {
+    ".ssh/id_ecdsa_sk.pub".source = ./id_ecdsa_sk.pub;
+    ".ssh/id_ed25519.pub".source = ./id_ed25519.pub;
+  };
 }
