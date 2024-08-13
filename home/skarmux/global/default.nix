@@ -14,12 +14,14 @@
     ./yazi.nix
     ./eza.nix
     ./starship.nix
+    ./sops.nix
     ./btop.nix
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 
   programs = {
     home-manager.enable = true;
     bat.enable = true;
+    ssh.enable = true;
   };
 
   systemd.user.startServices = "sd-switch";
