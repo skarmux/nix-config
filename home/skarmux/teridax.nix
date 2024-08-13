@@ -47,6 +47,15 @@
       workspace = "2";
       primary = false;
     }
+    {
+      name = "HDMI-A-3";
+      width = 1920;
+      height = 1080;
+      refreshRate = 60;
+      x = 1600;
+      workspace = "2";
+      primary = false;
+    }
   ];
 
   wayland.windowManager.hyprland = {
