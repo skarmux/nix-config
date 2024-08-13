@@ -59,10 +59,9 @@
     vulkan-tools
   ];
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     # NVIDIA doesn't support libvdpau, so this package will redirect VDPAU calls to LIBVA.
     extraPackages = with pkgs; [ libvdpau-va-gl ];
   };
