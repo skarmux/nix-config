@@ -59,7 +59,7 @@
       enable = true;
       
       extraConfig = {
-        XDG_REPO_DIR = "~/Repositories"; 
+        XDG_REPO_DIR = "${config.home.homeDirectory}/Repositories"; 
       };
 
       createDirectories = true;
