@@ -1,6 +1,6 @@
 {
   imports = [
-    ../global
-    ../app/neovim
+    ./global
+    ./app/neovim
   ];
 }
