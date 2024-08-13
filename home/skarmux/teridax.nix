@@ -10,11 +10,10 @@
     ./app/imv.nix
     ./app/zathura.nix
     ./app/keepassxc
-    ./app/signal.nix
     ./app/plex.nix
+    ./app/ticker.nix
     (import ./app/wezterm.nix { inherit config lib; })
     (import ./app/alacritty.nix { inherit config lib; default = true; })
-    ./app/ticker.nix
   ];
 
   home.sessionVariables.TERMINAL = "${pkgs.alacritty}/bin/alacritty";
