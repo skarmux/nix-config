@@ -11,6 +11,7 @@
     ./bash.nix
     ./fish.nix
     ./zellij
+    ./tmux.nix
     ./yazi.nix
     ./eza.nix
     ./starship.nix
