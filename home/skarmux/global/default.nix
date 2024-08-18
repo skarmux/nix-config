@@ -43,6 +43,10 @@
       grc # Semantic coloring of stdout
       tealdeer
 
+      # TODO: Optional?
+      devenv
+      direnv
+
       # Compression
       p7zip 
       unzip
