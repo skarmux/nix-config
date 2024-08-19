@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ./completion
@@ -181,7 +181,22 @@
       nix.enable = true;
 
       # Styled status line at the bottom
-      lualine.enable = true;
+      lualine = {
+        enable = true;
+
+        # One status line for all splits
+        globalstatus = true;
+
+        sectionSeparators = {
+          left = " ";
+          right = " ";
+        };
+
+        componentSeparators = {
+          left = "";
+          right = "";
+        };
+      };
 
       # Manipulate brackets and quotations
       surround.enable = true;
