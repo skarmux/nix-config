@@ -18,12 +18,14 @@
       snr = "sudo nixos-rebuild --flake .";
       snrs = "sudo nixos-rebuild --flake . switch";
       snrt = "sudo nixos-rebuild --flake . test";
+      snrb = "sudo nixos-rebuild --flake . boot";
 
       hm = "home-manager --flake .";
       hms = "home-manager --flake . switch";
 
-      n = lib.mkIf config.programs.nixvim.enable "nvim .";
+      n = lib.mkIf config.programs.nixvim.enable "nvim";
       h = lib.mkIf config.programs.helix.enable "hx";
+      y = lib.mkIf config.programs.yazi.enable "yazi";
     };
 
     # NOTE Used by programs.bash as well!
