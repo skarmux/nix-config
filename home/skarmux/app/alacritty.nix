@@ -19,6 +19,9 @@
         style = "Block";
         unfocused_hollow = true;
       };
+      font = {
+        size = 10.25;
+      };
       mouse.hide_when_typing = false;
     };
   };
