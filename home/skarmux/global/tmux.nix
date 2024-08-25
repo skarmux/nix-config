@@ -14,7 +14,7 @@
       set -g @catppuccin_window_current_fill "number"
       set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
 
-      set -g @catppuccin_status_modules_right "directory meetings date_time"
+      set -g @catppuccin_status_modules_right "directory cpu date_time"
       set -g @catppuccin_status_modules_left "session"
       set -g @catppuccin_status_left_separator  " "
       set -g @catppuccin_status_right_separator " "
@@ -24,17 +24,19 @@
       set -g @catppuccin_status_background "default"
 
       set -g @catppuccin_directory_text "#{b:pane_current_path}"
-      #set -g @catppuccin_meetings_text "#($HOME/.config/tmux/scripts/cal.sh)"
       set -g @catppuccin_date_time_text "%H:%M"
+      set -g @catppuccin_meetings_text "#($HOME/.config/tmux/scripts/cal.sh)"
       '';
     };
 
     # Number row on keyboard starts at 1
     baseIndex = 1;
 
-    # shortcut = "b";
+    mouse = true;
+
     disableConfirmationPrompt = true;
     clock24 = true;
+    historyLimit = 10000;
 
     /*
     set -g @plugin 'fcsonline/tmux-thumbs'
@@ -44,22 +46,24 @@
     plugins = with pkgs; [
       tmuxPlugins.sensible 
       tmuxPlugins.yank
+      tmuxPlugins.cpu
+      tmuxPlugins.net-speed
       {
         plugin = tmuxPlugins.resurrect;
-        extraConfig = ''
+        extraConfig = /* sh */ ''
         set -g @resurrect-strategy-nvim "session"
         '';
       }
       {
         plugin = tmuxPlugins.continuum;
-        extraConfig = ''
+        extraConfig = /* sh */ ''
         set -g @continuum-restore "on"
         '';
       }
     ];
     
-    extraConfig = ''
-    set -g renumber-windows on
+    extraConfig = /* sh */ ''
+    set -g renumber-windows on # prevent numbering gaps
     set -g status-position top # opposite of vim statusline
     set -g set-clipboard on    # use system clipboard
     '';

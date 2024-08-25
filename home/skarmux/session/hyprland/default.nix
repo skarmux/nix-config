@@ -5,7 +5,7 @@ let
 in
 {
   imports = [
-    ./waybar.nix
+    # ./waybar.nix
     ./wofi.nix
     ./qt.nix
     ./gtk.nix
