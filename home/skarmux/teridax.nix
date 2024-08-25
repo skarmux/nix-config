@@ -12,11 +12,13 @@
     ./app/keepassxc
     ./app/plex.nix
     ./app/ticker.nix
-    (import ./app/wezterm.nix { inherit config lib; })
-    (import ./app/alacritty.nix { inherit config lib; default = true; })
+    ./app/syncthing.nix
+    (import ./app/wezterm.nix { inherit config lib; default = true; })
+    (import ./app/alacritty.nix { inherit config lib; default = false; })
   ];
 
-  home.sessionVariables.TERMINAL = "${pkgs.alacritty}/bin/alacritty";
+  programs.khal.enable = true;
+  programs.vdirsyncer.enable = true;
 
   monitors = [
     {

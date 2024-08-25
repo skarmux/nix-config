@@ -8,7 +8,7 @@ in
     shell = pkgs.fish;
     description = "Nils Harbke";
     # # Same as user `skarmux` on NAS for `nfs` rights mapping
-    # uid = 1026;
+    uid = 1026;
     extraGroups = [
       "wheel" # (sudo)
     ]

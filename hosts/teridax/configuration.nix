@@ -9,10 +9,49 @@
     ../common/optional/wireless.nix
     ../common/optional/thunar.nix
     ../common/optional/gpg.nix
+    ../common/optional/nas.nix
 
     ./hardware-configuration.nix
     ./disk-configuration.nix
   ];
+
+  services.radicale = {
+    enable = true;
+    settings = {
+      server = {
+        hosts = ["0.0.0.0:5232" "[::]:5232"];
+      };
+    };
+  };
+
+  environment.persistence."/nix/persist".users.skarmux = {
+    directories = [
+      "Documents"
+      # { directory = ".gnupg"; mode = "0700"; }
+      # { directory = ".ssh"; mode = "0700"; }
+
+      # Plex Media Player
+      # - Downloads
+      # "Library"
+
+      # Direnv
+      # - List of allowed directories
+      ".local/share/direnv"
+      ".local/share/fish"
+      ".local/share/nvim"
+
+      # Syncthing
+      # - Connection settings
+      ".local/state/syncthing"
+
+      # Firefox
+      # - Extensions, Bookmarks, History, etc.
+      ".mozilla"
+    ];
+    files = [
+      # ".screenrc"
+    ];
+  };
 
   networking.hostName = "teridax";
 

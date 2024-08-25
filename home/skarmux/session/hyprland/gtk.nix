@@ -6,13 +6,8 @@
       size = 12;
     };
     theme = {
-      name = "Catppuccin-Mocha-Compact-Mauve-Dark";
-      package = pkgs.catppuccin-gtk.override {
-        accents = [ "mauve" ];
-        size = "compact";
-        tweaks = [ "rimless" ];
-        variant = "mocha";
-      };
+      name = "Adwaita";
+      package = pkgs.gnome.gnome-themes-extra;
     };
     cursorTheme = {
       name = "Vanilla";
