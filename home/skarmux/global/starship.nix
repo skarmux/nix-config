@@ -5,7 +5,7 @@
     settings = {
 
       format = ''
-        $username[@](bold blue)$hostname $directory
+        $directory
         ( $nix_shell)( $rust)( $git_branch$git_commit$git_state$git_metrics( $git_status)
         )$jobs$character
       '';
