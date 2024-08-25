@@ -65,12 +65,7 @@
     enable = true;
     userDirs = {
       enable = true;
-      
-      extraConfig = {
-        XDG_REPO_DIR = "${config.home.homeDirectory}/Repositories"; 
-      };
-
-      createDirectories = true;
+      createDirectories = lib.mkDefault true;
     };
   };
 }
