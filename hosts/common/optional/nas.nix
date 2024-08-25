@@ -3,6 +3,9 @@ let
   whenua_ip = "192.168.178.22";
 in
 {
+  # Matching user id from `skarmux` on NAS for `nfs`
+  users.users."skarmux".uid = 1026;
+
   # Required for NFS
   services.rpcbind.enable = true;
   boot.supportedFilesystems = [ "nfs" ];

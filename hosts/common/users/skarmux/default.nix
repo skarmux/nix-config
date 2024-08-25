@@ -5,10 +5,9 @@ in
 {
   users.users."skarmux" = {
     isNormalUser = true;
-    shell = pkgs.fish;
+    shell = pkgs.bash;
     description = "Nils Harbke";
-    # # Same as user `skarmux` on NAS for `nfs` rights mapping
-    uid = 1026;
+
     extraGroups = [
       "wheel" # (sudo)
     ]
