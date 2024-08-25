@@ -2,7 +2,6 @@
 {
   imports = [
     inputs.catppuccin.homeManagerModules.catppuccin
-    inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.nixvim.homeManagerModules.nixvim
     inputs.sops-nix.homeManagerModules.sops
     ./direnv.nix
