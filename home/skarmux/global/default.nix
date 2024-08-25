@@ -17,6 +17,7 @@
     ./starship.nix
     ./sops.nix
     ./btop.nix
+    ./nushell.nix
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 
   programs = {
