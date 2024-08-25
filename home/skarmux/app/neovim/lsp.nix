@@ -50,9 +50,9 @@
     fidget.enable = true;
     lsp-status.enable = false;
 
-    lspsaga = {
-      enable = true;
-      beacon.enable = true;
-    };
+    # lspsaga = {
+    #   enable = true;
+    #   beacon.enable = true;
+    # };
   };
 }
