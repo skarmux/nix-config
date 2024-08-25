@@ -13,6 +13,7 @@
     ./zellij
     ./tmux.nix
     ./yazi.nix
+    ./zoxide.nix
     ./eza.nix
     ./starship.nix
     ./sops.nix
