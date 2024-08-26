@@ -227,7 +227,7 @@
     keymaps = [
       # Save / Quit
       { mode = "n"; key = "<leader>w"; options.silent = true; action = ":w<CR>"; }
-      { mode = "n"; key = "<leader>q"; options.silent = true; action = ":wq<CR>"; }
+      { mode = "n"; key = "<leader>q"; options.silent = true; action = ":q<CR>"; }
       { mode = "n"; key = "<leader>e"; options.silent = true; action = ":Oil<CR>"; }
 
       # Move highlighted line(s) up and down
