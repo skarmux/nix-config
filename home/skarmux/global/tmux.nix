@@ -22,10 +22,10 @@
       set -g @catppuccin_directory_text "#{b:pane_current_path}"
       set -g @catppuccin_date_time_text "%H:%M"
 
-      set -g @catppuccin_status_left_separator " "
-      set -g @catppuccin_status_right_separator ""
-      set -g @catppuccin_window_left_separator " "
-      set -g @catppuccin_window_right_separator ""
+      set -g @catppuccin_status_left_separator " █"
+      set -g @catppuccin_status_right_separator "█"
+      set -g @catppuccin_window_left_separator " █"
+      set -g @catppuccin_window_right_separator "█"
       set -g @catppuccin_window_middle_separator "█ "
       '';
     };

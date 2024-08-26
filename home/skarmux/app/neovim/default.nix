@@ -188,13 +188,13 @@
         globalstatus = true;
 
         sectionSeparators = {
-          left = " ";
-          right = " ";
+          left = "";
+          right = "";
         };
 
         componentSeparators = {
-          left = "";
-          right = "";
+          left = "";
+          right = "";
         };
       };
 
