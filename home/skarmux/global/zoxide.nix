@@ -1,11 +1,9 @@
+{ config, ... }:
 {
   programs.zoxide = {
     enable = true;
-    enableBashIntegration = true;
-    enableFishIntegration = true;
-    enableNushellIntegration = true;
-    options = [
-      "--no-aliases"
-    ];
+    enableBashIntegration = config.programs.bash.enable;
+    enableFishIntegration = config.programs.fish.enable;
+    enableNushellIntegration = config.programs.nushell.enable;
   };
 }

@@ -5,12 +5,11 @@
     settings = {
 
       format = ''
-        $directory
-        ( $nix_shell)( $rust)( $git_branch$git_commit$git_state$git_metrics( $git_status)
-        )$jobs$character
+        $directory( [$git_branch( $git_metrics)( $git_status)](bold blue))$fill($rust )($nix_shell)
+        $jobs$character
       '';
 
-      add_newline = true;
+      add_newline = false;
 
       fill = {
         symbol = " ";
@@ -47,7 +46,7 @@
 
       directory = {
         format = "[$path](bold blue)";
-        truncation_length = 3;
+        truncation_length = 0;
         truncation_symbol = "…/";
         truncate_to_repo = true;
         home_symbol = "󰋜 ";
@@ -90,7 +89,12 @@
       git_branch = {
         symbol = "";
         format = "[$symbol $branch(:$remote_branch)]($style)";
+        # ignore_branches = ["main" "master"];
       };
+      # git_commit = {};
+      # git_state = {};
+      # git_status = {};
+      # git_metrics = {};
 
       rust = {
         format = "[$symbol ($version)]($style)";

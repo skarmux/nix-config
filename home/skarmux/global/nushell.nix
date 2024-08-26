@@ -1,7 +1,9 @@
-{ pkgs, ... }:
 {
   programs = {
+
+    # Aliases: ls, ll, la, lt, lla
     eza.enableNushellIntegration = true;
+    
     yazi.enableNushellIntegration = true;
     direnv.enableNushellIntegration = true;
     starship.enableNushellIntegration = true;
@@ -9,17 +11,22 @@
 
     nushell = {
       enable = true;
+
+      configFile.text = ''
+        $env.config = {
+          show_banner: false,
+        }
+      '';
+
       shellAliases = {
 
         # JSON in scroll buffer with highlights
-        jqless = "jq -C | less -r";
+        # TODO: Pipeline breaks nushell config
+        # jqless = "jq -C | less -r";
 
-        nd = "nix develop -c $SHELL";
-        ns = "nix shell";
-        nsn = "nix shell nixpkgs#";
+        nd = "nix develop -c $env.SHELL";
         nb = "nix build";
-        nbn = "nix build nixpkgs#";
-        nf = "nix flake";
+        nc = "nix flake check";
 
         snrs = "sudo nixos-rebuild --flake . switch";
         snrt = "sudo nixos-rebuild --flake . test";
@@ -27,17 +34,15 @@
 
         hms = "home-manager --flake . switch";
 
-        # cd = "z";
-        n = "nvim";
+        z = "zoxide";
         y = "yazi";
-        # h = "hx";
+        n = "nvim";
+        ng = "nvim -c Neogit";
 
         # Interactive -i to prevent accidental overrides
         cp = "cp -i";
         mv = "mv -i";
         rm = "rm -i";
-
-        tree = "eza --tree";
       };
     };
   };
