@@ -73,20 +73,36 @@
 
   services = {
 
-    tox-node.enable = true;
+    # Transfer logs to external syslog server
+    rsyslogd.enable = true;
+
+    # Secure Messenger Network Node
+    # tox-node.enable = true;
 
     # Use this system as exit-node
     tailscale.useRoutingFeatures = "server";
     
     # TODO: Do I need this for resolving DNS?
+    #       And does it bite with Tailscale DNS?
     resolved.enable = true;
     
     nginx = {
       enable = true;
+
+      # TODO: How does this play with headscale?
+      # tailscaleAuth = { enable = true; };
+
+      # recommendedTlsSettings = true;
+      # recommendedZstdSettings = true;
       recommendedProxySettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
       recommendedBrotliSettings = true;
+
+      appendConfig = ''
+        error_log syslog:server=whenua;
+        access_log syslog:server=whenua;
+      '';
     };
 
   };
