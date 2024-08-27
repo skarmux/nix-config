@@ -13,7 +13,7 @@
       set -g @catppuccin_window_current_fill "number"
       set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
 
-      set -g @catppuccin_status_modules_right "cpu date_time"
+      set -g @catppuccin_status_modules_right "cpu date_time host"
       
       set -g @catppuccin_status_connect_separator "no"
       set -g @catppuccin_status_background "default"
