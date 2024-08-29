@@ -3,6 +3,9 @@
   
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -81,6 +84,11 @@
         "pewku" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [ ./hosts/pewku/configuration.nix ];
+        };
+
+        "wsl" = lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [ ./hosts/wsl/configuration.nix ];
         };
 
       };
