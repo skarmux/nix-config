@@ -6,6 +6,7 @@ keys:
     - &ignika age1nyzjst28ndf5upxyh2c9rfmgsydhuzqxhzt78tkpp5ttd5qyuypsgup3jh
     - &pewku age1uh2hsdffutrymarqtsdhk3qcn5fvj3455mzjpqfcxvn7h4ey2axq9xjh7j
     - &steamdeck age1x5fyml0wx0z39lf2url60kfm9aqgt3dph3k3hwsl2sv26wju249scul72r
+    - &wsl age18wez6q60r4lcmr69g6cshjv4q7za6pyjk7m9kgxgg7rku8rtwa7qtq0825
 creation_rules:
   - path_regex: home/skarmux/secrets.ya?ml$
     key_groups:
@@ -37,3 +38,4 @@ creation_rules:
       - *teridax
       - *ignika
       - *pewku
+      - *wsl
