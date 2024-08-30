@@ -34,7 +34,7 @@ in
       ../../../../home/skarmux/yubikey/id_ed25519.pub
       ../../../../home/skarmux/yubikey/id_ecdsa_sk.pub
       ../../../../home/skarmux/takua/id_ed25519.pub
-      ../../../../home/skarmux/wsl/id_rsa.pub
+      ../../../../home/skarmux/wsl/id_ed25519.pub
     ];
   };
 
