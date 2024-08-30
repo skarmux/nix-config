@@ -99,10 +99,11 @@
       recommendedGzipSettings = true;
       recommendedBrotliSettings = true;
 
-      appendConfig = ''
-        error_log syslog:server=whenua;
-        access_log syslog:server=whenua;
-      '';
+      # TODO: Setup nas as syslog server
+      # appendConfig = ''
+      #   error_log syslog:server=whenua;
+      #   access_log syslog:server=whenua;
+      # '';
     };
 
   };
