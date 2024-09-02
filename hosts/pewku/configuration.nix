@@ -13,10 +13,10 @@
     #   port = 8112;
     # })
 
-    (import ./service/vikunja.nix {
-      port = 3456;
-      domain = "vikunja.skarmux.tech";
-    })
+    # (import ./service/vikunja.nix {
+    #   port = 3456;
+    #   domain = "vikunja.skarmux.tech";
+    # })
 
     (import ./service/firefox-sync.nix {
       inherit config pkgs;
