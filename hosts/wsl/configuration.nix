@@ -16,6 +16,11 @@
     ../common/users/skarmux
   ];
 
+  boot = {
+    # Enable deployment to Raspberry Pi 4 (ARM64)
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+  };
+
   wsl.enable = true;
   wsl.defaultUser = "nixos";
 
