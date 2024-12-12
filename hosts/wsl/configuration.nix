@@ -5,7 +5,7 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ inputs, config, lib, pkgs, ... }:
+{ inputs, lib, ... }:
 
 {
   imports = [
@@ -16,13 +16,20 @@
     ../common/users/skarmux
   ];
 
+  users.users.skarmux = {
+    password = "deck";
+    hashedPasswordFile = lib.mkForce null;
+  };
+
   boot = {
     # Enable deployment to Raspberry Pi 4 (ARM64)
     binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 
-  wsl.enable = true;
-  wsl.defaultUser = "nixos";
+  wsl = {
+    enable = true;
+    defaultUser = "skarmux";
+  };
 
   networking.hostName = "wsl";
 

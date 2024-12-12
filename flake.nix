@@ -91,6 +91,19 @@
           modules = [ ./hosts/wsl/configuration.nix ];
         };
 
+        # nix build .#nixosConfigurations.iso.config.system.build.isoImage
+        "iso" = lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            ({pkgs, modulesPath, ...}: {
+              imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
+              environment.systemPackages = with pkgs; [ git neovim];
+              boot.supportedFilesystems = [ "bcachefs" ];
+              nixpkgs.hostPlatform = "x86_64-linux";
+            })
+          ];
+        };
+
       };
 
       homeConfigurations = {

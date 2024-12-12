@@ -18,12 +18,12 @@
     #   domain = "vikunja.skarmux.tech";
     # })
 
-    (import ./service/firefox-sync.nix {
-      inherit config pkgs;
-      port = 8000; 
-    })
+    # (import ./service/firefox-sync.nix {
+    #   inherit config pkgs;
+    #   port = 8000; 
+    # })
 
-    (import ./service/headscale.nix { 
+    (import ./service/headscale { 
       inherit config;
       port = 8085; 
       portForMetrics = 8095; 
