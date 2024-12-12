@@ -1,0 +1,52 @@
+{
+    "groups": {
+        "group:admin": ["skarmux"],
+        "group:media": ["skarmux", "incipher", "eisbaron"]
+    },
+    "tagOwners": {
+        "tag:nas.dsm": ["group:admin"],
+        "tag:plex": ["group:admin"],
+        "tag:vpn": ["group:admin"],
+        "tag:ssh": ["group:admin"]
+    },
+    "Hosts": {
+        "whenua": "100.69.0.4/32",
+        "pewku": "100.69.0.2/32",
+        "ignika": "100.69.0.7/32",
+        "DESKTOP-RQ7V213": "100.69.0.8/32",
+        "ILoveSkye": "100.69.0.9/32",
+        "teridax": "100.69.0.3/32",
+        "localhost": "100.69.0.1/32",
+        "Cocomerro-PC": "100.69.0.6/32"
+    },
+    "acls": [
+        {
+            "action": "accept",
+            "src": ["group:admin"],
+            "proto": "tcp",
+            "dst": [
+                "tag:ssh:22"
+            ]
+        },
+        {
+            "action": "accept",
+            "src": ["group:media"],
+            "proto": "tcp",
+            "dst": [
+                "tag:nas:5000",
+                "tag:plex:32400"
+            ]
+        },
+        {
+            "action": "accept",
+            "src": ["group:admin"],
+            "proto": "icmp",
+            "dst": [
+                "tag:nas:*",
+                "tag:plex:*",
+                "tag:vpn:*",
+                "tag:client:*"
+            ]
+        }
+    ]
+}
