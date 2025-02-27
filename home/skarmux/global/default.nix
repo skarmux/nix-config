@@ -2,23 +2,24 @@
 {
   imports = [
     inputs.catppuccin.homeManagerModules.catppuccin
-    inputs.nixvim.homeManagerModules.nixvim
-    inputs.sops-nix.homeManagerModules.sops
+    # inputs.nixvim.homeManagerModules.nixvim
+    # inputs.sops-nix.homeManagerModules.sops
     ./direnv.nix
     ./nix.nix
     ./git
     ./bash.nix
-    ./fish.nix
-    ./zellij
+    # ./fish.nix
+    # ./zellij
     ./tmux.nix
     ./yazi.nix
     ./zoxide.nix
     ./eza.nix
     ./starship.nix
-    ./sops.nix
+    # ./sops.nix
     ./btop.nix
-    ./nushell.nix
-  ] ++ (builtins.attrValues outputs.homeManagerModules);
+    # ./nushell.nix
+  ];
+  # ] ++ (builtins.attrValues outputs.homeManagerModules);
 
   programs = {
     home-manager.enable = true;
@@ -36,17 +37,13 @@
 
     packages = with pkgs; [
       uutils-coreutils
-      vimv-rs
-      fzf
+      fzf # file finder
       du-dust # disk usage analyzer
-      ripgrep
-      jq 
+      ripgrep # full-text search
+      jq # json
+      yq # yaml and json
       grc # Semantic coloring of stdout
       tealdeer
-
-      # TODO: Optional?
-      devenv
-      direnv
 
       # Compression
       p7zip 

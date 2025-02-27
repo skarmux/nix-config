@@ -1,7 +1,8 @@
 {
   imports = [
     ./global
-    ./app/neovim
+    # ./app/neovim
+    ./app/helix
   ];
 
   xdg.userDirs.createDirectories = false;

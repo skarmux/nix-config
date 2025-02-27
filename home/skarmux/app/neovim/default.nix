@@ -2,11 +2,12 @@
 {
   imports = [
     ./completion
-    ./ollama
-    ./rust
+    ./debugging.nix
+    # ./ollama
+    # ./rust
     ./git.nix
-    ./typst.nix
-    ./lsp.nix
+    # ./typst.nix
+    ./lsp
     # ./obsidian.nix
   ];
 
@@ -22,6 +23,14 @@
         transparent_background = true;
       };
     };
+
+    performance.byteCompileLua = {
+      enable = true;
+      configs = true;
+      initLua = true;
+      nvimRuntime = true;
+      plugins = true;
+    }; 
 
     opts = {
       number = true; # Show line numbers
@@ -90,6 +99,8 @@
         };
       };
 
+      web-devicons.enable = true;
+
       # Syntax highlighting
       treesitter = {
         enable = true;
@@ -139,18 +150,15 @@
       # Highlight hovered word occurences
       illuminate.enable = true;
 
-      # Debugging interface
-      dap.enable = true;
-
       # Display colors next to RGB hex codes
-      nvim-colorizer = {
-        enable = true;
-        userDefaultOptions = {
-          names = false;
-          mode = "virtualtext";
-          virtualtext = "⬤ ";
-        };
-      };
+      # nvim-colorizer = {
+      #   enable = true;
+      #   userDefaultOptions = {
+      #     names = false;
+      #     mode = "virtualtext";
+      #     virtualtext = "⬤ ";
+      #   };
+      # };
 
       # Center text on screen
       zen-mode.enable = true;
@@ -168,7 +176,7 @@
       };
 
       # Quickly jump between registered buffers
-      harpoon.enable = true;
+      # harpoon.enable = true;
 
       # Lazy load plugins for faster startup
       # TODO: Test if more configuration is needed for nixvim
@@ -180,26 +188,28 @@
       # NixEdit command: navigate nixpkgs by attribute name
       nix.enable = true;
 
-      # Styled status line at the bottom
+      # [UI] Status line
       lualine = {
         enable = true;
 
-        # One status line for all splits
-        globalstatus = true;
+        settings.options = {
+          # One status line for all splits
+          globalstatus = true;
 
-        sectionSeparators = {
-          left = "";
-          right = "";
-        };
+          section_separators = {
+            left = "";
+            right = "";
+          };
 
-        componentSeparators = {
-          left = "";
-          right = "";
+          component_separators = {
+            left = "";
+            right = "";
+          };
         };
       };
 
       # Manipulate brackets and quotations
-      surround.enable = true;
+      vim-surround.enable = true;
 
       # Notification bubbles, hide cmdline, etc
       # noice.enable = true;
@@ -207,10 +217,9 @@
       notify = {
         enable = true;
         maxWidth = 50;
-
-        # Reduce network usage for remote sessions
-        stages = "static";
-        fps = null;
+        render = "wrapped-compact";
+        stages = "fade_in_slide_out";
+        fps = 60;
       };
 
       # Show breadcrumbs on the first line

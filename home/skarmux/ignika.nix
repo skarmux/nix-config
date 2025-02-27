@@ -6,6 +6,7 @@
     ./yubikey
 
     ./app/neovim
+    ./app/helix
 
     ./session/hyprland
     (import ./app/wezterm.nix { inherit config lib; })

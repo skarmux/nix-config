@@ -1,8 +1,10 @@
-{ pkgs, config, ... }:
+{ config, lib, ... }:
 {
   programs.bash = {
     enable = true;
-    shellAliases = config.programs.fish.shellAliases // config.programs.fish.shellAbbrs;
+    shellAliases = config.programs.fish.shellAliases // config.programs.fish.shellAbbrs // {
+      cd = lib.mkIf config.programs.zoxide.enable "z";
+    };
     initExtra = "";
     # profileExtra = "${pkgs.nushell}/bin/nu";
   };

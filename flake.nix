@@ -2,12 +2,10 @@
   description = "Skarmux's nix-config";
   
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -38,8 +36,8 @@
     deploy-rs.url = "github:serokell/deploy-rs";
 
     # Personal
-    feaston.url = "github:skarmux/feaston";
-    homepage.url = "github:skarmux/skarmux";
+    # feaston.url = "github:skarmux/feaston";
+    # homepage.url = "github:skarmux/skarmux";
   };
 
   outputs = { self, nixpkgs, home-manager, ... } @ inputs:
@@ -86,6 +84,7 @@
           modules = [ ./hosts/pewku/configuration.nix ];
         };
 
+<<<<<<< HEAD
         "wsl" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [ ./hosts/wsl/configuration.nix ];
@@ -104,22 +103,14 @@
           ];
         };
 
+=======
+>>>>>>> 1168033 (only home-manager for now)
       };
 
-      homeConfigurations = {
-
-        "steamdeck" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/steamdeck.nix ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-        };
-        
-        "skarmux" = lib.homeManagerConfiguration {
-          modules = [ ./home/skarmux/default.nix ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-        };
-
+      homeConfigurations."skarmux" = lib.homeManagerConfiguration {
+        modules = [ ./home/skarmux/default.nix ];
+        pkgs = pkgsFor.x86_64-linux;
+        extraSpecialArgs = { inherit inputs outputs; };
       };
 
       deploy.nodes.pewku = {

@@ -13,7 +13,7 @@
     git = config.programs.git.enable;
 
     # Display icons next to filenames
-    icons = true;
+    icons = "auto";
 
     extraOptions = [
       "--time-style=iso"
