@@ -1,41 +1,34 @@
 keys:
   - &users:
-    - &skarmux A6C555DD3AA48325B616A1D8F822D479719EAB61
+    - &skarmux age1p6rz0367carqljqz3493y2z2wgmsw2xh0yduxz8sd0jn45n0k49ske3k4t
   - &hosts:
     - &teridax age1kmgp8gj6pg6g7k9xhx35yc4zcktqmjwp2pfn5vpmjd09ky3e8avsah4wgg
-    - &ignika age1nyzjst28ndf5upxyh2c9rfmgsydhuzqxhzt78tkpp5ttd5qyuypsgup3jh
+    - &ignika age1pyj03ga9w6mqar9s99w4q27dwvgmjcm94a72a00x2n2uucw23q4sz3ww0z
     - &pewku age1uh2hsdffutrymarqtsdhk3qcn5fvj3455mzjpqfcxvn7h4ey2axq9xjh7j
-    - &steamdeck age1x5fyml0wx0z39lf2url60kfm9aqgt3dph3k3hwsl2sv26wju249scul72r
-    - &wsl age18wez6q60r4lcmr69g6cshjv4q7za6pyjk7m9kgxgg7rku8rtwa7qtq0825
 creation_rules:
   - path_regex: home/skarmux/secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-  - path_regex: hosts/teridax/secrets.ya?ml$
+  - path_regex: nixos/teridax/secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-      age:
       - *teridax
-  - path_regex: hosts/ignika/secrets.ya?ml$
+  - path_regex: nixos/ignika/secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-      age:
       - *ignika
-  - path_regex: hosts/pewku/secrets.ya?ml$
+  - path_regex: nixos/pewku/secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-      age:
       - *pewku
-  - path_regex: hosts/common/secrets.ya?ml$
+  - path_regex: secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-      age:
       - *teridax
       - *ignika
       - *pewku
-      - *wsl
