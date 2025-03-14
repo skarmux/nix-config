@@ -19,15 +19,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
-    };
-
-    nixgl = {
-      url = "github:/nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     hardware.url = "github:nixos/nixos-hardware";
     catppuccin.url = "github:catppuccin/nix";
@@ -35,9 +26,9 @@
     impermanence.url = "github:nix-community/impermanence";
     deploy-rs.url = "github:serokell/deploy-rs";
 
-    # Personal
-    # feaston.url = "github:skarmux/feaston";
-    # homepage.url = "github:skarmux/skarmux";
+    feaston.url = "github:skarmux/feaston";
+    homepage.url = "github:skarmux/skarmux";
+    # nixvim.url = "github:nix-community/nixvim";
   };
 
   outputs = { self, nixpkgs, home-manager, ... } @ inputs:
@@ -48,86 +39,55 @@
       pkgsFor =
         lib.genAttrs systems (system: import nixpkgs {
           inherit system;
-          overlays = [
-            inputs.nixgl.overlay
-            inputs.devshell.overlays.default
-          ];
+          overlays = [ inputs.devshell.overlays.default ];
         });
       forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
     in {
       inherit lib;
 
       nixosModules = import ./modules/nixos;
-
       homeManagerModules = import ./modules/home-manager;
 
       apps = forEachSystem (pkgs: import ./apps { inherit pkgs; });
-
       overlays = import ./overlays { inherit inputs outputs; };
-
-      devShell = forEachSystem (pkgs: import ./devshell.nix { inherit pkgs; });
+      # devShells = forEachSystem (pkgs: import ./devshell.nix { inherit pkgs; });
 
       nixosConfigurations = {
-
         "ignika" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/ignika/configuration.nix ];
+          modules = [ ./machines/ignika/configuration.nix ];
         };
-        
         "teridax" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/teridax/configuration.nix ];
+          modules = [ ./machines/teridax/configuration.nix ];
         };
-        
-        "pewku" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/pewku/configuration.nix ];
-        };
-
-<<<<<<< HEAD
-        "wsl" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/wsl/configuration.nix ];
-        };
-
-        # nix build .#nixosConfigurations.iso.config.system.build.isoImage
-        "iso" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ({pkgs, modulesPath, ...}: {
-              imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
-              environment.systemPackages = with pkgs; [ git neovim];
-              boot.supportedFilesystems = [ "bcachefs" ];
-              nixpkgs.hostPlatform = "x86_64-linux";
-            })
-          ];
-        };
-
-=======
->>>>>>> 1168033 (only home-manager for now)
+        # "pewku" = lib.nixosSystem {
+        #   specialArgs = { inherit inputs outputs; };
+        #   modules = [ ./hosts/pewku/configuration.nix ];
+        # };
       };
 
       homeConfigurations."skarmux" = lib.homeManagerConfiguration {
-        modules = [ ./home/skarmux/default.nix ];
+        modules = [ ./users/skarmux/home.nix ];
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = { inherit inputs outputs; };
       };
 
-      deploy.nodes.pewku = {
-        hostname = "${outputs.nixosConfigurations."pewku".config.networking.hostName}";
-        fastConnection = true;
-        interactiveSudo = false;
-        confirmTimeout = 60;
-        remoteBuild = false;
+      # deploy.nodes.pewku = {
+      #   hostname = "${outputs.nixosConfigurations."pewku".config.networking.hostName}";
+      #   fastConnection = true;
+      #   interactiveSudo = false;
+      #   confirmTimeout = 60;
+      #   remoteBuild = false;
 
-        profiles.system = {
-          sshUser = "skarmux";
-          path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations."pewku";
-          user = "root";
-        };
-      };
+      #   profiles.system = {
+      #     sshUser = "skarmux";
+      #     path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations."pewku";
+      #     user = "root";
+      #   };
+      # };
 
-      checks = builtins.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
+      # checks = builtins.mapAttrs
+      #   (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
     };
 }
