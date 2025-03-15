@@ -12,7 +12,7 @@
   # TODO: do not need home-manager
   # home-manager.users.panamax = {
   #   home = {
-  #     stateVersion = "24.05";
+  #     stateVersion = "24.11";
   #     packages = [ pkgs.panamax ];
   #   };
   #   # TODO: system service run with system user is fine

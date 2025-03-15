@@ -3,7 +3,7 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.sops-nix.nixosModules.sops
     ./nix.nix
-    ./openssh.nix
+    # ./openssh.nix
     ./persistence.nix
     ./sops.nix
     ./locale.nix
@@ -29,5 +29,7 @@
 
   users.mutableUsers = false;
 
-  system.stateVersion = "24.05";
+  hardware.keyboard.zsa.enable = true;
+
+  system.stateVersion = "24.11";
 }

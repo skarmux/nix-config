@@ -17,7 +17,7 @@
     ${pkgs.disko}/bin/disko \
         --mode disko \
         --dry-run \
-        --flake "path:$(pwd)#teridax" \
+        --flake "path:$(pwd)#$HOST" \
 
     ${pkgs.gum}/bin/gum confirm \
         "This will ERASE ALL DATA on dev/''${DISK}. Are you sure you want to continue?" \

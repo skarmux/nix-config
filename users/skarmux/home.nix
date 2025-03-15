@@ -43,7 +43,7 @@
       home-manager.enable = true; # for home-manager switch command
       git.enable = true;
       bat.enable = true; # `cat` replacement
-      ssh.enable = true; # enable ssh for this user
+      # ssh.enable = true; # enable ssh for this user
     };
     home.packages = with pkgs; [
       fzf      # fuzzy file finder
@@ -84,5 +84,5 @@
       allowOther = true;
     };
 
-    home.stateVersion = "24.05";
+    home.stateVersion = "24.11";
  }

@@ -12,59 +12,42 @@
     ./hardware-configuration.nix
   ];
 
-  # KDE Plasma 6
-  services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = "adwaita-dark";
-  };
-
   # Turn on all features related to desktop and graphical applications
   boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
-
-    initrd.availableKernelModules = [
-      "sd_mod"      # SCSI, SATA, and PATA (IDE) devices
-      "ahci"        # SATA devices on modern AHCI controllers
-      "nvme"        # NVMe drives (really fast SSDs)
-      "usb_storage" # Utilize USB Mass Storage (USB flash drives)
-      "usbhid"      # USB Human Interface Devices
-      "xhci_pci"    # USB 3.0 (eXtensible Host Controller Interface)
-    ];
-
-    kernelModules = [ "kvm-amd" "k10temp" /* device control: */ "i2c-dev" ];
-
-    # Enables this machine to build and deploy to aarch64 targets
-    # I need this to deploy to my raspberry pi
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
-
-    # Enable mounting and exploring of the windows drive
-    supportedFilesystems = [ "ntfs" ];
-
     loader = {
       timeout = null; # show boot selection indefenitely
+      systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
-      grub = {
-        enable = true;
-        efiSupport = config.boot.loader.efi.canTouchEfiVariables;
-        useOSProber = true; # Check for other OSes and make them available
-        configurationLimit = 10; # Limit nixos generations display
-        # Install GRUB onto the boot disk
-        #device = config.fileSystems."/boot".device;
-        # OR
-        # Don't install GRUB. TODO: Required for UEFI?
-        device = "nodev";
-      };
     };
+    supportedFilesystems = [ "ntfs" "bcachefs" ];
   };
 
-  # programs = {
-  #   adb.enable = true;
-  #   kdeconnect.enable = true;
-  # };
+  networking.hostName = "ignika";
+
+  services.xserver.enable = true;
+  services.displayManager = {
+    sddm.enable = true;
+    autoLogin.enable = true;
+    autoLogin.user = "skarmux";
+  };
+  services.desktopManager.plasma6.enable = true;
+
+  programs.firefox.enable = true;
+
+  users.users."skarmux" = {
+    isNormalUser = true;
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [
+      kdePackages.kate
+    ];
+  };
+
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
+  services.printing.enable = true;
 
   services.openssh.settings.AllowUsers = [ "skarmux" ];
 
