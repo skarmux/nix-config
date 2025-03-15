@@ -1,6 +1,8 @@
-{pkgs ? import <nixpkgs> {}, ...}: {
+{ pkgs ? import <nixpkgs> {}, ... }:
+{
   default = pkgs.mkShell {
-    NIX_CONFIG = "extra-experimental-features = nix-command flakes ca-derivations";
+    NIX_CONFIG = "extra-experimental-features = nix-command flakes";
+    GPG_TTY = "$(tty)"; # Allow entering (yubikey) gpg passwords within tty
     nativeBuildInputs = with pkgs; [
       nix
       home-manager

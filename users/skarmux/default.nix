@@ -37,26 +37,6 @@ in
     ];
   };
 
-  environment.persistence."${config.persistDir}" = {
-    users."skarmux" = {
-      directories = [
-        "Documents" # TODO use name from xdg config
-        # { directory = ".gnupg"; mode = "0700"; }
-        # { directory = ".ssh"; mode = "0700"; }
-
-        # Direnv
-        ".local/share/direnv"
-        # ".local/share/fish"
-        # ".local/share/nvim"
-
-        # Syncthing
-        # - Connection settings
-        ".local/state/syncthing"
-      ];
-      files = [ ];
-    };
-  };
-
   sops.secrets.skarmux-password = {
     sopsFile = ./secrets.yaml;
     neededForUsers = true;

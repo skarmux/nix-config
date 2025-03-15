@@ -4,18 +4,23 @@
     ../../users/skarmux
 
     ../common
-    # Desktop Environment
-    ../common/optional/greetd.nix
+    # ../common/optional/greetd.nix
     # ../common/optional/hyprland.nix
     # ../common/optional/thunar.nix
     ../common/optional/gpg.nix
 
-    # No longer required due to dual booting with
-    # two ssd
-    # ./kvm.nix
-
     ./hardware-configuration.nix
   ];
+
+  # KDE Plasma 6
+  services.xserver.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = "adwaita-dark";
+  };
 
   # Turn on all features related to desktop and graphical applications
   boot = {
@@ -30,7 +35,7 @@
       "xhci_pci"    # USB 3.0 (eXtensible Host Controller Interface)
     ];
 
-    kernelModules = [ "kvm-amd" "k10temp" /* device control */ "i2c-dev" ];
+    kernelModules = [ "kvm-amd" "k10temp" /* device control: */ "i2c-dev" ];
 
     # Enables this machine to build and deploy to aarch64 targets
     # I need this to deploy to my raspberry pi

@@ -55,15 +55,34 @@
       nixosConfigurations = {
         "ignika" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./machines/ignika/configuration.nix ];
+          modules = [{imports = [
+            inputs.sops-nix.nixosModules.sops
+            ./machines/ignika/configuration.nix
+          ];}];
         };
         "teridax" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./machines/teridax/configuration.nix ];
+          modules = [{imports = [
+            inputs.sops-nix.nixosModules.sops
+            ./machines/teridax/configuration.nix
+          ];}];
         };
         # "pewku" = lib.nixosSystem {
         #   specialArgs = { inherit inputs outputs; };
         #   modules = [ ./hosts/pewku/configuration.nix ];
+        # };
+
+        # `nix build .#nixosConfigurations.iso.config.system.build.isoImage`
+        # "iso" = lib.nixosSystem {
+        #   specialArgs = { inherit inputs outputs; };
+        #   modules = [
+        #     ({pkgs, modulesPath, ...}: {
+        #       imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
+        #       environment.systemPackages = with pkgs; [ git helix ];
+        #       boot.supportedFilesystems = [ "bcachefs" ];
+        #       nixpkgs.hostPlatform = "x86_64-linux";
+        #     })
+        #   ];
         # };
       };
 
