@@ -1,13 +1,17 @@
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
+# Installation
+
+```
+# nix-shell
+# sudo nix run 'github:nix-community/disko/latest#disko-install' -- --flake 'github:skarmux/nix-config#ignika' --disk main /dev/sdX
+```
+
+TODO: disko-install with impermanence
+
 # Enable experimental features on installation media
 ```
 export NIX_CONFIG="experimental-features = nix-command flakes"
-```
-
-# Prepare drives with Disko
-```
-nix run github:nix-community/disko -- --mode disko --flake github:skarmux/nix-config#teridax 
 ```
 
 # Unmount and reformat bcachefs partition with encryption and compression

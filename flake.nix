@@ -48,48 +48,31 @@
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
 
-      apps = forEachSystem (pkgs: import ./apps { inherit pkgs; });
+      # apps = forEachSystem (pkgs: import ./apps { inherit pkgs; });
       overlays = import ./overlays { inherit inputs outputs; };
-      # devShells = forEachSystem (pkgs: import ./devshell.nix { inherit pkgs; });
+      devShells = forEachSystem (pkgs: import ./shell.nix {inherit pkgs;});
 
       nixosConfigurations = {
         "ignika" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [{imports = [
-            inputs.sops-nix.nixosModules.sops
-            ./machines/ignika/configuration.nix
-          ];}];
+          modules = [ ./machines/ignika/configuration.nix ];
         };
         "teridax" = lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
-          modules = [{imports = [
-            inputs.sops-nix.nixosModules.sops
-            ./machines/teridax/configuration.nix
-          ];}];
+          modules = [ ./machines/teridax/configuration.nix ];
         };
         # "pewku" = lib.nixosSystem {
         #   specialArgs = { inherit inputs outputs; };
         #   modules = [ ./hosts/pewku/configuration.nix ];
         # };
-
-        # `nix build .#nixosConfigurations.iso.config.system.build.isoImage`
-        # "iso" = lib.nixosSystem {
-        #   specialArgs = { inherit inputs outputs; };
-        #   modules = [
-        #     ({pkgs, modulesPath, ...}: {
-        #       imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
-        #       environment.systemPackages = with pkgs; [ git helix ];
-        #       boot.supportedFilesystems = [ "bcachefs" ];
-        #       nixpkgs.hostPlatform = "x86_64-linux";
-        #     })
-        #   ];
-        # };
       };
 
+      # I keep the home configuration minimal so the exact same can be used on
+      # all systems. Machine specific settings have to be within the nixos config.
       homeConfigurations."skarmux" = lib.homeManagerConfiguration {
+        extraSpecialArgs = { inherit inputs outputs; };
         modules = [ ./users/skarmux/home.nix ];
         pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = { inherit inputs outputs; };
       };
 
       # deploy.nodes.pewku = {
@@ -98,7 +81,6 @@
       #   interactiveSudo = false;
       #   confirmTimeout = 60;
       #   remoteBuild = false;
-
       #   profiles.system = {
       #     sshUser = "skarmux";
       #     path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations."pewku";

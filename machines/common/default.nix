@@ -1,6 +1,7 @@
 { inputs, outputs, pkgs, ... }: {
   imports = [
     inputs.home-manager.nixosModules.home-manager
+    inputs.sops-nix.nixosModules.sops
     ./nix.nix
     ./openssh.nix
     ./persistence.nix
