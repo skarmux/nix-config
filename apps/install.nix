@@ -1,44 +1,67 @@
 { pkgs, ... }:
 {
-  # Source: https://github.com/nmasur/dotfiles
-
   type = "app";
 
   program = builtins.toString (pkgs.writeShellScript "install" ''
-    set -e
+    set -e # exit on error
 
-    HOST=$1
-    DISK=$2
+    DISK=$(lsblk && ${pkgs.gum}/bin/gum input --placeholder "/dev/sdX")
+    HOST=$(${pkgs.gum}/bin/gum choose "ignika" "teridax" "pewku")
 
-    export NIX_CONFIG="experimental-features = nix-command flakes"
+    log () {
+      ${pkgs.gum}/bin/gum log --time rfc822 --level debug $1
+    }
 
-    gpg --import $(pwd)/home/skarmux/yubikey/public.gpg
+    log "Importing gpg key for attached yubikeys"
+    gpg --import ./users/skarmux/yubikey/public.gpg
 
-    ${pkgs.gum}/bin/gum log --time rfc822 --level debug \
-      "Generate new host SSH keys"
-    sudo ssh-keygen -t ed25519 -C $HOST -f /mnt/etc/ssh/ssh_host_ed25519_key
+    # All sops secrets are encrypted with the yubikey public gpg secret
+    # so that host specific keys can be added at any time.
+    log "Format disk"
+    pkgs.disko}/bin/disko --mode disko --dry-run --flake "path:.#$HOST"
+    ${pkgs.gum}/bin/gum confirm --default=false \
+      "This will ERASE ALL DATA on $DISK. Are you sure you want to continue?"
+    ${pkgs.disko}/bin/disko --mode disko --flake "path:.#$HOST"
 
+    # Reformat main partition to bcachefs
+    log "Unmountinx /nix partition"
+    umount -v /mnt/nix
+
+    log "Format bcachefs partition (again) with encryption and compression=lz4"
+    ${pkgs.bcachefs-tools}/bin/bcachefs format --encrypted --compression=lz4 $DISK
+
+
+    log "Mount $DISK to /mnt/nix"
+    mount -v $DISK /mnt/nix
+
+    log "Create additional mount directories before install"
+    mkdir -v -p /mnt/{etc/nixos,etc/ssh,var/log}
+    mkdir -v -p /mnt/nix/persist/{etc/nixos,etc/ssh,var/log}
+
+    log "Bind mount the persistent configuration / logs"
+    mount -v -o bind /mnt/nix/persist/etc/nixos /mnt/etc/nixos
+    mount -v -o bind /mnt/nix/persist/etc/ssh /mnt/etc/ssh
+    mount -v -o bind /mnt/nix/persist/var/log /mnt/var/log
+
+    # SSH
+    log "Generate new host SSH keys"
+    ssh-keygen -t ed25519 -C $HOST -f /mnt/etc/ssh/ssh_host_ed25519_key
+
+    # AGE (required for sops-nix)
     AGE_KEY=$(${pkgs.ssh-to-age}/bin/ssh-to-age < /mnt/etc/ssh/ssh_host_ed25519_key.pub)
-    ${pkgs.gum}/bin/gum log --time rfc822 --level debug \
-      "Convert public SSH key to age format"
+    log "Convert public SSH key to age format"
     echo $AGE_KEY
 
-    ${pkgs.gum}/bin/gum log --time rfc822 --level debug \
-      "Replace old age key in .sops.yaml"
-    sed -i "s/\&$HOST age.*/\&$HOST $AGE_KEY/" $(pwd)/.sops.yaml
+    # Update sops
+    log "Replace old age key in .sops.yaml"
+    sed -i "s/\&$HOST age.*/\&$HOST $AGE_KEY/" .sops.yaml
 
-    ${pkgs.gum}/bin/gum log --time rfc822 --level debug \
-      "Update secret encryption with new key (requires pgp key on yubikey)"
+    log "Update secret encryption with new key (requires pgp key on yubikey)"
     ${pkgs.gum}/bin/gum confirm "YubiKey inserted?" --default=false
-    ${pkgs.sops}/bin/sops updatekeys $(pwd)/hosts/common/secrets.yaml
-
-    sudo cp -a $(pwd)/. /mnt/etc/nixos/
-    sudo chmod -v 777 /mnt/etc/nixos
+    ${pkgs.sops}/bin/sops updatekeys ./machines/common/secrets.yaml
 
     ${pkgs.gum}/bin/gum confirm "Start installation?" --default=false
-    sudo nixos-install --flake /mnt/etc/nixos#$HOST --no-root-passwd
-
-    sudo chmod -v -R 755 /mnt/etc/nixos
+    nixos-install --flake .#$HOST --no-root-passwd
   '');
 
 }
