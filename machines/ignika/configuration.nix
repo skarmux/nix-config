@@ -58,28 +58,6 @@
     # deluge # torrenting client
   ];
 
-  fileSystems = {
-    "/" = {
-      device = "none";
-      fsType = "tempfs";
-      options = [ "defaults" "size=4G" "mode=755" ];
-    };
-    "/persistent" = {
-      device = "/dev/root_vg/root";
-      fsType = "btrfs";
-      options = [ "subvol=persistent" ];
-    };
-    "/nix" = {
-      device = "/dev/root_vg/root";
-      fsType = "btrfs";
-      options = [ "subvol=nix" ];
-    };
-    "/boot" = {
-      device = "/dev/disk/by-uuid/XXXX-XXXXX";
-      fsType = "vfat";
-    };
-  }
-
   home-manager.users."skarmux" = {
     monitors = [
       # {

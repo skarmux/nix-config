@@ -1,8 +1,6 @@
 { inputs, ... }:
 {
-  imports = [
-    inputs.disko.nixosModules.disko
-  ];
+  imports = [ inputs.disko.nixosModules.disko ];
 
   disko.devices = {
 
@@ -13,29 +11,28 @@
 
     disk.main = {
       type = "disk";
-      device = "/dev/sda";
-      content.type = "gpt";
-      content.partitions = {
-
-        ESP = {
-          size = "500M";
-          type = "EF00";
-          content = {
-            type = "filesystem";
-            format = "vfat";
-            mountpoint = "/boot";
+      device = "/dev/disk/by-id/some-disk-id";
+      content = {
+        type = "gpt";
+        partitions = {
+          ESP = {
+            size = "500M";
+            type = "EF00";
+            content = {
+              type = "filesystem";
+              format = "vfat";
+              mountpoint = "/boot";
+            };
+          };
+          nixos = {
+            size = "100%";
+            content = {
+              type = "filesystem";
+              format = "bcachefs";
+              mountpoint = "/nix";
+            };
           };
         };
-
-        nixos = {
-          size = "100%";
-          content = {
-            type = "filesystem";
-            format = "bcachefs";
-            mountpoint = "/nix";
-          };
-        };
-
       };
     };
   };

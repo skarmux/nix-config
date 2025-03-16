@@ -5,6 +5,8 @@
     # ../common/optional/gamemode.nix
     # ../common/optional/steam-hardware.nix
 
+    ./disk-configuration.nix
+
     # Audio
     ../common/optional/pipewire.nix
   ];
