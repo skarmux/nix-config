@@ -48,7 +48,7 @@
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
 
-      # apps = forEachSystem (pkgs: import ./apps { inherit pkgs; });
+      apps = forEachSystem (pkgs: import ./apps { inherit pkgs; });
       overlays = import ./overlays { inherit inputs outputs; };
       devShells = forEachSystem (pkgs: import ./shell.nix {inherit pkgs;});
 
