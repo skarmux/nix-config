@@ -5,7 +5,15 @@
   program = builtins.toString (pkgs.writeShellScript "install" ''
     set -e # exit on error
 
-    DISK=$(lsblk && ${pkgs.gum}/bin/gum input --placeholder "/dev/sdX")
+    # Preparing the disk
+
+    cryptsetup luksFormat /dev/nvme0n1p2
+    cryptsetup open /dev/nvme0n1p2 root
+    mkfs.btrfs /dev/mapper/root
+    sudo mount -t btrfs /dev/mapper/root /mnt
+
+    lsblk
+    DISK=$(${pkgs.gum}/bin/gum input --placeholder "/dev/sdX")
     HOST=$(${pkgs.gum}/bin/gum choose "ignika" "teridax" "pewku")
 
     log () {
@@ -13,15 +21,14 @@
     }
 
     log "Importing gpg key for attached yubikeys"
-    gpg --import ./users/skarmux/yubikey/public.gpg
+    gpg --import $(pwd)/users/skarmux/yubikey/public.gpg
 
     # All sops secrets are encrypted with the yubikey public gpg secret
     # so that host specific keys can be added at any time.
     log "Format disk"
-    pkgs.disko}/bin/disko --mode disko --dry-run --flake "path:.#$HOST"
     ${pkgs.gum}/bin/gum confirm --default=false \
       "This will ERASE ALL DATA on $DISK. Are you sure you want to continue?"
-    ${pkgs.disko}/bin/disko --mode disko --flake "path:.#$HOST"
+    nix --experimental-features "flakes nix-command" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake "path:$(pwd)#$HOST"
 
     # Reformat main partition to bcachefs
     log "Unmountinx /nix partition"
@@ -58,10 +65,10 @@
 
     log "Update secret encryption with new key (requires pgp key on yubikey)"
     ${pkgs.gum}/bin/gum confirm "YubiKey inserted?" --default=false
-    ${pkgs.sops}/bin/sops updatekeys ./machines/common/secrets.yaml
+    ${pkgs.sops}/bin/sops updatekeys $(pwd)/machines/common/secrets.yaml
 
     ${pkgs.gum}/bin/gum confirm "Start installation?" --default=false
-    nixos-install --flake .#$HOST --no-root-passwd
+    nixos-install --flake $(pwd)#$HOST --no-root-passwd
   '');
 
 }

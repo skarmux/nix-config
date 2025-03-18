@@ -1,25 +1,13 @@
-{ inputs, ... }:
+{ lib, inputs, ... }:
 {
-  imports = [ inputs.disko.nixosModules.disko ];
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/XXXX-XXXX";
+    fsType = "vfat";
+  };
 
   boot.initrd = {
     supportedFilesystems = [ "btrfs" ];
-    postDeviceCommands = lib.mkIf (!phase1Systemd) (lib.mkBefore wipeScript);
-    systemd.services.restore-root = lib.mkIf phase1Systemd {
-      description = "Rollback btrfs rootfs";
-      wantedBy = [ "initrd.target" ];
-      requires = [ "dev-disk-by\\x2dlabel-${config.networking.hostName}.device" ];
-      after = [
-        "dev-disk-by\\x2dlabel-${config.networking.hostName}.device" 
-        "systemd-croptsetop@${config.networking.hostName}.service"
-      ];
-      before = [ "sysroot.mount" ];
-      unitConfig.DefaultDependencies = "no";
-      serviceConfig.Type = "oneshot";
-      script = wipeScript;
-    };
-
-    boot.initrd.postResumeCommands = lib.mkAfter /* bash */ ''
+    postResumeCommands = lib.mkAfter /* bash */ ''
       mkdir /btrfs_tmp
       mount /dev/root_vg/root /btrfs_tmp
       if [[ -e /btrfs_tmp/root ]]; then
@@ -42,60 +30,83 @@
     '';
   };
 
-  disko.devices = {
-
-    disk.main = {
-      type = "disk";
-      device = "/dev/sdX";
-      content = {
-        type = "gpt";
-        partitions = {
-          ESP = {
-            size = "512M";
-            type = "EF00";
-            content = {
-              type = "filesystem";
-              format = "vfat";
-              mountpoint = "/boot";
-              mountOptions = [ "umask=007" ];
-            };
-          };
-          luks = {
-            size = "100%";
-            content = {
-              type = "luks";
-              name = "crypted";
-              # disable settings.keyFile if you want to use interactive password entry
-              #passwordFile = "/tmp/secret.key"; # Interactive
-              settings = {
-                allowDiscards = true;
-                keyFile = "/tmp/secret.key";
-              };
-              additionalKeyFiles = [ "/tmp/additionalSecret.key" ];
-              content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ]; # Override existing partition
-                subvolumes = {
-                  "/root" = {
-                    mountpoint = "/";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/nix" = {
-                    mountpoint = "/nix";
-                    mountOptions = { "compress-zstd" "noatime" };
-                  };
-                  "/persist" = {
-                    mountpoint = "/persist";
-                    mountOptions = { "compress-zstd" "noatime" };
-                  };
-                };
-              };
-            };
-          };
-        };
-      };
-    };
-
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/fc42a4c4-57cd-490a-b50d-6ead51c2834b";
+    fsType = "btrfs";
+    options = [ "subvol=root" "noatime" ];
   };
+
+  fileSystems."/persist" = {
+    device = "/dev/disk/by-uuid/fc42a4c4-57cd-490a-b50d-6ead51c2834b";
+    fsType = "btrfs";
+    options = [ "subvol=persist" "noatime" ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/fc42a4c4-57cd-490a-b50d-6ead51c2834b";
+    fsType = "btrfs";
+    options = [ "subvol=nix" "noatime" ];
+  };
+
+  # imports = [ inputs.disko.nixosModules.disko ];
+
+  # # sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake .#ignika
+  # disko.devices = {
+
+  #   disk.main = {
+  #     type = "disk";
+  #     device = "/dev/nvme0n1"; # names can vary!!!
+  #     content = {
+  #       type = "gpt";
+  #       partitions = {
+  #         ESP = {
+  #           size = "512M";
+  #           type = "EF00";
+  #           content = {
+  #             type = "filesystem";
+  #             format = "vfat";
+  #             mountpoint = "/boot";
+  #             mountOptions = [ "umask=007" ];
+  #           };
+  #         };
+  #         # https://wiki.archlinux.org/title/Universal_2nd_Factor#Data-at-rest_encryption_with_LUKS
+  #         luks = {
+  #           size = "100%";
+  #           content = {
+  #             type = "luks";
+  #             name = "crypted";
+  #             # disable settings.keyFile if you want to use interactive password entry
+  #             #passwordFile = "/tmp/secret.key"; # Interactive
+  #             settings = {
+  #               allowDiscards = true;
+  #               keyFile = "/tmp/secret.key";
+  #             };
+  #             # additionalKeyFiles = [ "/tmp/additionalSecret.key" ];
+  #             # mountpoint = "/root_vg";
+  #             content = {
+  #               type = "btrfs";
+  #               extraArgs = [ "-f" ]; # Override existing partition
+  #               subvolumes = {
+  #                 "/root" = {
+  #                   mountpoint = "/";
+  #                   mountOptions = [ "compress=zstd" "noatime" ];
+  #                 };
+  #                 "/nix" = {
+  #                   mountpoint = "/nix";
+  #                   mountOptions = [ "compress-zstd" "noatime" ];
+  #                 };
+  #                 "/persist" = {
+  #                   mountpoint = "/persist";
+  #                   mountOptions = [ "compress-zstd" "noatime" ];
+  #                 };
+  #               };
+  #             };
+  #           };
+  #         };
+  #       };
+  #     };
+  #   };
+
+  # };
 
 }
