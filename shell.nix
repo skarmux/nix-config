@@ -12,6 +12,7 @@
       sops
       ssh-to-age
       gnupg
+      pinentry-curses
       age
     ];
   };
