@@ -1,51 +1,86 @@
+# Yubikey based Full Disk Encryption (FDE) on NixOS:
+# https://nixos.wiki/wiki/Yubikey_based_Full_Disk_Encryption_(FDE)_on_NixOS
+# Nix Shell: nix-shell https://github.com/sgillespie/nixos-yubikey-luks/archive/master.tar.gz
 { lib, inputs, ... }:
+let
+  bootDevice = "/dev/disk/by-uuid/XXXX-XXXX"; # Boot Partition
+  mainDevice = "/dev/disk/by-uuid/fc42a4c4-57cd-490a-b50d-6ead51c2834b"; # Root Partition
+in
 {
+  # Minimal list of modules to use the EFI system partition and the YubiKey
+  boot.initrd.kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
+  # Enable support for the YubiKey PBA
+  boot.initrd.luks.yubikeySupport = true;
+  # Configuration to use your Luks device
+  boot.initrd.luks.devices = {
+    "$LUKSROOT" = {
+      device = "$LUKS_PART";
+      preLVM = true; # You may want to set this to false if you need to start a network service first
+      yubikey = {
+        slot = $SLOT;
+        twoFactor = true; # Set to false if you did not set up a user password.
+        storage = {
+          device = "$EFI_PART";
+        };
+      };
+    }; 
+  };
+
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/XXXX-XXXX";
+    device = bootDevice;
     fsType = "vfat";
   };
 
   boot.initrd = {
     supportedFilesystems = [ "btrfs" ];
-    postResumeCommands = lib.mkAfter /* bash */ ''
-      mkdir /btrfs_tmp
-      mount /dev/root_vg/root /btrfs_tmp
-      if [[ -e /btrfs_tmp/root ]]; then
-          mkdir -p /btrfs_tmp/old_roots
-          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
-          mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
-      fi
-      delete_subvolume_recursively() {
-          IFS=$'\n'
-          for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-              delete_subvolume_recursively "/btrfs_tmp/$i"
-          done
-          btrfs subvolume delete "$1"
-      }
-      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
-          delete_subvolume_recursively "$i"
-      done
-      btrfs subvolume create /btrfs_tmp/root
-      umount /btrfs_tmp
+    postResumeCommands = lib.mkAfter /* sh */ ''
+      # Reset the `root` partition on every boot.
+      mkdir -p /tmp
+      MOUNT=$(mktemp -d)
+      (
+        # Mount the `btrfs` partition
+        mount -t btrfs -o subvol=/ ${mainDevice} "$MOUNT"
+
+        # Automatically unmount when the shell session exits.
+        trap 'umount "$MOUNT"' EXIT
+
+        # Backup root subvolume
+        # Move contents of current `root` subvolume to `old_roots` with a timestamp.
+        if [[ -e $MOUNT/root ]]; then
+            mkdir -p $MOUNT/old_roots
+            timestamp=$(date --date="@$(stat -c %Y $MOUNT/root)" "+%Y-%m-%-d_%H:%M:%S")
+            # This moves and renames the actual subvolume!
+            mv $MOUNT/root "$MOUNT/old_roots/$timestamp"
+        fi
+
+        # Delete all old_root/<timestamp> subvolumes older than 30 days.
+        delete_subvolume_recursively() {
+            IFS=$'\n'
+            for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+                delete_subvolume_recursively "$MOUNT/$i"
+            done
+            btrfs subvolume delete "$1"
+        }
+        for i in $(find $MOUNT/old_roots/ -maxdepth 1 -mtime +30); do
+            delete_subvolume_recursively "$i"
+        done
+
+        # Create new `root` subvolume
+        btrfs subvolume create /btrfs_tmp/root
+      )
     '';
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/fc42a4c4-57cd-490a-b50d-6ead51c2834b";
-    fsType = "btrfs";
-    options = [ "subvol=root" "noatime" ];
-  };
+  # `noatime` (No Access Time) disables the writing of the last access time on files/directories.
+  # It reduces writes and therefore increases performance and disk longevity.
 
-  fileSystems."/persist" = {
-    device = "/dev/disk/by-uuid/fc42a4c4-57cd-490a-b50d-6ead51c2834b";
-    fsType = "btrfs";
-    options = [ "subvol=persist" "noatime" ];
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/fc42a4c4-57cd-490a-b50d-6ead51c2834b";
-    fsType = "btrfs";
-    options = [ "subvol=nix" "noatime" ];
+  fileSystems = {
+    "/" = 
+      { device = mainDevice; fsType = "btrfs"; options = [ "noatime" "subvol=root" ]; };
+    "/nix" =
+      { device = mainDevice; fsType = "btrfs"; options = [ "noatime" "subvol=nix" ]; };
+    "/persist" =
+      { device = mainDevice; fsType = "btrfs"; options = [ "noatime" "subvol=persist" ]; };
   };
 
   # imports = [ inputs.disko.nixosModules.disko ];
@@ -74,12 +109,16 @@
   #           size = "100%";
   #           content = {
   #             type = "luks";
-  #             name = "crypted";
+  #             name = "crypt";
   #             # disable settings.keyFile if you want to use interactive password entry
-  #             #passwordFile = "/tmp/secret.key"; # Interactive
+  #             passwordFile = "/tmp/secret.key"; # Interactive TODO needs to be generated by script
   #             settings = {
   #               allowDiscards = true;
-  #               keyFile = "/tmp/secret.key";
+  #               #keyFile = "/tmp/secret.key";
+  #               crypttabExtraOpts = [
+  #                 "fido2-device=auto"
+  #                 "token-timeout=10"
+  #               ];
   #             };
   #             # additionalKeyFiles = [ "/tmp/additionalSecret.key" ];
   #             # mountpoint = "/root_vg";

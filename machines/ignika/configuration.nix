@@ -7,6 +7,8 @@
     # ../common/optional/greetd.nix
     # ../common/optional/hyprland.nix
     # ../common/optional/thunar.nix
+
+    # gpg for signing of git commits
     ../common/optional/gpg.nix
 
     ./hardware-configuration.nix
