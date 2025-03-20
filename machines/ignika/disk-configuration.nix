@@ -24,42 +24,42 @@
 
   boot.initrd = {
     supportedFilesystems = [ "btrfs" ];
-    postResumeCommands = lib.mkAfter /* sh */ ''
-      # Reset the `root` partition on every boot.
-      mkdir -p /tmp
-      MOUNT=$(mktemp -d)
-      (
-        # Mount the `btrfs` partition
-        mount -t btrfs -o subvol=/ ${mainDevice} "$MOUNT"
+    # postResumeCommands = lib.mkAfter /* sh */ ''
+    #   # Reset the `root` partition on every boot.
+    #   mkdir -p /tmp
+    #   MOUNT=$(mktemp -d)
+    #   (
+    #     # Mount the `btrfs` partition
+    #     mount -t btrfs -o subvol=/ ${mainDevice} "$MOUNT"
 
-        # Automatically unmount when the shell session exits.
-        trap 'umount "$MOUNT"' EXIT
+    #     # Automatically unmount when the shell session exits.
+    #     trap 'umount "$MOUNT"' EXIT
 
-        # Backup root subvolume
-        # Move contents of current `root` subvolume to `old_roots` with a timestamp.
-        if [[ -e $MOUNT/root ]]; then
-            mkdir -p $MOUNT/old_roots
-            timestamp=$(date --date="@$(stat -c %Y $MOUNT/root)" "+%Y-%m-%-d_%H:%M:%S")
-            # This moves and renames the actual subvolume!
-            mv $MOUNT/root "$MOUNT/old_roots/$timestamp"
-        fi
+    #     # Backup root subvolume
+    #     # Move contents of current `root` subvolume to `old_roots` with a timestamp.
+    #     if [[ -e $MOUNT/root ]]; then
+    #         mkdir -p $MOUNT/old_roots
+    #         timestamp=$(date --date="@$(stat -c %Y $MOUNT/root)" "+%Y-%m-%-d_%H:%M:%S")
+    #         # This moves and renames the actual subvolume!
+    #         mv $MOUNT/root "$MOUNT/old_roots/$timestamp"
+    #     fi
 
-        # Delete all old_root/<timestamp> subvolumes older than 30 days.
-        delete_subvolume_recursively() {
-            IFS=$'\n'
-            for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
-                delete_subvolume_recursively "$MOUNT/$i"
-            done
-            btrfs subvolume delete "$1"
-        }
-        for i in $(find $MOUNT/old_roots/ -maxdepth 1 -mtime +30); do
-            delete_subvolume_recursively "$i"
-        done
+    #     # Delete all old_root/<timestamp> subvolumes older than 30 days.
+    #     delete_subvolume_recursively() {
+    #         IFS=$'\n'
+    #         for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+    #             delete_subvolume_recursively "$MOUNT/$i"
+    #         done
+    #         btrfs subvolume delete "$1"
+    #     }
+    #     for i in $(find $MOUNT/old_roots/ -maxdepth 1 -mtime +30); do
+    #         delete_subvolume_recursively "$i"
+    #     done
 
-        # Create new `root` subvolume
-        btrfs subvolume create /btrfs_tmp/root
-      )
-    '';
+    #     # Create new `root` subvolume
+    #     btrfs subvolume create /btrfs_tmp/root
+    #   )
+    # '';
   };
 
   # `noatime` (No Access Time) disables the writing of the last access time on files/directories.
