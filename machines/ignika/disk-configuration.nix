@@ -2,10 +2,6 @@
 # https://nixos.wiki/wiki/Yubikey_based_Full_Disk_Encryption_(FDE)_on_NixOS
 # Nix Shell: nix-shell https://github.com/sgillespie/nixos-yubikey-luks/archive/master.tar.gz
 { lib, inputs, ... }:
-let
-  bootDevice = "/dev/disk/by-uuid/XXXX-XXXX"; # Boot Partition
-  mainDevice = "/dev/disk/by-uuid/fc42a4c4-57cd-490a-b50d-6ead51c2834b"; # Root Partition
-in
 {
   # Minimal list of modules to use the EFI system partition and the YubiKey
   boot.initrd.kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
@@ -24,11 +20,6 @@ in
         };
       };
     }; 
-  };
-
-  fileSystems."/boot" = {
-    device = bootDevice;
-    fsType = "vfat";
   };
 
   boot.initrd = {
@@ -75,12 +66,14 @@ in
   # It reduces writes and therefore increases performance and disk longevity.
 
   fileSystems = {
+    "/boot" = { device = "/dev/nvme1n1p1"; fsType = "vfat"; options = [ "umask=0077" ]; };
+
     "/" = 
-      { device = mainDevice; fsType = "btrfs"; options = [ "noatime" "subvol=root" ]; };
+      { device = "/dev/partitions/fsroot"; fsType = "btrfs"; options = [ "noatime" "subvol=root" ]; };
     "/nix" =
-      { device = mainDevice; fsType = "btrfs"; options = [ "noatime" "subvol=nix" ]; };
+      { device = "/dev/partitions/fsroot"; fsType = "btrfs"; options = [ "noatime" "subvol=nix" ]; };
     "/persist" =
-      { device = mainDevice; fsType = "btrfs"; options = [ "noatime" "subvol=persist" ]; };
+      { device = "/dev/partitions/fsroot"; fsType = "btrfs"; options = [ "noatime" "subvol=persist" ]; neededForBoot = trueu; };
   };
 
   # imports = [ inputs.disko.nixosModules.disko ];

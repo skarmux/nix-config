@@ -38,7 +38,7 @@ in
   };
 
   sops.secrets.skarmux-password = {
-    sopsFile = ./secrets.yaml;
+    sopsFile = ../../machines/common/secrets.yaml;
     neededForUsers = true;
   };
 
