@@ -39,19 +39,6 @@
     binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/8b073728-0f65-4563-9150-1d34e1a1e508";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/3BB3-5069";
-    fsType = "vfat";
-    options = [ "fmask=0077" "dmask=0077" ];
-  };
-
-  swapDevices = [];
-
   networking = {
     hostName = "ignika";
     useDHCP = false; # enable per interface manually
