@@ -13,7 +13,7 @@
       device = "$LUKS_PART";
       preLVM = true; # You may want to set this to false if you need to start a network service first
       yubikey = {
-        slot = $SLOT;
+        slot = 2;
         twoFactor = true; # Set to false if you did not set up a user password.
         storage = {
           device = "$EFI_PART";
