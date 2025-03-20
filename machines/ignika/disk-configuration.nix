@@ -9,14 +9,14 @@
   boot.initrd.luks.yubikeySupport = true;
   # Configuration to use your Luks device
   boot.initrd.luks.devices = {
-    "$LUKSROOT" = {
-      device = "$LUKS_PART";
+    "nixos-enc" = {
+      device = "/dev/nvme1n1p2";
       preLVM = true; # You may want to set this to false if you need to start a network service first
       yubikey = {
         slot = 2;
         twoFactor = true; # Set to false if you did not set up a user password.
         storage = {
-          device = "$EFI_PART";
+          device = "/dev/nvme1n1p1";
         };
       };
     }; 
