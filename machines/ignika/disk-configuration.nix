@@ -73,7 +73,7 @@
     "/nix" =
       { device = "/dev/partitions/fsroot"; fsType = "btrfs"; options = [ "noatime" "subvol=nix" ]; };
     "/persist" =
-      { device = "/dev/partitions/fsroot"; fsType = "btrfs"; options = [ "noatime" "subvol=persist" ]; neededForBoot = trueu; };
+      { device = "/dev/partitions/fsroot"; fsType = "btrfs"; options = [ "noatime" "subvol=persist" ]; neededForBoot = true; };
   };
 
   # imports = [ inputs.disko.nixosModules.disko ];
