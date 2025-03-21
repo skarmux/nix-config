@@ -3,13 +3,14 @@
 # Open this shell before running the script!!
 # nix-shell https://github.com/sgillespie/nixos-yubikey-luks/archive/master.tar.gz
 
-HOST=$(${pkgs.gum}/bin/gum choose "ignika" "teridax" "pewku")
+HOST=$(gum choose "ignika" "teridax" "pewku")
+
 
 echo "EFI_PART"
-EFI_PART=$(${pkgs.gum}/bin/gum input --placeholder "/dev/sdX")
+EFI_PART=$(gum choose $(lsblk -o NAME | awk 'NR > 1'))
 
 echo "LUKS_PART"
-LUKS_PART=$(${pkgs.gum}/bin/gum input --placeholder "/dev/sdX")
+LUKS_PART=$(gum choose $(lsblk -o NAME | awk 'NR > 1'))
 
 SLOT=2
 ykpersonalize -"$SLOT" -ochal-resp -ochal-hmac
