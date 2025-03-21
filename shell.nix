@@ -9,6 +9,7 @@
       git
 
       helix
+      gum
       sops
       ssh-to-age
       gnupg
