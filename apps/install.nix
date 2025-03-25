@@ -5,49 +5,39 @@
   program = builtins.toString (pkgs.writeShellScript "install" ''
     set -e # exit on error
 
-    # Sut up the Yubikey
-    SLOT=2 # Short Press: Slot 1; Long Press: Slot 2
-    ykpersonalize -"$SLOT" -ochal-resp -ochal-hmac
-    SALT_LENGTH=16
-    salt="$(dd af=/dev/random bs=1 count=$SALT_LENGHT 2>/dev/null | rbtohex)"
-    challenge="$(echo -n $salt | openssl dgst -binary -sha512 | rbtohex)"
-    response="$(ykchalresp -2 -x $challenge 2>/dev/null)"
-    KEY_LENGTH=512
-    ITERATIONS=1000000
-    # Autheticate with password
-    #read -s k_user
-    #k_luks="$(echo -n $k_user | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
-    # Authenticate without password
-    k_luks="$(echo | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
-    # Setup the LUKS partition
-    EFI_PART=$(${pkgs.gum}/bin/gum input --placeholder "/dev/sdXp1")
-    LUKS_PART=$(${pkgs.gum}/bin/gum input --placeholder "/dev/sdXp2")
-    # Setup the LUKS device
-    # Create the necessary filesystem on the efi system partition, which will store the current salt for the PBA, and mount it.
-    EFI_MNT=/root/boot
-    mkdir "$EFI_MNT"
-    mkfs.vfat -F 32 -n uefi "$EFI_PART"
-    mount "$EFI_PART" "$EFI_MNT"
-    # Decide where on the efi system partition to store the salt and prepare the directore layout accordingly.
-    STORAGE=/crypt-storage/default
-    mkdir -p "$(dirname $EFI_MNT$STORAGE)"
-    # Store the salt and iteration count to the EFI systems partition
-    echo -ne "$salt\n$ITERATIONS" > $EFI_MNT$STORAGE
-    # Create the LUKS device
-    CIPHER=aes-xts-plain64
-    HASH=sha512
-    echo -n "$k_luks" | hextorb | cryptsetup luksFormat --cipher="$CIPHER" --key-size="$KEY_LENGTH" --hash="$HASH" --key-file=- "$LUKS_PART"
-
-    # Preparing the disk
-
-    cryptsetup luksFormat /dev/nvme0n1p2
-    cryptsetup open /dev/nvme0n1p2 root
-    mkfs.btrfs /dev/mapper/root
-    sudo mount -t btrfs /dev/mapper/root /mnt
-
-    lsblk
-    DISK=$(${pkgs.gum}/bin/gum input --placeholder "/dev/sdX")
     HOST=$(${pkgs.gum}/bin/gum choose "ignika" "teridax" "pewku")
+
+    # Generate SSH key
+    mkdir -p /mnt/persist/etc/ssh
+    ssh-keygen -t ed25519 -C "$HOST" -f /mnt/persist/etc/ssh/ssh_host_ed25519_key
+    cp /mnt/persist/etc/ssh/ssh_host_ed25519_key.pub machines/ignika/ssh_host_ed25519_key.pub
+
+    # Follow up with `sops updatekeys machines/common/secrets.yaml` after updating
+    # the age key for $HOST in .sops.yaml. `ssh-to-age /mnt/etc/ssh/ssh_host_ed25519_key.pub`
+    AGE_KEY=$(${pkgs.ssh-to-age}/bin/ssh-to-age < /mnt/persist/etc/ssh/ssh_host_ed25519_key.pub)
+
+    # Import gpg key (private key stored on yubikey)
+    gpg --import users/skarmux/yubikey/public.gpg
+
+    # Fix pinentry
+    export GPG_TTY=$(tty)
+    mkdir -p ~/.gnupg
+    echo "pinentry-program $(which ${pkgs.pinentry-curses}/bin/pinentry)" > ~/.gnupg/gpg-agent.conf
+    gpg-connect-agent reloadagent /bye
+
+    # Replace old age key in .sops.yaml
+    sed -i "s/\&$HOST age.*/\&$HOST $AGE_KEY/" .sops.yaml
+
+    # Update secret encryption with new key
+    ${pkgs.sops}/bin/sops updatekeys machines/common/secrets.yaml
+
+    ${pkgs.sops}/bin/sops machines/common/secrets.yaml
+
+    exit 0
+
+    # ...
+
+    DISK=$(${pkgs.gum}/bin/gum input --placeholder "/dev/sdX")
 
     log () {
       ${pkgs.gum}/bin/gum log --time rfc822 --level debug $1
