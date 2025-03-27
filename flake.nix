@@ -4,18 +4,10 @@
   outputs = inputs @ { flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        # ./iso
         ./home
         ./nixos
-        # ./devshells
-        # ./overlays
+        ./devshells
       ];
-      # flake.templates = import ./templates;
-      flake.disko = import ./disko;
-
-      # perSystem = { pkgs, ... }: {
-      #   packages = import ./pkgs { inherit pkgs; };
-      # };
 
       systems = [ "x86_64-linux" "aarch64-linux" ];
     };

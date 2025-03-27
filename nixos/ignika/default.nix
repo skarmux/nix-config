@@ -12,6 +12,17 @@
 
   mods.gnome.enable = true;
 
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+
+  sops.secrets = {
+    skarmux-password = {
+      neededForUsers = true;
+      sopsFile = ./secrets.yaml;
+    };
+  };
+  
   services.displayManager = {
     autoLogin.enable = true;
     autoLogin.user = "skarmux";
