@@ -30,7 +30,7 @@ in
 
     # Part of App Indicator
     services.udev.packages = with pkgs; [
-      gnome.gnome-settings-daemon
+      gnome-settings-daemon
     ];
 
     # Trim GNOME default software
@@ -42,7 +42,7 @@ in
       geary    # email reader
       gedit    # text editor
       # gnome-characters
-      # gnome-music
+      gnome-music
       # gnome-photos
       # gnome-terminal
       gnome-tour

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   programs.helix = {
-
+    enable = true;
     settings = {
       editor = import ./editor.nix;
       keys.normal = {

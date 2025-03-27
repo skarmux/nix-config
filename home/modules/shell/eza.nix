@@ -13,6 +13,7 @@
     git = config.programs.git.enable;
 
     # Display icons next to filenames
+    # TODO Only with nerdfonts enabled
     icons = "auto";
 
     extraOptions = [

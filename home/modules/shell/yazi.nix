@@ -18,13 +18,13 @@
       };
       opener = {
         edit = [
-          { run = ''nvim "$0"''; block = true;}
+          { run = ''hx "$0"''; block = true;}
         ];
         play = [
           { run = ''celluloid "$0"''; orphan = true; }
         ];
         open = [
-          { run = ''zathura "$0"''; orphan = true; }
+          { run = ''evince "$0"''; orphan = true; }
         ];
       };
       open = {

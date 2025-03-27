@@ -10,4 +10,8 @@
   # sops.age.keyFile = "/nix/persist/var/lib/sops-nix/key.txt";
 
   sops.age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+
+  home-manager.sharedModules = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
 }

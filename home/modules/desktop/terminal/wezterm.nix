@@ -1,13 +1,4 @@
-{ config
-, lib
-, default ? false
-, ...
-}:
 {
-  home.sessionVariables.TERMINAL = lib.mkIf default "${config.programs.wezterm.package}/bin/wezterm";
-
-  # TODO: Opening multiple instances of wezterm
-  #       causes it to slow down to a crawl :(
   programs.wezterm = {
     enable = true;
     extraConfig = /* lua */ ''

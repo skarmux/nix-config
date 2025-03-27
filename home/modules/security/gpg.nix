@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ self, config, pkgs, ... }:
 let
   pinentry = if config.gtk.enable then {
     packages = [ pkgs.pinentry-gnome3 pkgs.gcr ];
@@ -32,8 +32,8 @@ in {
       enable = true;
       settings.trust-model = "tofu+pgp";
       publicKeys = [{
-        source = ./public.gpg;
-        trust = 5; # Ultimate trust level. My precious!!
+        source = "${self}/home/skarmux/public.gpg";
+        trust = 5;
       }];
     };
   };
