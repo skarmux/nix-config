@@ -11,7 +11,15 @@
       self.homeModules.shell
       self.homeModules.desktop
       self.homeModules.security
+      self.homeModules.monitoring
     ];
+
+    home.sessionVariables = {
+      # Per default, plex plants its `Library` cache dir in ~
+      # TODO Does this automatically create the .local/plex dir?
+      PLEX_HOME = "${config.home-manager.users.skarmux.home.homeDirectory}/.local/plex";
+      EDITOR = "${pkgs.helix}/bin/hx";
+    };
 
     home.packages = with pkgs; [
       # Browser
@@ -41,6 +49,9 @@
 
       # Util
       keepassxc
+
+      # AI
+      llm # command line llm
     ];
 
     home.file = {

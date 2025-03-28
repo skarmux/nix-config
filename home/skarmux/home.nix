@@ -10,6 +10,8 @@
     self.homeModules.shell
   ];
 
+  home.sessionVariables.EDITOR = "${pkgs.helix}/bin/hx";
+
   home.file = {
     ".ssh/id_ecdsa_sk.pub".source = ./id_ecdsa_sk.pub;
     ".ssh/id_ed25519.pub".source = ./id_ed25519.pub;

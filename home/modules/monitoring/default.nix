@@ -1,16 +1,18 @@
 { pkgs, ... }:
 {
-  imports = [ ./btop.nix ];
+  imports = [
+    ./btop.nix
+  ];
 
   home.packages = with pkgs; [
-    stui  # stress testing
     htop
     atop
     iftop # network traffic
     iotop # disk activity
-    nvtop # amd/intel/nvidia
-    csysdig
-    linux-perf
+    nvtopPackages.full # amd/intel/nvidia
+    sysdig
+    # linux-perf is a kernel package
     wavemon # wifi
+    dust # disk usage
   ];
 }

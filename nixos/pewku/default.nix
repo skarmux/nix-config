@@ -9,16 +9,6 @@
     #   port = 8112;
     # })
 
-    # (import ./service/vikunja.nix {
-    #   port = 3456;
-    #   domain = "vikunja.skarmux.tech";
-    # })
-
-    # (import ./service/firefox-sync.nix {
-    #   inherit config pkgs;
-    #   port = 8000; 
-    # })
-
     (import ./service/headscale { 
       inherit config;
       port = 8085; 
@@ -43,7 +33,7 @@
       domain = "skarmux.tech";
     })
 
-    ./hardware-configuration.nix
+    ./hardware.nix
   ];
 
   sops.secrets = {
@@ -66,8 +56,6 @@
     };
     kernelPackages = pkgs.linuxPackages_latest;
   };
-
-  # virtualisation.docker.enable = true;
 
   services = {
 
@@ -148,5 +136,4 @@
   environment.persistence."/persist" = {
     directories = [ "/var/lib/acme" ];
   };
-
 }
