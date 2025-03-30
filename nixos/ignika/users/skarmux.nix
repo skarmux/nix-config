@@ -1,71 +1,59 @@
 { self, pkgs, config, lib, ... }:
+let
+  hm = config.home-manager.users.skarmux;
+in
 {
   home-manager.users.skarmux = {
-    imports = [
-      (import self.homeModules.home {
-        inherit pkgs config lib self;
-        username = "skarmux";
-      })
-      self.homeModules.git
-      self.homeModules.helix
-      self.homeModules.shell
-      self.homeModules.desktop
-      self.homeModules.security
-      self.homeModules.monitoring
-    ];
 
-    home.sessionVariables = {
-      # Per default, plex plants its `Library` cache dir in ~
-      # TODO Does this automatically create the .local/plex dir?
-      PLEX_HOME = "${config.home-manager.users.skarmux.home.homeDirectory}/.local/plex";
-      EDITOR = "${pkgs.helix}/bin/hx";
+    imports = [ ../../../home/skarmux/home.nix ];
+
+    home = {
+      packages = with pkgs; [
+        # Browser
+        brave
+        # Messenger
+        discord
+        element-desktop
+        signal-desktop
+        telegram-desktop
+        # Games
+        steam
+        # Media
+        celluloid
+        plex-media-player
+        plexamp
+        # Streaming
+        obs-studio
+        twitch-tui
+        ffmpeg_6
+        # Util
+        keepassxc
+        ticker
+        # Office
+        libreoffice
+        # AI
+        llm # command line llm
+      ];
     };
 
-    home.packages = with pkgs; [
-      # Browser
-      brave
+    services.yubikey-touch-detector.enable = true;
 
-      # Messenger
-      discord
-      element-desktop
-      signal-desktop
-      telegram-desktop
-
-      # Games
-      steam
-
-      # Media
-      celluloid
-      plex-media-player
-      plexamp
-
-      # Shell
-      grc
-
-      # Streaming
-      obs-studio
-      twitch-tui
-      ffmpeg_6
-
-      # Util
-      keepassxc
-
-      # AI
-      llm # command line llm
-    ];
-
-    home.file = {
-      ".ssh/id_ecdsa_sk.pub".source = "${self}/home/skarmux/id_ecdsa_sk.pub";
-      ".ssh/id_ed25519.pub".source = "${self}/home/skarmux/id_ed25519.pub";
+    sops.secrets."ticker" = {
+      path = "/home/skarmux/.config/.ticker.yaml";
     };
+  };
 
-    sops.defaultSopsFile = "${self}/home/skarmux/secrets.yaml";
-    sops.secrets = {
-      "ssh/id_ecdsa_sk" = {
-        sopsFile = "${self}/home/skarmux/secrets.yaml";
-        path = "/home/skarmux/.ssh/id_ecdsa_sk";
-      };
+  yubikey = {
+    identifiers = {
+      yc = 24686370;
+      ya = 25390376;
     };
+    gpg = true;
+    lockScreen = true;
+    smartcard = true;
+    pam = true;
+    u2f = true;
+    ssh = true;
   };
 
   users.users.skarmux = {
@@ -75,13 +63,14 @@
       "wheel"
       "video"
       "audio"
-      "networkmanager"
       "i2c"
-    ];
+    ] ++ (lib.optionals config.networking.networkmanager.enable [
+      "networkmanager"
+    ]);
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
     openssh.authorizedKeys.keyFiles = [
-      "${self}/home/skarmux/id_ed25519.pub"  # hardware
-      "${self}/home/skarmux/id_ecdsa_sk.pub" # hardware
+      hm.home.file.".ssh/id_ecdsa_sk.pub".path
+      hm.home.file.".ssh/id_ed25519.pub".path
     ];
   };
 }

@@ -1,10 +1,6 @@
 { self, inputs, ... }:
 {
-  flake = {
-    
-    nixosModules = import ./modules;
-    
-    nixosConfigurations = {
+  flake.nixosConfigurations = {
 
       ignika = inputs.nixpkgs.lib.nixosSystem {
         specialArgs = { inherit self inputs; };
@@ -18,6 +14,5 @@
         ];
       };
 
-    };
   };
 }
