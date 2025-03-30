@@ -10,6 +10,7 @@ let
   
   cfg = config.yubikey;
 
+  # FIXME Does not belong in a module!!!
   homeDirectory = "/home/skarmux";
 
   # yubikey-up/down will symlink the currently plugged in yubikey to the id_yubikey

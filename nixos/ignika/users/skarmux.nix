@@ -44,6 +44,15 @@
         extraConfig = ''
           AddKeysToAgent yes
         '';
+        matchBlocks = {
+          "yubikey-hosts" = {
+            host = "gitlab.com github.com";
+            identitiesOnly = true;
+            identityFile = [
+              "~/.ssh/id_yubikey"
+            ];
+          };
+        };
       };
     };
   };
