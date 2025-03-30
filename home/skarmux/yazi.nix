@@ -12,7 +12,7 @@
         scrolloff = 8;
       };
       preview = {
-        wrap = true;
+        wrap = "yes";
         image_filter = "nearest";
         image_quality = 50; # 50-90
       };

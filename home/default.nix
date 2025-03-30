@@ -7,7 +7,12 @@
         system = "x86_64-linux";
       };
       extraSpecialArgs = { inherit self inputs pkgs; };
-      modules = [ ./skarmux/home.nix ];
+      modules = [
+        ./skarmux/home.nix
+        {
+          imports = [ inputs.sops-nix.homeManagerModules.sops ];
+        }
+      ];
     };
 
   };

@@ -1,8 +1,7 @@
-{ self, pkgs, config, lib, ... }:
-let
-  hm = config.home-manager.users.skarmux;
-in
+{ self, inputs, pkgs, config, lib, ... }:
 {
+  # Home
+
   home-manager.users.skarmux = {
 
     imports = [ ../../../home/skarmux/home.nix ];
@@ -28,7 +27,6 @@ in
         ffmpeg_6
         # Util
         keepassxc
-        ticker
         # Office
         libreoffice
         # AI
@@ -38,27 +36,22 @@ in
 
     services.yubikey-touch-detector.enable = true;
 
-    sops.secrets."ticker" = {
-      path = "/home/skarmux/.config/.ticker.yaml";
+    programs = {
+      direnv.enable = true;
+      ssh = {
+        enable = true;
+        # Required for yubi-agent
+        extraConfig = ''
+          AddKeysToAgent yes
+        '';
+      };
     };
   };
 
-  yubikey = {
-    identifiers = {
-      yc = 24686370;
-      ya = 25390376;
-    };
-    gpg = true;
-    lockScreen = true;
-    smartcard = true;
-    pam = true;
-    u2f = true;
-    ssh = true;
-  };
+  # NixOS
 
   users.users.skarmux = {
     isNormalUser = true;
-    shell = pkgs.bash;
     extraGroups = [
       "wheel"
       "video"
@@ -68,9 +61,21 @@ in
       "networkmanager"
     ]);
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
-    openssh.authorizedKeys.keyFiles = [
-      hm.home.file.".ssh/id_ecdsa_sk.pub".path
-      hm.home.file.".ssh/id_ed25519.pub".path
+
+    openssh.authorizedKeys.keys = [
+      (builtins.readFile ../../../home/skarmux/id_yc.pub)
+      (builtins.readFile ../../../home/skarmux/id_ya.pub)
     ];
   };
+
+  yubikey = {
+    enable = true;
+    identifiers = {
+      yc = 24686370;
+      ya = 25390376;
+    };
+    lockScreen = false;
+  };
+
+  sops.secrets.skarmux-password.neededForUsers = true;
 }

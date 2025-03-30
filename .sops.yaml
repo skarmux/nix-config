@@ -1,6 +1,6 @@
 keys:
   - &users:
-    - &skarmux A6C555DD3AA48325B616A1D8F822D479719EAB61
+    - &skarmux age1p6rz0367carqljqz3493y2z2wgmsw2xh0yduxz8sd0jn45n0k49ske3k4t
   - &hosts:
     - &teridax age1kmgp8gj6pg6g7k9xhx35yc4zcktqmjwp2pfn5vpmjd09ky3e8avsah4wgg
     - &ignika age1pyj03ga9w6mqar9s99w4q27dwvgmjcm94a72a00x2n2uucw23q4sz3ww0z
@@ -8,31 +8,27 @@ keys:
 creation_rules:
   - path_regex: home/skarmux/secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
   - path_regex: nixos/teridax/secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-      age:
       - *teridax
   - path_regex: nixos/ignika/secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-      age:
       - *ignika
   - path_regex: nixos/pewku/secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-      age:
       - *pewku
   - path_regex: secrets.ya?ml$
     key_groups:
-    - pgp:
+    - age:
       - *skarmux
-      age:
       - *teridax
       - *ignika
       - *pewku

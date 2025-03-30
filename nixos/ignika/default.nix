@@ -4,7 +4,11 @@
     ./disk.nix
     ./hardware.nix
     ./users/skarmux.nix
-  ];
+  ] ++ builtins.attrValues self.nixosModules;
+
+  networking.hostName = "ignika";
+
+  system.stateVersion = "24.11";
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -12,16 +16,7 @@
 
   mods.gnome.enable = true;
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-  ];
-
-  sops.secrets = {
-    skarmux-password = {
-      neededForUsers = true;
-      sopsFile = ./secrets.yaml;
-    };
-  };
+  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
   
   services.displayManager = {
     autoLogin.enable = true;
@@ -29,4 +24,6 @@
   };
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
+
+  sops.defaultSopsFile = ./secrets.yaml;
 }

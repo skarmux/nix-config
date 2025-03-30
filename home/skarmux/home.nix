@@ -18,13 +18,13 @@
   ]
   ++ builtins.attrValues self.homeModules
   ++ [
-    inputs.sops-nix.homeManagerModules.sops
     inputs.catppuccin.homeManagerModules.catppuccin
   ];
   
   home = {
     username = "skarmux";
     homeDirectory = "/home/skarmux";
+    stateVersion = "24.11";
     packages = [
       pkgs.bat # cat replacement
       pkgs.fzf # fuzzy file finder
@@ -32,16 +32,14 @@
       pkgs.grc # auto coloring of stdout
     ];
     file = {
-      ".ssh/id_ed25519.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIOHnEYhX+q+xTVjoIIAjT+tn1NVAtqLjkE8J88YS14w skarmux";
-      ".ssh/id_ecdsa_sk.pub".text = "sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBCtxwv03fCfq44djR+y38BEyrKnJAUWN+X8kXkhXNrk87pViOBbRuZ95F4uySg48PEgYRG2jFGQ4Ho8BJTVSYIAAAAAEc3NoOg== skarmux@teridax";
+      ".ssh/id_yc.pub".source = ./id_yc.pub;
+      ".ssh/id_ya.pub".source = ./id_ya.pub;
     };
-    stateVersion = "24.11";
   };
 
   programs = {
     bash.enable = true;
     btop.enable = true;
-    direnv.enable = true;
     eza.enable = true;
     git.enable = true;
     helix = { enable = true; defaultEditor = true; };
@@ -62,18 +60,14 @@
   systemd.user.startServices = "sd-switch";
 
   sops = {
+    # FIXME
+    age.keyFile = "/home/skarmux/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets.yaml;
-    # - skarmux profile: No key source configured for sops.
-    # Either set
-    # - services.openssh.enable (preferrable?)
-    # - sops.age.keyFile
-    # - sops.gnupg.home
-    # - sops.gnupg.qubes-split-gpg.enable
-    gnupg.home = config.programs.gpg.homedir;
+    validateSopsFiles = false;
+    # gnupg.home = config.programs.gpg.homedir;
     secrets = {
-      "ssh/id_ecdsa_sk" = {
-        path = "/home/skarmux/.ssh/id_ecdsa_sk";
-      };
+      "ssh/yc".path = "/home/skarmux/.ssh/id_yc";
+      "ssh/ya".path = "/home/skarmux/.ssh/id_ya";
     };
   };
 }
