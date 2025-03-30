@@ -69,6 +69,42 @@ in
       Install.Also = optionals cfg.socket.enable [ "yubikey-touch-detector.socket" ];
       Install.WantedBy = [ "default.target" ];
     };
-  };
 
+    systemd.user.services.yubikey-touch-detector-sound =
+      let
+        file = cfg.notificationSoundFile;
+        yubikey-play-sound = pkgs.writeShellScriptBin "yubikey-play-sound" ''
+          socket="''${XDG_RUNTIME_DIR:-/run/user/$UID}/yubikey-touch-detector.socket"
+          while true; do
+            if [ ! -e "$socket" ]; then
+              printf '{"text"; "Waiting for YubiKey socket"}\n'
+              while [ ! -e "$socket" ]; do sleep 1; done
+            fi
+            printf '{"text": ""}\n'
+
+            ${lib.getBin pkgs.netcat}/bin/nc -U "$socket" | while read -n5 cmd; do
+              if [ "''${cmd:4:1}" = "1" ]; then
+                printf "Playing ${file}\n"
+                ${pkgs.mpv}/bin/mpv --volume=100 ${file} > /dev/null
+              else
+                printf "Ignored yubikey command: $cmd\n"
+              fi
+            done
+            ${lib.getBin pkgs.coreutils}/bin/sleep 1
+          done
+        '';
+      in
+      lib.mkIf cfg.notificationSound {
+        Unit = {
+          Description = "Play sound when the YubiKey is waiting for a touch";
+          Requires = [ "yubikey-touch-detector.service" ];
+        };
+        Service = {
+          ExecStart = "${lib.getBin yubikey-play-sound}/bin/yubikey-play-sound";
+          Restart = "on-failure";
+          RestartSec = "1sec";
+        };
+        Install.WantedBy = [ "yubikey-touch-detector.service" ];
+      };
+  };
 }

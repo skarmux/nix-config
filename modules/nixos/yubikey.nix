@@ -52,6 +52,7 @@ let
         ln -sf "${homeDirectory}/.ssh/id_''${key_name}.pub" ${homeDirectory}/.ssh/id_yubikey.pub
       '';
     };
+
   yubikey-down =
     pkgs.writeShellApplication {
       name = "yubikey-down";
@@ -94,6 +95,7 @@ in
       yubikey-agent.enable = true; # SSH Agent
       pcscd.enable = true; # Smartcard functionality
       udev.packages = [ pkgs.yubikey-personalization ];
+      # FIXME Screen locking on removal
       udev.extraRules = ''
         # Symlink ssh key on yubikey add
         SUBSYSTEM=="usb",\
@@ -102,9 +104,9 @@ in
         RUN+="${lib.getBin yubikey-up}/bin/yubikey-up"
 
         # Unlink ssh key on yubikey removal
-        SUBSYSTEM=="input",\
+        SUBSYSTEM=="hid",\
         ACTION=="remove",\
-        ENV{HID_NAME}=="Yubi",\
+        ENV{HID_NAME}=="Yubico Yubi",\
         RUN+="${lib.getBin yubikey-down}/bin/yubikey-down"
 
         # Lock screen when yubikey is unplugged
