@@ -86,5 +86,12 @@
     lockScreen = false;
   };
 
-  sops.secrets.skarmux-password.neededForUsers = true;
+  sops.secrets = {
+    "skarmux-password".neededForUsers = true;
+    "yubico/u2f_keys" = {
+      owner = config.users.users.skarmux.name;
+      inherit (config.users.users.skarmux) group;
+      path = "/home/skarmux/.config/Yubico/u2f_keys";
+    };
+  };
 }

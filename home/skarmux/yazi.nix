@@ -1,6 +1,6 @@
 {
   programs.yazi = {
-    enableNushellIntegration = true;
+
     settings = {
       # https://yazi-rs.github.io/docs/configuration/yazi/
       manager = {
@@ -38,6 +38,7 @@
       };
     };
     shellWrapperName = "y";
+
     enableBashIntegration = true;
     enableFishIntegration = true;
     enableNushellIntegration = true;
