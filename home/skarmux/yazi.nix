@@ -1,5 +1,6 @@
 {
   programs.yazi = {
+    enableNushellIntegration = true;
     settings = {
       # https://yazi-rs.github.io/docs/configuration/yazi/
       manager = {

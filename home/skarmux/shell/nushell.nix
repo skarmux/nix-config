@@ -6,13 +6,4 @@
       }
     '';
   };
-
-  programs = {
-    direnv.enableNushellIntegration = true;
-    eza.enableNushellIntegration = true;
-    starship.enableNushellIntegration = true;
-    thefuck.enableNushellIntegration = true;
-    yazi.enableNushellIntegration = true;
-    zoxide.enableNushellIntegration = true;
-  };
 }
