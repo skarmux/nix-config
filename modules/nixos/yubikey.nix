@@ -139,12 +139,6 @@ in
         login.u2fAuth = true;
         sudo.u2fAuth = true;
       };
-      # yubico = {
-      #   enable = true;
-      #   debug = true;
-      #   mode = "challenge-response";
-      #   id = [ "12345678" ];
-      # };
     };
   };
 }

@@ -9,18 +9,18 @@ in
     allowSFTP = false;
     
     settings = {
-      Compression = "yes";
-      AllowUsers = [ "skarmux" ]; # TODO Move
-      AllowTcpForwarding = "yes";
       AllowAgentForwarding = "no";
       AllowStreamLocalForwarding = "no";
+      AllowTcpForwarding = "yes";
+      AllowUsers = [ "skarmux" ]; # TODO Move
       AuthenticationMethods = "publickey";
+      ChallengeResponseAuthentication = false;
+      Compression = "yes";
       KbdInteractiveAuthentication = false;
-      X11Forwarding = false;
       PasswordAuthentication = false;
       PermitRootLogin = "no";
       StreamLocalBindUnlink = "yes";
-      ChallengeResponseAuthentication = false;
+      X11Forwarding = false;
 
       # Allow forwarding ports to everywhere
       # GatewayPorts = "clientspecified";
@@ -32,6 +32,22 @@ in
       path = "/persist/etc/ssh/ssh_host_ed25519_key";
       type = "ed25519";
     }];
+  };
+
+  # yubikey login / sudo
+  # NOTE: We use rssh because sshAgentAuth is old and doesn't support yubikey:
+  # https://github.com/jbeverly/pam_ssh_agent_auth/issues/23
+  # https://github.com/z4yx/pam_rssh
+  security.pam.services.sudo = { config, ... }:
+  {
+    rules.auth.rssh = {
+      order =  config.rules.auth.ssh_agent_auth.order - 1;
+      control = "sufficient";
+      modulePath = "${pkgs.pam_rssh}/lib/libpam_rssh.so";
+      settings.authorized_keys_command = pkgs.writeShellScript "get-authorized-keys" ''
+        cat "/etc/ssh/authorized_keys.d/$1"
+      '';
+    };
   };
 
   programs.ssh = {

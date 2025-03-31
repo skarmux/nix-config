@@ -25,5 +25,14 @@
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
+  security.sudo = {
+    # Only `wheel` group users can execute sudo
+    execWheelOnly = true;
+    # Always ask for sudo password!
+    configFile = ''
+      Defaults timestamp_timeout=0
+    '';
+  };
+  
   sops.defaultSopsFile = ./secrets.yaml;
 }
