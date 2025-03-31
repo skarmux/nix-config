@@ -27,6 +27,7 @@
         ffmpeg_6
         # Util
         keepassxc
+        obsidian
         # Office
         libreoffice
         # AI
@@ -34,7 +35,17 @@
       ];
     };
 
-    services.yubikey-touch-detector.enable = true;
+    services = {
+      yubikey-touch-detector.enable = true;
+      syncthing = {
+        enable = true;
+        # https://docs.syncthing.net/users/syncthing.html
+        extraOptions = [
+          "--gui-address=https://127.0.0.1:8384"
+          "--no-default-folder"
+        ];
+      };
+    };
 
     programs = {
       direnv.enable = true;
