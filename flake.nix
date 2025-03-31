@@ -1,133 +1,34 @@
 {
   description = "Skarmux's nix-config";
+
+  outputs = inputs @ { flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        ./devshells
+        ./home
+        ./modules
+        ./nixos
+      ];
+      systems = [ "x86_64-linux" "aarch64-linux" ];
+    };
   
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-
-    home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixvim = {
-      url = "github:nix-community/nixvim";
-    };
-
-    nixgl = {
-      url = "github:/nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    hardware.url = "github:nixos/nixos-hardware";
     catppuccin.url = "github:catppuccin/nix";
-    devshell.url = "github:numtide/devshell/main";
-    impermanence.url = "github:nix-community/impermanence";
     deploy-rs.url = "github:serokell/deploy-rs";
-
-    # Personal
-    # feaston.url = "github:skarmux/feaston";
-    # homepage.url = "github:skarmux/skarmux";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko/v1.11.0";
+    feaston.url = "github:skarmux/feaston";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    hardware.url = "github:nixos/nixos-hardware";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager";
+    homepage.url = "github:skarmux/skarmux";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    impermanence.url = "github:nix-community/impermanence";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:mic92/sops-nix";
+    stylix.inputs.home-manager.follows = "home-manager";
+    stylix.url = "github:danth/stylix";
   };
-
-  outputs = { self, nixpkgs, home-manager, ... } @ inputs:
-    let
-      inherit (self) outputs;
-      lib = nixpkgs.lib // home-manager.lib;
-      systems = [ "x86_64-linux" "aarch64-linux" ];
-      pkgsFor =
-        lib.genAttrs systems (system: import nixpkgs {
-          inherit system;
-          overlays = [
-            inputs.nixgl.overlay
-            inputs.devshell.overlays.default
-          ];
-        });
-      forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
-    in {
-      inherit lib;
-
-      nixosModules = import ./modules/nixos;
-
-      homeManagerModules = import ./modules/home-manager;
-
-      apps = forEachSystem (pkgs: import ./apps { inherit pkgs; });
-
-      overlays = import ./overlays { inherit inputs outputs; };
-
-      devShell = forEachSystem (pkgs: import ./devshell.nix { inherit pkgs; });
-
-      nixosConfigurations = {
-
-        "ignika" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/ignika/configuration.nix ];
-        };
-        
-        "teridax" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/teridax/configuration.nix ];
-        };
-        
-        "pewku" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/pewku/configuration.nix ];
-        };
-
-<<<<<<< HEAD
-        "wsl" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/wsl/configuration.nix ];
-        };
-
-        # nix build .#nixosConfigurations.iso.config.system.build.isoImage
-        "iso" = lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            ({pkgs, modulesPath, ...}: {
-              imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
-              environment.systemPackages = with pkgs; [ git neovim];
-              boot.supportedFilesystems = [ "bcachefs" ];
-              nixpkgs.hostPlatform = "x86_64-linux";
-            })
-          ];
-        };
-
-=======
->>>>>>> 1168033 (only home-manager for now)
-      };
-
-      homeConfigurations."skarmux" = lib.homeManagerConfiguration {
-        modules = [ ./home/skarmux/default.nix ];
-        pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = { inherit inputs outputs; };
-      };
-
-      deploy.nodes.pewku = {
-        hostname = "${outputs.nixosConfigurations."pewku".config.networking.hostName}";
-        fastConnection = true;
-        interactiveSudo = false;
-        confirmTimeout = 60;
-        remoteBuild = false;
-
-        profiles.system = {
-          sshUser = "skarmux";
-          path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations."pewku";
-          user = "root";
-        };
-      };
-
-      checks = builtins.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
-    };
 }
