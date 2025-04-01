@@ -11,10 +11,10 @@ let
   };
 
   shellAliases = {
-    cp = "${pkgs.uutils-coreutils}/bin/cp -i";
-    mv = "${pkgs.uutils-coreutils}/bin/mv -i";
-    rm = "${pkgs.uutils-coreutils}/bin/rm -i";
-    cd = "${config.programs.zoxide.package}/bin/z";
+    cp = "cp -i";
+    mv = "mv -i";
+    rm = "rm -i";
+    cd = "z";
   };
 
 in
