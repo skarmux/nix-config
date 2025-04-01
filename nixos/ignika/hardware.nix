@@ -22,5 +22,8 @@
 
   hardware.cpu.amd.updateMicrocode = true; # Allow firmware updates
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;  
+
   hardware.enableRedistributableFirmware = true;
 }
