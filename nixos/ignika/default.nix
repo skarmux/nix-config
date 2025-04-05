@@ -36,6 +36,7 @@
   environment.systemPackages = [
     pkgs.mangohud
     pkgs.gamescope
+    pkgs.protonvpn-gui
   ];
 
   # gamescope -W 3840 -H 1600 -r 119 -f -e -- mangohud gamemoderun %command%

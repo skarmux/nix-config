@@ -20,34 +20,35 @@ in
       "autovt@tty1".enable = false;
     };
 
-    environment.systemPackages = with pkgs; [
-      gnomeExtensions.switcher        # App Launcher/Switcher
-      gnomeExtensions.tactile         # Window Tiling
-      gnomeExtensions.just-perfection # Tweak Gnome Shell
+    environment.systemPackages = [
+      pkgs.gnomeExtensions.switcher        # App Launcher/Switcher
+      pkgs.gnomeExtensions.tactile         # Window Tiling
+      pkgs.gnomeExtensions.just-perfection # Tweak Gnome Shell
+      pkgs.gnomeExtensions.transparent-top-bar
     ];
 
     # Part of App Indicator
-    services.udev.packages = with pkgs; [
-      gnome-settings-daemon
+    services.udev.packages = [
+      pkgs.gnome-settings-daemon
     ];
 
     # Trim GNOME default software
-    environment.gnome.excludePackages = (with pkgs; [
-      atomix   # puzzle game
-      cheese   # webcam tool
-      epiphany # web browser
-      # evince # document viewer
-      geary    # email reader
-      gedit    # text editor
-      # gnome-characters
-      gnome-music
-      # gnome-photos
-      # gnome-terminal
-      gnome-tour
-      hitori   # sudoku game
-      iagno    # go game
-      tali     # poker game
-      totem    # video player (broken on wayland)
+    environment.gnome.excludePackages = ([
+      pkgs.atomix   # puzzle game
+      pkgs.cheese   # webcam tool
+      pkgs.epiphany # web browser
+      # pkgs.evince # document viewer
+      pkgs.geary    # email reader
+      pkgs.gedit    # text editor
+      # pkgs.gnome-characters
+      pkgs.gnome-music
+      # pkgs.gnome-photos
+      # pkgs.gnome-terminal
+      pkgs.gnome-tour
+      pkgs.hitori   # sudoku game
+      pkgs.iagno    # go game
+      pkgs.tali     # poker game
+      pkgs.totem    # video player (broken on wayland)
     ]);
   };
 }
