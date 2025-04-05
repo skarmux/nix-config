@@ -21,8 +21,6 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      gnomeExtensions.appindicator    # Systray Icons
-      gnomeExtensions.space-bar       # Workspace Indicator
       gnomeExtensions.switcher        # App Launcher/Switcher
       gnomeExtensions.tactile         # Window Tiling
       gnomeExtensions.just-perfection # Tweak Gnome Shell

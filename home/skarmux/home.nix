@@ -4,8 +4,9 @@
     ./alacritty.nix
     ./direnv.nix
     ./eza.nix
-    ./gpg.nix
+    ./ghostty.nix
     ./git
+    ./gpg.nix
     ./helix
     ./shell
     ./starship.nix

@@ -7,30 +7,30 @@
     imports = [ ../../../home/skarmux/home.nix ];
 
     home = {
-      packages = with pkgs; [
+      packages = [
         # Browser
-        brave
+        pkgs.brave
         # Messenger
-        discord
-        element-desktop
-        signal-desktop
-        telegram-desktop
+        pkgs.discord
+        pkgs.element-desktop
+        pkgs.signal-desktop
+        pkgs.telegram-desktop
         # Media
-        celluloid
-        plex-media-player
-        plexamp
-        gimp
+        pkgs.celluloid
+        pkgs.plex-media-player
+        pkgs.plexamp
+        pkgs.gimp
         # Streaming
-        obs-studio
-        twitch-tui
-        ffmpeg_6
+        pkgs.obs-studio
+        pkgs.twitch-tui
+        pkgs.ffmpeg_6
         # Util
-        keepassxc
-        obsidian
+        pkgs.keepassxc
+        pkgs.obsidian
         # Office
-        libreoffice
+        pkgs.libreoffice
         # AI
-        llm # command line llm
+        pkgs.llm # command line llm
       ];
     };
 
@@ -48,6 +48,7 @@
 
     programs = {
       direnv.enable = true;
+      ghostty.enable = true;
       ssh = {
         enable = true;
         # Required for yubi-agent
@@ -75,7 +76,7 @@
       "wheel"
       "video"
       "audio"
-      "i2c"
+      "i2c" # For zsa voyager
     ] ++ (lib.optionals config.networking.networkmanager.enable [
       "networkmanager"
     ]);
