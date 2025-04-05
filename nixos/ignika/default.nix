@@ -23,6 +23,40 @@
     autoLogin.user = "skarmux";
   };
 
+  programs = {
+    steam = {
+      enable = true;
+      extraCompatPackages = [
+        pkgs.proton-ge-bin
+      ];
+    };
+    gamemode.enable = true;
+  };
+
+  environment.systemPackages = [
+    pkgs.mangohud
+    pkgs.gamescope
+  ];
+
+  # gamescope -W 3840 -H 1600 -r 119 -f -e -- mangohud gamemoderun %command%
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    steam = pkgs.steam.override {
+      extraPkgs = pkgs: with pkgs; [
+        xorg.libXcursor
+        xorg.libXi
+        xorg.libXinerama
+        xorg.libXScrnSaver
+        libpng
+        libpulseaudio
+        libvorbis
+        stdenv.cc.cc.lib
+        libkrb5
+        keyutils
+      ];
+    };
+  };
+
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
   security.sudo = {

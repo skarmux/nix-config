@@ -8,22 +8,10 @@
     initrd.availableKernelModules = [ "xhci_pci" "uas" "pcie_brcmstb" "usbhid" ];
   };
 
-  fileSystems = {
-    "/boot" = {
-      device = "/dev/sda1";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
-    "/" = {
-      device = "/dev/sda2";
-      fsType = "ext4";
-    };
-  };
-
   networking = {
     wireless.enable = false;
     # Disable DHCP by default and enable it per interface
-    # to make tailscale work properly
+    # to make tailscale magicDNS work properly
     useDHCP = false;
     interfaces.enabcm6e4ei0.useDHCP = true;
   };

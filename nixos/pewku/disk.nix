@@ -1,10 +1,10 @@
-{ lib, inputs, ... }:
+{ inputs, ... }:
 {
   imports = [ inputs.disko.nixosModules.disko ];
 
   disko.devices.disk.main = {
     type = "disk";
-    device = "/dev/nvme0n1"; # names can vary!!!
+    device = "/dev/sda";
     content = {
       type = "gpt";
       partitions = {
@@ -18,7 +18,7 @@
             mountOptions = [ "umask=0077" ];
           };
         };
-        luks = {
+        root = {
           size = "100%";
           content = {
             type = "luks";
@@ -40,7 +40,6 @@
                   mountpoint = "/nix";
                   mountOptions = [ "compress=zstd" "noatime" ];
                 };
-                # I don't want weird symlinking happening in my home directory
                 "/home" = {
                   mountpoint = "/home";
                   mountOptions = [ "compress=zstd" "noatime" ];

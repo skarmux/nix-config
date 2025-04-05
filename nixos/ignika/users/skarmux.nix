@@ -15,12 +15,11 @@
         element-desktop
         signal-desktop
         telegram-desktop
-        # Games
-        steam
         # Media
         celluloid
         plex-media-player
         plexamp
+        gimp
         # Streaming
         obs-studio
         twitch-tui

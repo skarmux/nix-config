@@ -1,14 +1,11 @@
-{ inputs
-, domain ? "feaston.skarmux.texh"
-, port ? 6000
-, ... }: 
+{ inputs , ... }:
 {
   imports = [ inputs.feaston.nixosModules.default ];
 
   services.feaston = {
     enable = true;
-    domain = domain;
-    port = port;
+    domain = "feaston.skarmux.tech";
+    port = 6000;
     enableNginx = true;
     enableTLS = true;
   };

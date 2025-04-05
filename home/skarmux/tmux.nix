@@ -1,18 +1,22 @@
 { pkgs, ... }:
 {
   programs.tmux = {
-
-    # Number row on keyboard starts at 1
     baseIndex = 1;
     mouse = true;
     disableConfirmationPrompt = true;
     clock24 = false;
-    historyLimit = 10000;
-
     plugins = with pkgs; [
-      tmuxPlugins.sensible 
-      tmuxPlugins.yank
+      # Sensible default settings for tmux
+      tmuxPlugins.sensible
+      # Copy to system clipboard
       {
+        plugin = tmuxPlugins.yank;
+        extraConfig = /* sh */ ''
+          set -g set-clipboard on
+        '';
+      }
+      {
+        # Automatically save and restore tmux environment
         plugin = tmuxPlugins.resurrect;
         extraConfig = /* sh */ ''
           set -g @resurrect-strategy-nvim "session"
@@ -27,11 +31,9 @@
     ];
     
     extraConfig = /* sh */ ''
-      set -g status off # disable the status bar
       set -g default-terminal "tmux-256color"
-      # set -g renumber-windows on # prevent numbering gaps
+      set -g renumber-windows on # prevent numbering gaps
       set -g status-position top # opposite of vim statusline
-      set -g set-clipboard on    # use system clipboard
 
       # reload tmux conf
       unbind r
@@ -40,36 +42,38 @@
   };
 
   catppuccin.tmux.extraConfig = /* sh */ ''
-    # set -g @catppuccin_status_modules_left "session"
-    # set -g @catppuccin_window_number_position "left"
-    # set -g @catppuccin_window_default_fill "number"
-    # set -g @catppuccin_window_default_text "#W"
+    # Make the status line background transparent
+    # default | none | #{@thm_<color>}
+    set -g @catppuccin_status_background "#{@thm_bg}"
+
+    # Change the style of status line elements
+    set -g @catppuccin_window_status_style "rounded"
+    
+    # Make the status line more pleasant by hiding the
+    # session id `[n] `
+    set -g status-left ""
+    # set -g status-left "#{E:@catppuccin_status_session}"
+
+    # Ensure that everything on the right side of the status line
+    # is included.
+    set -g status-right-length 100
+
+    # Make background the same as the status line background
+    set -g @catppuccin_status_module_crust_color "#{@thm_bg}"
+
+    # Place status elements
+    set -g status-right "#{E:@catppuccin_status_session}"
+    # -a: append
+    set -ag status-right "#{E:@catppuccin_status_date_time}"
+
+    # set -g @catppuccin_date_time_text "%H:%M"
+    # set -g @catppuccin_status_connect_separator "no"
+    # set -g @catppuccin_status_fill "icon"
+    # set -g @catppuccin_status_right_separator_inverse "no"
     # set -g @catppuccin_window_current_fill "number"
     # set -g @catppuccin_window_current_text "#W#{?window_zoomed_flag,(),}"
-    set -g @catppuccin_window_status_style "rounded"
-
-    # Make the status line pretty and add some modules
-    set -g status-right-length 100
-    set -g status-left-length 100
-    set -g status-left ""
-    set -g status-right "#{E:@catppuccin_status_application}"
-    set -agF status-right "#{E:@catppuccin_status_cpu}"
-    set -ag status-right "#{E:@catppuccin_status_session}"
-    set -ag status-right "#{E:@catppuccin_status_uptime}"
-    set -agF status-right "#{E:@catppuccin_status_battery}"
-
-    # set -g @catppuccin_status_modules_right "cpu date_time host"
-    # set -g @catppuccin_status_connect_separator "no"
-    # set -g @catppuccin_status_background "default"
-    # set -g @catppuccin_status_fill "icon"
-
-    set -g @catppuccin_directory_text "#{b:pane_current_path}"
-    # set -g @catppuccin_date_time_text "%H:%M"
-
-    # set -g @catppuccin_status_left_separator " █"
-    # set -g @catppuccin_status_right_separator "█"
-    # set -g @catppuccin_window_left_separator " █"
-    # set -g @catppuccin_window_right_separator "█"
-    # set -g @catppuccin_window_middle_separator "█ "
+    # set -g @catppuccin_window_default_fill "number"
+    # set -g @catppuccin_window_default_text "#W"
+    # set -g @catppuccin_window_number_position "right"
   '';
 }

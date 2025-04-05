@@ -207,15 +207,17 @@
       "locked": {
         "lastModified": 1724666836,
         "narHash": "sha256-QXDxf8Xo1ni4bExfF2aGuIF5Na18X5hfhuoxvMAL6V4=",
-        "owner": "skarmux",
-        "repo": "feaston",
+        "ref": "main",
         "rev": "0e55a21671d3f02652158a13e44e723376fd1d89",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/skarmux/feaston.git"
       },
       "original": {
-        "owner": "skarmux",
-        "repo": "feaston",
-        "type": "github"
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/skarmux/feaston.git"
       }
     },
     "fenix": {
@@ -548,15 +550,17 @@
       "locked": {
         "lastModified": 1724774083,
         "narHash": "sha256-FQFRZP3NZvyGfIYoZyVZCF2WX5wPsaI8k3g5IDF88pY=",
-        "owner": "skarmux",
-        "repo": "skarmux",
+        "ref": "main",
         "rev": "edfdab06b865279779565a7db8eed7b755a76942",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/skarmux/skarmux.git"
       },
       "original": {
-        "owner": "skarmux",
-        "repo": "skarmux",
-        "type": "github"
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/skarmux/skarmux.git"
       }
     },
     "hyprcursor": {

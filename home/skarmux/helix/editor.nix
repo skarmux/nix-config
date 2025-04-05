@@ -7,9 +7,9 @@
   line-number = "relative";
   cursorline = true;
   cursorcolumn = false;
-  # continue-comments = true;
+  continue-comments = true;
   auto-completion = true;
-  # path-completion = true;
+  path-completion = true;
   auto-format = false;
   idle-timeout = 0;
   preview-completion-insert = true;
@@ -25,12 +25,12 @@
   default-line-ending = "lf";
   insert-final-newline = true;
 
-  # clipboard-provider = "termcode";
+  clipboard-provider = "tmux";
 
   statusline = {
     left = [ "mode" "diagnostics" ];
     center =
-      [ "file-base-name" "file-modification-indicator" "read-only-indicator" ];
+      [ "file-name" "file-modification-indicator" "read-only-indicator" ];
     right = [
       "spinner" # indicating lsp activity
       "register"
@@ -39,9 +39,9 @@
       "position"
     ];
     separator = "|";
-    mode.normal = "NORMAL";
-    mode.insert = "INSERT";
-    mode.select = "SELECT";
+    # mode.normal = "NORMAL";
+    # mode.insert = "INSERT";
+    # mode.select = "SELECT";
   };
 
   lsp = {
@@ -101,22 +101,21 @@
   };
 
   gutters = {
-    layout = [ "diagnostics" "spacer" "spacer" "diff" ];
+    layout = [ "diff" "diagnostics" ];
     line-numbers.min-width = 2;
   };
 
-  soft-wrap = {
-    enable = false;
-  };
+  soft-wrap.enable = false;
 
   smart-tab = {
     enable = true;
     supersede-menu = false;
   };
 
-  # inline-diagnostics = {
+  inline-diagnostics = {
     # error, warning, info, hint, disable
-    # cursor-line = "hint";
-    # other-lines = "error";
-  # };
+    cursor-line = "hint";
+    other-lines = "error";
+    max-diagnostics = 10;
+  };
 }
