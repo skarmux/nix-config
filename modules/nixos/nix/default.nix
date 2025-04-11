@@ -1,11 +1,23 @@
 { lib, config, ... }:
 {
   nixpkgs.config = {
-    allowUnfree = true;
-    # allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    #   # Add additional package names here
-    #   "discord"
-    # ];
+    # cache.nixos.org does not process unfree packages which
+    # requires the host to build them
+    allowUnfree = false;
+    # This way, I have an overview over the non-free packages I use
+    allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      # Add additional package names here
+      "discord"
+      "nvidia-x11"
+      "unrar"
+      "plexamp"
+      "makemkv"
+      "davinci-resolve"
+      "obsidian"
+      "steam"
+      "steam-unwrapped" # For adding Proton-GE
+      "nvidia-settings"
+    ];
   };
 
   nix = {
@@ -23,8 +35,8 @@
 
     gc = {
       automatic = lib.mkDefault false;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
+      dates = "monthly";
+      options = "--delete-older-than 30d";
     };
   
     settings = {

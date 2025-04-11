@@ -30,7 +30,9 @@
     stylix.inputs.home-manager.follows = "home-manager";
     stylix.url = "github:danth/stylix";
     # Personal
-    feaston.url = "git+ssh://git@github.com/skarmux/feaston.git?ref=main&shallow=1";
-    homepage.url = "git+ssh://git@github.com/skarmux/skarmux.git?ref=main&shallow=1";
+    feaston.inputs.nixpkgs.follows = "nixpkgs";
+    feaston.url = "git+ssh://git@github.com/skarmux/feaston.git";
+    homepage.inputs.nixpkgs.follows = "nixpkgs";
+    homepage.url = "git+ssh://git@github.com/skarmux/skarmux.git";
   };
 }

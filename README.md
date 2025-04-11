@@ -4,6 +4,14 @@ https://github.com/nmasur/dotfiles
 https://github.com/niksingh710/ndots
 https://github.com/Misterio77/nix-config
 
+# Updating
+
+If the commit hash to nixpkgs after a `nix flake update nixpkgs` is too new so
+that there are no cached binaries yet, you can replace it with the latest from
+https://status.nixos.org: `nix flake lock --override-input github:nixos/nixpkgs/<commit_hash>`
+
+Unfree or packages with overrides will always be built from source!
+
 # Installation
 
 ```

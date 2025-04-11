@@ -43,7 +43,11 @@
     btop.enable = true;
     eza.enable = true;
     git.enable = true;
-    helix = { enable = true; defaultEditor = true; };
+    helix = {
+      enable = true;
+      defaultEditor = true;
+      tree-file-picker = "tmux";
+    };
     starship.enable = true;
     tmux.enable = true;
     yazi.enable = true;

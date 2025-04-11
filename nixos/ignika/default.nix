@@ -4,6 +4,7 @@
     ./disk.nix
     ./hardware.nix
     ./users/skarmux.nix
+    inputs.feaston.nixosModules.feaston
   ] ++ builtins.attrValues self.nixosModules;
 
   networking.hostName = "ignika";
@@ -18,55 +19,52 @@
 
   fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
   
-  services.displayManager = {
-    autoLogin.enable = true;
-    autoLogin.user = "skarmux";
+  services = {
+    displayManager = {
+      autoLogin.enable = true;
+      autoLogin.user = "skarmux";
+    };
+    feaston.enable = false;
+    openssh.enable = true;
+    # FIXME Temporarily disable ACME for local testing
+    nginx.virtualHosts."feaston.skarmux.tech" = {
+      enableACME = lib.mkForce false;
+      forceSSL = lib.mkForce false;
+    };
   };
 
   programs = {
     steam = {
       enable = true;
-      extraCompatPackages = [
-        pkgs.proton-ge-bin
-      ];
+      extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
     gamemode.enable = true;
   };
 
   environment.systemPackages = [
+    # pkgs.anubis
     pkgs.mangohud
     pkgs.gamescope
-    pkgs.protonvpn-gui
+    pkgs.protonvpn-gui # NOTE: Needs to be system level, I think
   ];
-
-  # gamescope -W 3840 -H 1600 -r 119 -f -e -- mangohud gamemoderun %command%
-
-  nixpkgs.config.packageOverrides = pkgs: {
-    steam = pkgs.steam.override {
-      extraPkgs = pkgs: with pkgs; [
-        xorg.libXcursor
-        xorg.libXi
-        xorg.libXinerama
-        xorg.libXScrnSaver
-        libpng
-        libpulseaudio
-        libvorbis
-        stdenv.cc.cc.lib
-        libkrb5
-        keyutils
-      ];
-    };
-  };
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  security.sudo = {
-    # Only `wheel` group users can execute sudo
-    execWheelOnly = true;
-    # Always ask for sudo password!
-    configFile = ''
-      Defaults timestamp_timeout=0
-    '';
+  security = {
+    sudo = {
+      # Only `wheel` group users can execute sudo
+      execWheelOnly = true;
+      # Always ask for sudo password!
+      configFile = ''
+        Defaults timestamp_timeout=0
+      '';
+    };
+
+    # FIXME Temporarily disable ACME for local testing
+    # acme = {
+    #   acceptTerms = true;
+    #   defaults.email = "admin@skarmux.tech";
+    # };
   };
   
   sops.defaultSopsFile = ./secrets.yaml;

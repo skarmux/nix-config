@@ -4,7 +4,7 @@
     enableFishIntegration = true;
     enableZshIntegration = true;
     settings = {
-      # font-size = 14;
+      font-size = 16;
     };
   };
 

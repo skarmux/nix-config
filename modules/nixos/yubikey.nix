@@ -84,7 +84,8 @@ in
   config = mkIf cfg.enable {
 
     environment.systemPackages = [
-      pkgs.yubioath-flutter # gui Authenticator for Desktop
+      # FIXME: Does not build
+      # pkgs.yubioath-flutter # gui Authenticator for Desktop
       pkgs.yubikey-manager # cli `ykman` Manager Configuration Tool
       pkgs.pam_u2f # sudo authentication
       yubikey-up

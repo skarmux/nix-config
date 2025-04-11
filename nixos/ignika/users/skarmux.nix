@@ -4,6 +4,8 @@
 
   home-manager.users.skarmux = {
 
+    # Import all user-specific configurations and
+    # minimum package selection
     imports = [ ../../../home/skarmux/home.nix ];
 
     home = {
@@ -20,15 +22,26 @@
         pkgs.plex-media-player
         pkgs.plexamp
         pkgs.gimp
+        # Bluray
+        pkgs.vlc
+        pkgs.makemkv
+        # Work
+        # pkgs.davinci-resolve
+        # pkgs.blender
         # Streaming
         pkgs.obs-studio
         pkgs.twitch-tui
-        pkgs.ffmpeg_6
+        # pkgs.ffmpeg_6
         # Util
+        pkgs.mdp
         pkgs.keepassxc
         pkgs.obsidian
+        pkgs.sidequest
         # Office
         pkgs.libreoffice
+        pkgs.deluge
+        # pkgs.ryujinx
+        # pkgs.dolphin-emu
         # AI
         pkgs.llm # command line llm
       ];
@@ -79,7 +92,7 @@
       "i2c" # For zsa voyager
     ] ++ (lib.optionals config.networking.networkmanager.enable [
       "networkmanager"
-    ]);
+    ]) ++ (lib.optionals config.programs.adb.enable [ "adbusers" ]);
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
 
     openssh.authorizedKeys.keys = [
@@ -96,6 +109,8 @@
     };
     lockScreen = false;
   };
+
+  programs.adb.enable = true; # Required for SideQuest
 
   sops.secrets = {
     "skarmux-password".neededForUsers = true;
