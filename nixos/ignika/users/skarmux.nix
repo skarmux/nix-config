@@ -42,8 +42,6 @@
         pkgs.deluge
         # pkgs.ryujinx
         # pkgs.dolphin-emu
-        # AI
-        pkgs.llm # command line llm
       ];
     };
 
@@ -62,6 +60,7 @@
     programs = {
       direnv.enable = true;
       ghostty.enable = true;
+      llm.enable = true;
       ssh = {
         enable = true;
         # Required for yubi-agent

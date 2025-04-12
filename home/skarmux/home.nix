@@ -8,6 +8,7 @@
     ./git
     ./gpg.nix
     ./helix
+    ./llm
     ./shell
     ./starship.nix
     ./tmux.nix
@@ -45,6 +46,7 @@
     git.enable = true;
     helix = {
       enable = true;
+      llm = true;
       defaultEditor = true;
       tree-file-picker = "tmux";
     };
@@ -65,14 +67,13 @@
   systemd.user.startServices = "sd-switch";
 
   sops = {
-    # FIXME
     age.keyFile = "/home/skarmux/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets.yaml;
-    validateSopsFiles = false;
-    # gnupg.home = config.programs.gpg.homedir;
+    validateSopsFiles = true;
     secrets = {
       "ssh/yc".path = "/home/skarmux/.ssh/id_yc";
       "ssh/ya".path = "/home/skarmux/.ssh/id_ya";
+      "openai/simonw-llm".path = "/home/skarmux/.config/helix/openai_api_token";
     };
   };
 }

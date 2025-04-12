@@ -16,7 +16,7 @@ in
 
     settings = {
       manager = {
-        ratio = [ 1 2 3 ];
+        ratio = [ 1 3 1];
         sort_by = "alphabetical";
         sort_sensitive = false;
         sort_dir_first = true;
@@ -33,12 +33,12 @@ in
         image_quality = 70; # 50-90
       };
       opener = {
-        play = [ ] ++ (lib.optionals (hasPackage "celluloid") [
-          {
-            run = ''${pkgs.celluloid}/bin/celluloid "$0"'';
-            orphan = true;
-          }
-        ]);
+        play = [
+          # {
+          #   run = ''celluloid "$0"'';
+          #   orphan = true;
+          # }
+        ];
         edit = [
           {
             run = ''$EDITOR "$0"'';
@@ -47,14 +47,21 @@ in
             desc = "Default editor";
           }
         ];
-        open = [ ] ++ (lib.optionals (hasPackage "evince") [
-          {
-            run = ''${pkgs.evince}/bin/evince "$0"'';
-            orphan = true;
-          }
-        ]);
+        open = [
+          # {
+          #   run = ''evince "$0"'';
+          #   orphan = true;
+          # }
+        ];
+        bulk-rename = [{
+          run = ''$EDITOR "$@"'';
+          block = true;
+        }];
       };
       open = {
+        prepend_rules = [
+          { name = "bulk-rename.txt"; use = "bulk-rename"; }
+        ];
         rules = [
           { mime = "text/*"; use = "edit"; }
           { mime = "video/*"; use = "play"; }
