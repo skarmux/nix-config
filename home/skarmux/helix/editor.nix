@@ -41,7 +41,7 @@
     separator = "|";
     # mode.normal = "NORMAL";
     # mode.insert = "INSERT";
-    # mode.select = "SELECT";
+    mode.select = "VIS";
   };
 
   lsp = {

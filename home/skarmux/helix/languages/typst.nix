@@ -22,7 +22,7 @@
       auto-format = true;
       language-servers = [
         "typst-lsp"
-      ] ++ (lib.optionals config.programs.helix.llm [
+      ] ++ (lib.optionals config.programs.helix.lsp-ai.enable [
         "lsp-ai"
       ]);
     }];

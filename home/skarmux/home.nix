@@ -46,9 +46,15 @@
     git.enable = true;
     helix = {
       enable = true;
-      llm = true;
       defaultEditor = true;
-      tree-file-picker = "tmux";
+      lsp-ai = {
+        enable = true;
+        openai = {
+          enable = true;
+          authTokenFile = config.sops.secrets."openai/simonw-llm".path;
+        };
+      };
+      file-picker = "tmux";
     };
     starship.enable = true;
     tmux.enable = true;

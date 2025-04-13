@@ -16,11 +16,14 @@
       language-servers = [
         "vscode-html-language-server"
         "tailwindcss-ls"
-      ] ++ (lib.optionals config.programs.helix.llm [
+      ] ++ (lib.optionals config.programs.helix.lsp-ai.enable [
         "lsp-ai"
       ]);
       text-width = 100;
-      soft-wrap.wrap-at-text-width = true;
+      soft-wrap = {
+        enable = true;
+        wrap-at-text-width = true;
+      };
     }];
   };
 }
