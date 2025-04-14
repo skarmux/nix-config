@@ -42,6 +42,7 @@
         pkgs.deluge
         # pkgs.ryujinx
         # pkgs.dolphin-emu
+        pkgs.cool-retro-term
       ];
     };
 

@@ -13,6 +13,7 @@
     ./languages/html.nix
     ./languages/javascript.nix
     ./languages/markdown.nix
+    ./languages/nix.nix
     ./languages/php.nix
     ./languages/rust.nix
     ./languages/text.nix

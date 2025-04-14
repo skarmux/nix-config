@@ -4,7 +4,7 @@
     ./disk.nix
     ./hardware.nix
     ./users/skarmux.nix
-    inputs.feaston.nixosModules.feaston
+    inputs.feaston.nixosModules.default
   ] ++ builtins.attrValues self.nixosModules;
 
   networking.hostName = "ignika";
@@ -17,19 +17,35 @@
 
   mods.gnome.enable = true;
 
-  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+  fonts.packages = [
+    # pkgs.nerd-fonts.jetbrains-mono # upcoming
+    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
   
   services = {
     displayManager = {
       autoLogin.enable = true;
       autoLogin.user = "skarmux";
     };
-    feaston.enable = false;
-    openssh.enable = true;
-    # FIXME Temporarily disable ACME for local testing
-    nginx.virtualHosts."feaston.skarmux.tech" = {
-      enableACME = lib.mkForce false;
-      forceSSL = lib.mkForce false;
+    feaston = {
+      enable = true;
+      domain = "feaston.localhost";
+    };
+    openssh = {
+      enable = true;
+      settings.AllowUsers = [ "skarmux" ];
+    };
+    nginx = {
+      enable = true;
+      recommendedBrotliSettings = true;
+      recommendedGzipSettings = true;
+      recommendedOptimisation = true;
+      recommendedProxySettings = true;
+      virtualHosts."feaston.localhost" = {
+        # FIXME Temporarily disable ACME for local testing
+        enableACME = lib.mkForce false;
+        forceSSL = lib.mkForce false;
+      };
     };
   };
 
@@ -55,9 +71,9 @@
       # Only `wheel` group users can execute sudo
       execWheelOnly = true;
       # Always ask for sudo password!
-      configFile = ''
-        Defaults timestamp_timeout=0
-      '';
+      # configFile = ''
+      #   Defaults timestamp_timeout=0
+      # '';
     };
 
     # FIXME Temporarily disable ACME for local testing

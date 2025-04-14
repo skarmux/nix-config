@@ -1,27 +1,10 @@
-{ inputs, pkgs, config, ... }:
+{ inputs, self, pkgs, config, ... }:
 {
   imports = [
     ./disk.nix
     ./hardware.nix
-    ./services/nginx
     ./users/skarmux.nix
-
-    # (import ./service/nix-serve.nix { 
-    #   inherit config;
-    #   port = 3337; 
-    #   domain = "cache.skarmux.tech";
-    # })
-
-    # (import ./service/feaston.nix { 
-    #   inherit inputs;
-    #   port = 6000; 
-    #   domain = "feaston.skarmux.tech";
-    # })
-
-    # (import ./service/homepage.nix { 
-    #   inherit inputs;
-    #   domain = "skarmux.tech";
-    # })
+    inputs.feaston.nixosModules.default
   ] ++ builtins.attrValues self.nixosModules;
 
   networking.hostName = "pewku";
@@ -39,17 +22,36 @@
   };
 
   services = {
-
+    feaston = {
+      enable = true;
+      enableTLS = true;
+      domain = "feaston.skarmux.tech";
+      port = 6000; # internal
+    };
+    
     # Transfer logs to external syslog server
     # FIXME
     # rsyslogd.enable = true;
-
-    # Use this system as exit-node
-    tailscale.useRoutingFeatures = "server";
     
+    # Use this system as exit-node
+    # tailscale.useRoutingFeatures = "server";
+
     # TODO: Do I need this for resolving DNS?
     #       And does it bite with Tailscale DNS?
     resolved.enable = true;
+
+    openssh = {
+      enable = true;
+      settings.AllowUsers = [ "skarmux" ];
+    };
+
+    nginx = {
+      enable = true;
+      recommendedBrotliSettings = true;
+      recommendedGzipSettings = true;
+      recommendedOptimisation = true;
+      recommendedProxySettings = true;
+    };
   };
 
   powerManagement.cpuFreqGovernor = "ondemand";
@@ -85,7 +87,7 @@
 
   sops.defaultSopsFile = ./secrets.yaml;
 
-  environment.persistence."/persist" = {
-    directories = [ "/var/lib/acme" ];
-  };
+  # environment.persistence."/persist" = {
+  #   directories = [ "/var/lib/acme" ];
+  # };
 }
