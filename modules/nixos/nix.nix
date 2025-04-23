@@ -3,23 +3,43 @@
   nixpkgs.config = {
     # cache.nixos.org does not process unfree packages which
     # requires the host to build them
+    # Not sure about the cachix cache though...
+
     allowUnfree = false;
-    # This way, I have an overview over the non-free packages I use
+
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      # Add additional package names here
-      "discord"
-      "nvidia-x11"
-      "unrar"
-      "plexamp"
-      "makemkv"
       "davinci-resolve"
+      "discord"
+      "makemkv"
+      "nvidia-settings"
+      "nvidia-x11"
       "obsidian"
+      "plexamp"
       "steam"
       "steam-unwrapped" # For adding Proton-GE
-      "nvidia-settings"
-      "corefonts" # Microsoft True Type Fonts
-      "vista-fonts" # More Microsoft Fonts
-      "warp-terminal"
+      "unrar"
+
+      # Microsoft True Type Fonts
+      # Arial
+      # Comic Sans
+      # Courier New
+      # Georgia
+      # Impact
+      # Tahoma
+      # Times New Roman
+      # Trebuchet
+      # Verdana
+      # Webdings
+      "corefonts" 
+
+      # Microsoft True Type Fonts (Windows Vista)
+      # Calibri
+      # Cambria
+      # Candara
+      # Consolas
+      # Constantia
+      # Corbel
+      "vista-fonts"
     ];
   };
 

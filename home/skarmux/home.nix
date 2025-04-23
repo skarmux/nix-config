@@ -66,8 +66,8 @@
 
   catppuccin = {
     enable = true; # global
-    flavor = "mocha";
-    accent = "mauve";
+    flavor = "frappe";
+    accent = "blue";
   };
 
   systemd.user.startServices = "sd-switch";

@@ -1,11 +1,10 @@
 {
   shell = ./shell;
-  nix = ./nix;
+  nix = ./nix.nix;
   sops = ./sops.nix;
   desktop = ./desktop;
   hardware = ./hardware;
   networking = ./networking;
-  home-manager = ./home-manager;
+  home-manager = ./home-manager.nix;
   yubikey = ./yubikey.nix;
-  # virt-manager = ./virt-manager.nix; # FIXME
 }

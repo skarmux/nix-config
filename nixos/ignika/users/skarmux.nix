@@ -43,7 +43,6 @@
         # pkgs.ryujinx
         # pkgs.dolphin-emu
         pkgs.cool-retro-term
-        pkgs.warp-terminal
       ];
     };
 
