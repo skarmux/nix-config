@@ -17,7 +17,7 @@
         sort_sensitive = false;
         sort_dir_first = true;
         linemode = "none";
-        show_hidden = true;
+        show_hidden = false; # toggle with `.`
         show_symlink = true;
         scrolloff = 8;
         title_format = "";
