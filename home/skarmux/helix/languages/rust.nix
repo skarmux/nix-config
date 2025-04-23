@@ -26,6 +26,15 @@
         };
         text-width = 80;
         auto-format = true;
+        auto-pairs = {
+          "(" = ")";
+          "{" = "}";
+          "[" = "]";
+          "\"" = "\"";
+          "`" = "`";
+          "<" = ">";
+          "=" = ";";
+        };
         language-servers = [ "rust-analyzer" ];
       }
     ];

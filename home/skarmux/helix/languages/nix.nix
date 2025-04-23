@@ -20,6 +20,15 @@
         # args = [ "--output" "-" ];
       };
       auto-format = true;
+      auto-pairs = {
+        "(" = ")";
+        "{" = "}";
+        "[" = "]";
+        "\"" = "\"";
+        "`" = "`";
+        "<" = ">";
+        "=" = ";";
+      };
       language-servers = [
         "nixd"
       ] ++ (lib.optionals config.programs.helix.lsp-ai.enable [
