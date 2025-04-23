@@ -17,6 +17,9 @@
       "steam"
       "steam-unwrapped" # For adding Proton-GE
       "nvidia-settings"
+      "corefonts" # Microsoft True Type Fonts
+      "vista-fonts" # More Microsoft Fonts
+      "warp-terminal"
     ];
   };
 

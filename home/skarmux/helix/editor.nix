@@ -7,7 +7,7 @@
   line-number = "relative";
   cursorline = true;
   cursorcolumn = false;
-  continue-comments = true;
+  continue-comments = false;
   auto-completion = true;
   path-completion = true;
   auto-format = false;

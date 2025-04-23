@@ -30,7 +30,7 @@ in
         wrap = "no";
         tab_size = 2;
         image_filter = "nearest";
-        image_quality = 70; # 50-90
+        image_quality = 50; # 50-90
       };
       opener = {
         play = [
@@ -68,6 +68,7 @@ in
           
           # { mime = "application/json", use = "edit" }
           { name = "*.json"; use = "edit"; }
+          { name = "*.typ"; use = "edit"; }
 
           # Multiple openers for a single file
           { name = "*.html"; use = [ "open" "edit" ]; }

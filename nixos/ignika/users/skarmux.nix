@@ -7,7 +7,7 @@
     # Import all user-specific configurations and
     # minimum package selection
     imports = [ ../../../home/skarmux/home.nix ];
-
+    
     home = {
       packages = [
         # Browser
@@ -19,12 +19,9 @@
         pkgs.telegram-desktop
         # Media
         pkgs.celluloid
-        pkgs.plex-media-player
         pkgs.plexamp
         pkgs.gimp
-        # Bluray
-        pkgs.vlc
-        pkgs.makemkv
+        pkgs.inkscape
         # Work
         # pkgs.davinci-resolve
         # pkgs.blender
@@ -36,15 +33,21 @@
         pkgs.mdp
         pkgs.keepassxc
         pkgs.obsidian
+        # Meta Quest 3 Sideloading
         pkgs.sidequest
         # Office
         pkgs.libreoffice
+        # Torrent
         pkgs.deluge
+        # Emulators
         # pkgs.ryujinx
         # pkgs.dolphin-emu
         pkgs.cool-retro-term
+        pkgs.warp-terminal
       ];
     };
+
+    fonts.fontconfig.enable = true;
 
     services = {
       yubikey-touch-detector.enable = true;

@@ -1,8 +1,11 @@
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
+```
+Good references
 https://github.com/nmasur/dotfiles
 https://github.com/niksingh710/ndots
 https://github.com/Misterio77/nix-config
+```
 
 # Updating
 
@@ -13,6 +16,28 @@ https://status.nixos.org: `nix flake lock --override-input github:nixos/nixpkgs/
 Unfree or packages with overrides will always be built from source!
 
 # Installation
+
+## Remote setup with `disko` and `nixos-anywhere`
+
+ - How do I get sops setup with a private host ssh key? Can I import a pre-determined private key?
+ - I need a custom `kexec` image for deploying on any architecture other than `x86_64`.
+
+```
+ # Example for deployment on `pewku`
+
+nix run github:nix-community/nixos-anywhere -- \
+ --kexec "$(nix build --print-out-paths github:nix-community/nixos-images#packages.aarch64-linux.kexec-installer-nixos-unstable-noninteractive)/nixos-kexec-installer-noninteractive-aarch64-linux.tar.gz" \
+ --flake 'github:skarmux/nix-config#pewku' \
+ skarmux@pewku
+```
+- Command must be run by a machine able to compile aarch64 natively, with a remote builder or qemu.
+  - I use qemu on my NixOS with `boot.binfmt.emulatedSystems = [ "aarch64-linux" ];`
+- Can I do this with a sudoers user instead of root?
+  - `A target machine that is reachable via SSH, either using keys or a password, and the privilege to either log in directly as root or a user with password-less sudo.`
+  - I think skarmux is configured for password-less sudo?
+
+
+## Install from Live image
 
 ```
 # nix-shell

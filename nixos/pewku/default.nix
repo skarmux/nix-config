@@ -76,8 +76,10 @@
     sudo = {
       # Only allow sudo binary execution for members of the wheel group
       execWheelOnly = true;
+
+      # Passwordless-Sudo
       # NOTE: This snippet from the deploy-rs example is required for the deployment activation
-      # Another option would be to have the root user activated on the server
+      #       Another option would be to have the root user activated on the server
       extraRules = [{
         groups = [ "wheel" ];
         commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];

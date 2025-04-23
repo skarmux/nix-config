@@ -17,10 +17,16 @@
 
   mods.gnome.enable = true;
 
-  fonts.packages = [
-    # pkgs.nerd-fonts.jetbrains-mono # upcoming
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-  ];
+  fonts = {
+    enableDefaultPackages = true;
+    enableGhostscriptFonts = true;
+    packages = [
+      pkgs.vistafonts
+      pkgs.corefonts
+      (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      # pkgs.nerd-fonts.jetbrains-mono # upcoming
+    ];
+  };
   
   services = {
     displayManager = {

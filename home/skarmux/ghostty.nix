@@ -5,6 +5,7 @@
     enableZshIntegration = true;
     settings = {
       font-size = 16;
+      background-opacity = 0.8;
     };
   };
 

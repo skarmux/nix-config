@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
 {
   imports = [
-    ./ssh.nix
+    ./openssh.nix
     ./tailscale.nix
   ];
 
