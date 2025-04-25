@@ -39,7 +39,6 @@
     settings = {
       PermitRootLogin = "yes";
       PasswordAuthentication = true;
-      AllowUsers = [ "skarmux" ];
     };
     hostKeys = [{
       # NOTE: Copied from openssh module (2025-04-25)
