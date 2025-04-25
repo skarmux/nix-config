@@ -1,7 +1,5 @@
-{ self, lib, config, pkgs, ... }:
+{ config, pkgs, ... }:
 let
-  inherit (config.networking) hostName;
-  hosts = self.nixosConfigurations;
   cfg = config.services.openssh;
 in
 {
@@ -35,12 +33,6 @@ in
   };
 
   programs.ssh = {
-    # knownHosts = builtins.mapAttrs (name: cfg: {
-    #   publicKeyFile = ../../../nixos/${name}/ssh_host_ed25519_key.pub;
-    #   # Alias for localhost if it's the same host
-    #   extraHostNames = [] ++ (lib.optional (name == hostName) "localhost");
-    # }) hosts;
-    
     knownHostsFiles = [
       (pkgs.writeText "github.keys" ''
         github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl

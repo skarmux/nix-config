@@ -46,7 +46,9 @@
     # Serve the nix store binaries to other network clients
     sshServe = {
       enable = lib.mkDefault false;
-      keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIOHnEYhX+q+xTVjoIIAjT+tn1NVAtqLjkE8J88YS14w skarmux" ];
+      keys = [
+        (builtins.readFile ../../nixos/ignika/ssh_host_ed25519_key.pub)
+      ];
       protocol = "ssh";
       # Whether to enable writing to the Nix store as a remote store via SSH. 
       # Note: the sshServe user is named nix-ssh and is not a trusted-user. 

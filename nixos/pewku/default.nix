@@ -4,7 +4,6 @@
     ./users
     ./disk.nix
     ./hardware.nix
-    ./nix-serve.nix
     inputs.feaston.nixosModules.default
   ] ++ builtins.attrValues self.nixosModules;
 
@@ -22,11 +21,19 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
+  # programs.ssh = {
+  #   knownHosts = [
+  #     { publicKeyFile = ../ignika/ssh_host_ed25519_key.pub; }
+  #   ];
+  # };
+
+  nix.settings.trusted-users = [ "skarmux" ];
+
   services = {
 
     feaston = {
       enable = true;
-      enableTLS = true;
+      enableTLS = false; # FIXME until acme works
       domain = "feaston.skarmux.tech";
       port = 6000; # internal
     };
@@ -59,6 +66,14 @@
       recommendedGzipSettings = true;
       recommendedOptimisation = true;
       recommendedProxySettings = true;
+      virtualHosts."cache.skarmux.tech" = lib.mkIf config.services.nix-serve.enable {
+        # forceSSL = true;
+        # enableACME = true;
+        locations."/" = {
+          proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString 3337}";
+          recommendedProxySettings = true;
+        };
+      };
     };
   };
 
@@ -70,10 +85,10 @@
   };
 
   security = {
-    acme = {
-      acceptTerms = true;
-      defaults.email = "admin@skarmux.tech";
-    };
+    # acme = {
+    #   acceptTerms = true;
+    #   defaults.email = "admin@skarmux.tech";
+    # };
     auditd.enable = true;
     audit = {
       enable = true;
