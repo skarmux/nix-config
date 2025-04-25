@@ -1,12 +1,12 @@
-{ inputs, self, config, lib, pkgs, ... }:
+{ inputs, self, config, pkgs, ... }:
 {
   imports = [
     ./users
     ./disk.nix
     ./hardware.nix
     inputs.impermanence.nixosModules.impermanence
-    # inputs.feaston.nixosModules.default
-    # inputs.homepage.nixosModules.default
+    inputs.feaston.nixosModules.default
+    inputs.homepage.nixosModules.default
   ] ++ builtins.attrValues self.nixosModules;
 
   system.stateVersion = "24.11";
@@ -46,17 +46,17 @@
 
   services = {
 
-    # feaston = {
-    #   enable = true;
-    #   enableTLS = true;
-    #   domain = "feaston.skarmux.tech";
-    #   port = 6000;
-    # };
+    feaston = {
+      # enable = true;
+      enableTLS = true;
+      domain = "feaston.skarmux.tech";
+      port = 6000;
+    };
 
-    # homepage = {
-    #   enable = true;
-    #   domain = "skarmux.tech";
-    # };
+    homepage = {
+      enable = true;
+      domain = "skarmux.tech";
+    };
     
     # Transfer logs to external syslog server
     # FIXME
@@ -88,13 +88,21 @@
       recommendedOptimisation = true;
       recommendedProxySettings = true;
 
-      virtualHosts."cache.skarmux.tech" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/" = {
-          proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString 3337}";
-          recommendedProxySettings = true;
+      virtualHosts = {
+        "skarmux.tech" = {
+          onlySSL = true; # TODO: Is 'forceSSL' better?
+          sslCertificate = ./ssl/skarmux_tech/ssl-bundle.crt;
+          sslTrustedCertificate = ./ssl/skarmux_tech/SectigoRSADomainValidationSecureServerCA.crt;
+          sslCertificateKey = config.sops.secrets."skarmux_tech/certificate_key".path;
         };
+        # "cache.skarmux.tech" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString 3337}";
+        #     recommendedProxySettings = true;
+        #   };
+        # };
       };
     };
   };
