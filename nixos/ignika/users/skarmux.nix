@@ -43,14 +43,6 @@
         cool-retro-term
       ];
 
-      xdg.mimeApps = {
-        enable = true; # .config/mimeapps.list
-        defaultApplications = {
-          "image/jxl" = [ "org.gnome.Loupe.desktop" ];
-        };
-        associations.added = { };
-      };
-
       persistence."/persist/home/skarmux" = {
         directories = [
           "Desktop"
@@ -87,6 +79,15 @@
           # ".config/direnv/???"
         ];
       };
+
+    };
+
+    xdg.mimeApps = {
+      enable = true; # .config/mimeapps.list
+      defaultApplications = {
+        "image/jxl" = [ "org.gnome.Loupe.desktop" ];
+      };
+      associations.added = { };
     };
 
     fonts.fontconfig.enable = true;

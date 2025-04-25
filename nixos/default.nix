@@ -15,11 +15,6 @@
         modules = [ ./pewku ];
       };
 
-      pewku-minimal = inputs.nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit self inputs; };
-        modules = [ ./pewku/minimal.nix ];
-      };
-
     };
 
     deploy.nodes.pewku = {
