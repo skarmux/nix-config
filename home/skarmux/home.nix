@@ -30,20 +30,27 @@
       bat # cat replacement
       fzf # fuzzy file finder
       jq  # json parsing
-      grc # auto coloring of stdout
     ];
     file = {
       ".ssh/id_yc.pub".source = ../../keys/id_yc.pub;
       ".ssh/id_ya.pub".source = ../../keys/id_ya.pub;
     };
     persistence."/persist/home/skarmux" = {
+      allowOther = true;
+      defaultDirectoryMethod = "symlink";
       directories = [
-        ".ssh"
+        "Desktop"
+        "Documents"
+        "Downloads"
+        "Music"
+        "Pictures"
+        "Public"
+        "Templates"
+        "Videos"
       ];
       files = [
         ".config/sops/age/keys.txt"
       ];
-      allowOther = true;
     };
   };
 

@@ -42,6 +42,43 @@
         # dolphin-emu
         cool-retro-term
       ];
+
+      xdg.mimeApps = {
+        enable = true; # .config/mimeapps.list
+        defaultApplications = {
+          "image/jxl" = [ "org.gnome.Loupe.desktop" ];
+        };
+        associations.added = { };
+      };
+
+      persistence."/persist/home/skarmux" = {
+        directories = [
+          ".config/BraveSoftware/Brave-Browser"
+          ".config/dconf"
+          ".config/discord"
+          ".config/keepasxc"
+          ".config/libreoffice"
+          ".config/nautilus"
+          ".config/Proton"
+          ".config/protonvpn"
+          ".config/protonfixes"
+          ".config/Signal"
+          ".config/gnome-session"
+          ".local/share/Trash"
+          ".local/share/zoxide"
+          ".local/share/keyrings"
+          ".local/share/gvfs-metadata"
+          ".local/share/TelegramDesktop"
+          ".local/share/Plexamp"
+          ".local/state/syncthing"
+          ".steam"
+        ];
+        files = [
+          ".config/background"
+          ".config/gnome-initial-setup-done"
+          # ".config/direnv/???"
+        ];
+      };
     };
 
     fonts.fontconfig.enable = true;

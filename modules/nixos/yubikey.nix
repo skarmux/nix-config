@@ -88,36 +88,39 @@ in
       # pkgs.yubioath-flutter # gui Authenticator for Desktop
       pkgs.yubikey-manager # cli `ykman` Manager Configuration Tool
       pkgs.pam_u2f # sudo authentication
-      yubikey-up
-      yubikey-down
+      # yubikey-up
+      # yubikey-down
     ];
 
     services = {
       yubikey-agent.enable = true; # SSH Agent
       pcscd.enable = true; # Smartcard functionality
       udev.packages = [ pkgs.yubikey-personalization ];
-      # FIXME Screen locking on removal
-      udev.extraRules = ''
-        # Symlink ssh key on yubikey add
-        SUBSYSTEM=="usb",\
-        ACTION=="add",\
-        ATTR{idVendor}=="1050",\
-        RUN+="${lib.getBin yubikey-up}/bin/yubikey-up"
-
-        # Unlink ssh key on yubikey removal
-        SUBSYSTEM=="hid",\
-        ACTION=="remove",\
-        ENV{HID_NAME}=="Yubico Yubi",\
-        RUN+="${lib.getBin yubikey-down}/bin/yubikey-down"
-
-        # Lock screen when yubikey is unplugged
-        # ACTION=="remove",\
-        # ENV{ID_BUS}=="usb",\
-        # ENV{ID_MODEL_ID}=="0407",\
-        # ENV{ID_VENDOR_ID}=="1050",\
-        # ENV{ID_VENDOR}=="Yubico",\
-        # RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
-      '';
+      
+      # FIXME Add screen locking on removal
+      
+      # FIXME Implement in home module
+      # udev.extraRules = ''
+      #   # Symlink ssh key on yubikey add
+      #   SUBSYSTEM=="usb",\
+      #   ACTION=="add",\
+      #   ATTR{idVendor}=="1050",\
+      #   RUN+="${lib.getBin yubikey-up}/bin/yubikey-up"
+      #
+      #   # Unlink ssh key on yubikey removal
+      #   SUBSYSTEM=="hid",\
+      #   ACTION=="remove",\
+      #   ENV{HID_NAME}=="Yubico Yubi",\
+      #   RUN+="${lib.getBin yubikey-down}/bin/yubikey-down"
+      #
+      #   # Lock screen when yubikey is unplugged
+      #   # ACTION=="remove",\
+      #   # ENV{ID_BUS}=="usb",\
+      #   # ENV{ID_MODEL_ID}=="0407",\
+      #   # ENV{ID_VENDOR_ID}=="1050",\
+      #   # ENV{ID_VENDOR}=="Yubico",\
+      #   # RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
+      # '';
     };
 
     programs.gnupg.agent = {
@@ -132,14 +135,14 @@ in
         # Passwordless sudo when SSH'ing with keys
         authorizedKeysFiles = [ "/etc/ssh/authorized_keys.d/%u" ];
       };
-      u2f = {
-        enable = true;
-        settings = {
-          cue = false; # Tells user they need to press the button
-          authFile = "/home/skarmux/.config/Yubico/u2f_keys";
-          # debug = true;
-        };
-      };
+      # u2f = {
+      #   enable = true;
+      #   settings = {
+      #     cue = false; # Tells user they need to press the button
+      #     authFile = "/home/skarmux/.config/Yubico/u2f_keys";
+      #     debug = false;
+      #   };
+      # };
       services = {
         login.u2fAuth = true;
         sudo = {

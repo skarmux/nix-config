@@ -32,7 +32,7 @@ in {
       enable = true;
       settings.trust-model = "tofu+pgp";
       publicKeys = [{
-        source = "${self}/home/skarmux/public.gpg";
+        source = ../../keys/public.gpg;
         trust = 5;
       }];
     };
