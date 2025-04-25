@@ -1,7 +1,5 @@
-{ self, inputs, pkgs, config, lib, ... }:
+{ pkgs, config, lib, ... }:
 {
-  # Home
-
   home-manager.users.skarmux = {
 
     # Import all user-specific configurations and
@@ -9,41 +7,78 @@
     imports = [ ../../../home/skarmux/home.nix ];
     
     home = {
-      packages = [
+      packages = with pkgs; [
         # Browser
-        pkgs.brave
+        brave
         # Messenger
-        pkgs.discord
-        pkgs.element-desktop
-        pkgs.signal-desktop
-        pkgs.telegram-desktop
+        discord
+        element-desktop
+        signal-desktop
+        telegram-desktop
         # Media
-        pkgs.celluloid
-        pkgs.plexamp
-        pkgs.gimp
-        pkgs.inkscape
+        celluloid
+        plexamp
+        gimp
+        inkscape
         # Work
-        # pkgs.davinci-resolve
-        # pkgs.blender
+        # davinci-resolve
+        # blender
         # Streaming
-        pkgs.obs-studio
-        pkgs.twitch-tui
-        # pkgs.ffmpeg_6
+        obs-studio
+        twitch-tui
+        # ffmpeg_6
         # Util
-        pkgs.mdp
-        pkgs.keepassxc
-        pkgs.obsidian
+        mdp
+        keepassxc
+        obsidian
         # Meta Quest 3 Sideloading
-        pkgs.sidequest
+        sidequest
         # Office
-        pkgs.libreoffice
+        libreoffice
         # Torrent
-        pkgs.deluge
+        deluge
         # Emulators
-        # pkgs.ryujinx
-        # pkgs.dolphin-emu
-        pkgs.cool-retro-term
+        # ryujinx
+        # dolphin-emu
+        cool-retro-term
       ];
+
+      xdg.mimeApps = {
+        enable = true; # .config/mimeapps.list
+        defaultApplications = {
+          "image/jxl" = [ "org.gnome.Loupe.desktop" ];
+        };
+        associations.added = { };
+      };
+
+      persistence."/persist/home/skarmux" = {
+        directories = [
+          ".config/BraveSoftware/Brave-Browser"
+          ".config/dconf"
+          ".config/discord"
+          ".config/keepasxc"
+          ".config/libreoffice"
+          ".config/nautilus"
+          ".config/Proton"
+          ".config/protonvpn"
+          ".config/protonfixes"
+          ".config/Signal"
+          ".config/gnome-session"
+          ".local/share/Trash"
+          ".local/share/zoxide"
+          ".local/share/keyrings"
+          ".local/share/gvfs-metadata"
+          ".local/share/TelegramDesktop"
+          ".local/share/Plexamp"
+          ".local/state/syncthing"
+          ".steam"
+        ];
+        files = [
+          ".config/background"
+          ".config/gnome-initial-setup-done"
+          # ".config/direnv/???"
+        ];
+      };
     };
 
     fonts.fontconfig.enable = true;
@@ -98,8 +133,8 @@
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
 
     openssh.authorizedKeys.keys = [
-      (builtins.readFile ../../../home/skarmux/id_yc.pub)
-      (builtins.readFile ../../../home/skarmux/id_ya.pub)
+      (builtins.readFile ../../../keys/id_yc.pub)
+      (builtins.readFile ../../../keys/id_ya.pub)
     ];
   };
 

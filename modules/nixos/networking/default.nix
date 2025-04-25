@@ -1,9 +1,6 @@
-{ lib, pkgs, config, ... }:
+{ lib, ... }:
 {
-  imports = [
-    ./openssh.nix
-    ./tailscale.nix
-  ];
+  imports = [ ./openssh.nix ];
 
   networking = {
     firewall.enable = lib.mkDefault true;

@@ -1,10 +1,10 @@
-{ inputs, self, pkgs, lib, config, ... }:
+{ self, pkgs, lib, ... }:
 {
   imports = [
+    ./audio.nix
     ./disk.nix
     ./hardware.nix
-    ./users/skarmux.nix
-    inputs.feaston.nixosModules.default
+    ./users
   ] ++ builtins.attrValues self.nixosModules;
 
   networking.hostName = "ignika";
@@ -33,10 +33,6 @@
       autoLogin.enable = true;
       autoLogin.user = "skarmux";
     };
-    feaston = {
-      enable = true;
-      domain = "feaston.localhost";
-    };
     openssh = {
       enable = true;
       settings.AllowUsers = [ "skarmux" ];
@@ -47,11 +43,6 @@
       recommendedGzipSettings = true;
       recommendedOptimisation = true;
       recommendedProxySettings = true;
-      virtualHosts."feaston.localhost" = {
-        # FIXME Temporarily disable ACME for local testing
-        enableACME = lib.mkForce false;
-        forceSSL = lib.mkForce false;
-      };
     };
   };
 
@@ -61,13 +52,14 @@
       extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
     gamemode.enable = true;
+    # Required for impermanence home-manager option `fuse.allowOther = true`
+    fuse.userAllowOther = true;
   };
 
-  environment.systemPackages = [
-    # pkgs.anubis
-    pkgs.mangohud
-    pkgs.gamescope
-    pkgs.protonvpn-gui # NOTE: Needs to be system level, I think
+  environment.systemPackages = with pkgs; [
+    protonvpn-gui # NOTE: Needs to be system level, I think
+    helix
+    git
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
@@ -81,12 +73,6 @@
       #   Defaults timestamp_timeout=0
       # '';
     };
-
-    # FIXME Temporarily disable ACME for local testing
-    # acme = {
-    #   acceptTerms = true;
-    #   defaults.email = "admin@skarmux.tech";
-    # };
   };
   
   sops.defaultSopsFile = ./secrets.yaml;

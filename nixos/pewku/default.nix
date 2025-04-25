@@ -1,9 +1,10 @@
-{ inputs, self, pkgs, config, ... }:
+{ inputs, self, config, lib, pkgs, ... }:
 {
   imports = [
+    ./users
     ./disk.nix
     ./hardware.nix
-    ./users/skarmux.nix
+    ./nix-serve.nix
     inputs.feaston.nixosModules.default
   ] ++ builtins.attrValues self.nixosModules;
 
@@ -22,6 +23,7 @@
   };
 
   services = {
+
     feaston = {
       enable = true;
       enableTLS = true;
@@ -38,11 +40,17 @@
 
     # TODO: Do I need this for resolving DNS?
     #       And does it bite with Tailscale DNS?
-    resolved.enable = true;
+    # resolved.enable = true;
 
     openssh = {
       enable = true;
       settings.AllowUsers = [ "skarmux" ];
+    };
+
+    nix-serve = {
+      enable = true;
+      secretKeyFile = config.sops.secrets."cache-priv-key".path;
+      port = 3337;
     };
 
     nginx = {
@@ -69,9 +77,7 @@
     auditd.enable = true;
     audit = {
       enable = true;
-      rules = [
-        "-a exit,always -F arch=b64 -S execve"
-      ];
+      rules = [ "-a exit,always -F arch=b64 -S execve" ];
     };
     sudo = {
       # Only allow sudo binary execution for members of the wheel group
@@ -87,9 +93,10 @@
     };
   };
 
-  sops.defaultSopsFile = ./secrets.yaml;
-
-  # environment.persistence."/persist" = {
-  #   directories = [ "/var/lib/acme" ];
-  # };
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    secrets = {
+      "cache-priv-key" = {};
+    };
+  };
 }

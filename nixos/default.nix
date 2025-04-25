@@ -15,11 +15,17 @@
         modules = [ ./pewku ];
       };
 
+      pewku-minimal = inputs.nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit self inputs; };
+        modules = [ ./pewku/minimal.nix ];
+      };
+
     };
 
     deploy.nodes.pewku = {
       hostname = "pewku";
       profiles.system = {
+        sshUser = "skarmux";
         user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.pewku;
       };

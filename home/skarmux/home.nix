@@ -1,6 +1,8 @@
-{ inputs, self, pkgs, lib, config, ... }:
+{ inputs, self, pkgs, ... }:
 {
   imports = [
+    inputs.catppuccin.homeManagerModules.catppuccin
+    inputs.impermanence.homeManagerModules.impermanence
     ./alacritty.nix
     ./direnv.nix
     ./eza.nix
@@ -18,24 +20,37 @@
     ./zellij
     ./zoxide.nix
   ]
-  ++ builtins.attrValues self.homeModules
-  ++ [
-    inputs.catppuccin.homeManagerModules.catppuccin
-  ];
+  ++ builtins.attrValues self.homeModules;
   
   home = {
     username = "skarmux";
     homeDirectory = "/home/skarmux";
     stateVersion = "24.11";
-    packages = [
-      pkgs.bat # cat replacement
-      pkgs.fzf # fuzzy file finder
-      pkgs.jq  # json parsing
-      pkgs.grc # auto coloring of stdout
+    packages = with pkgs; [
+      bat # cat replacement
+      fzf # fuzzy file finder
+      jq  # json parsing
     ];
     file = {
-      ".ssh/id_yc.pub".source = ./id_yc.pub;
-      ".ssh/id_ya.pub".source = ./id_ya.pub;
+      ".ssh/id_yc.pub".source = ../../keys/id_yc.pub;
+      ".ssh/id_ya.pub".source = ../../keys/id_ya.pub;
+    };
+    persistence."/persist/home/skarmux" = {
+      allowOther = true;
+      defaultDirectoryMethod = "symlink";
+      directories = [
+        "Desktop"
+        "Documents"
+        "Downloads"
+        "Music"
+        "Pictures"
+        "Public"
+        "Templates"
+        "Videos"
+      ];
+      files = [
+        ".config/sops/age/keys.txt"
+      ];
     };
   };
 
@@ -47,13 +62,6 @@
     helix = {
       enable = true;
       defaultEditor = true;
-      lsp-ai = {
-        enable = true;
-        openai = {
-          enable = true;
-          authTokenFile = config.sops.secrets."openai/simonw-llm".path;
-        };
-      };
       file-picker = "tmux";
     };
     starship.enable = true;
@@ -79,7 +87,6 @@
     secrets = {
       "ssh/yc".path = "/home/skarmux/.ssh/id_yc";
       "ssh/ya".path = "/home/skarmux/.ssh/id_ya";
-      "openai/simonw-llm".path = "/home/skarmux/.config/helix/openai_api_token";
     };
   };
 }

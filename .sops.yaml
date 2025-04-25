@@ -10,10 +10,6 @@ creation_rules:
     key_groups:
     - age:
       - *skarmux
-  - path_regex: home/skarmux/llm/keys.json
-    key_groups:
-    - age:
-      - *skarmux
   - path_regex: nixos/teridax/secrets.ya?ml$
     key_groups:
     - age:
@@ -28,11 +24,4 @@ creation_rules:
     key_groups:
     - age:
       - *skarmux
-      - *pewku
-  - path_regex: secrets.ya?ml$
-    key_groups:
-    - age:
-      - *skarmux
-      - *teridax
-      - *ignika
       - *pewku
