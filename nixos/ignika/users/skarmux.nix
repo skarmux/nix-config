@@ -53,6 +53,14 @@
 
       persistence."/persist/home/skarmux" = {
         directories = [
+          "Desktop"
+          "Documents"
+          "Downloads"
+          "Music"
+          "Pictures"
+          "Public"
+          "Templates"
+          "Videos"
           ".config/BraveSoftware/Brave-Browser"
           ".config/dconf"
           ".config/discord"

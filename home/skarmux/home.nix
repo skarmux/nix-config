@@ -38,16 +38,6 @@
     persistence."/persist/home/skarmux" = {
       allowOther = true;
       defaultDirectoryMethod = "symlink";
-      directories = [
-        "Desktop"
-        "Documents"
-        "Downloads"
-        "Music"
-        "Pictures"
-        "Public"
-        "Templates"
-        "Videos"
-      ];
       files = [
         ".config/sops/age/keys.txt"
       ];

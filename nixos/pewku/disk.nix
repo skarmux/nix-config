@@ -17,7 +17,7 @@
           end = "513MiB";
           content = {
             type = "filesystem";
-            format = "fat32";
+            format = "vfat";
             mountpoint = "/boot";
             mountOptions = [ "umask=0077" ];
           };
@@ -28,7 +28,6 @@
             type = "luks";
             name = "crypted";
             # disable settings.keyFile if you want to use interactive password entry
-            passwordFile = "/tmp/disk-main.key"; # see nixos-anywhere.sh
             settings = { allowDiscards = true; };
             content = {
               type = "btrfs";

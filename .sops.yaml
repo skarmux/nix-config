@@ -4,7 +4,7 @@ keys:
   - &hosts:
     - &teridax age1kmgp8gj6pg6g7k9xhx35yc4zcktqmjwp2pfn5vpmjd09ky3e8avsah4wgg
     - &ignika age1pyj03ga9w6mqar9s99w4q27dwvgmjcm94a72a00x2n2uucw23q4sz3ww0z
-    - &pewku age1uh2hsdffutrymarqtsdhk3qcn5fvj3455mzjpqfcxvn7h4ey2axq9xjh7j
+    - &pewku age1ep58ggw4xvqwcecac6vngmy7pw7chpsjm5ftlg53ax5kwkjr63nss5hdv4
 creation_rules:
   - path_regex: home/skarmux/secrets.ya?ml$
     key_groups:
