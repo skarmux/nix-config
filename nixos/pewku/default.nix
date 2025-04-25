@@ -27,6 +27,11 @@
   #   ];
   # };
 
+  environment.systemPackages = with pkgs; [
+    helix
+    git
+  ];
+
   nix.settings.trusted-users = [ "skarmux" ];
 
   services = {
@@ -62,10 +67,12 @@
 
     nginx = {
       enable = true;
+      
       recommendedBrotliSettings = true;
       recommendedGzipSettings = true;
       recommendedOptimisation = true;
       recommendedProxySettings = true;
+
       virtualHosts."cache.skarmux.tech" = lib.mkIf config.services.nix-serve.enable {
         # forceSSL = true;
         # enableACME = true;
@@ -85,10 +92,10 @@
   };
 
   security = {
-    # acme = {
-    #   acceptTerms = true;
-    #   defaults.email = "admin@skarmux.tech";
-    # };
+    acme = {
+      acceptTerms = true;
+      defaults.email = "admin@skarmux.tech";
+    };
     auditd.enable = true;
     audit = {
       enable = true;
