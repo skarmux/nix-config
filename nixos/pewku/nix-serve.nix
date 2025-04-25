@@ -1,4 +1,4 @@
-{ config  , ... }:
+{ config, lib, ... }:
 {
   services = {
 
@@ -9,7 +9,7 @@
     };
     
     nginx = {
-      virtualHosts."cache.skarmux.tech" = {
+      virtualHosts."cache.skarmux.tech" = lib.mkIf config.services.nix-serve.enable {
         forceSSL = true;
         enableACME = true;
         locations."/" = {

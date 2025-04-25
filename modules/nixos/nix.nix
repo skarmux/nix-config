@@ -5,8 +5,7 @@
     # requires the host to build them
     # Not sure about the cachix cache though...
 
-    allowUnfree = false;
-
+    allowUnfree = lib.mkForce false;
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       "davinci-resolve"
       "discord"

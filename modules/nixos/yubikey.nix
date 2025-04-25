@@ -125,9 +125,13 @@ in
       enableSSHSupport = true;
     };
 
-    # Pluggable Authentication Modules
+    # Pluggable Authentication Modules (PAM)
     security.pam = {
-      sshAgentAuth.enable = true;
+      sshAgentAuth = {
+        enable = true;
+        # Passwordless sudo when SSH'ing with keys
+        authorizedKeysFiles = [ "/etc/ssh/authorized_keys.d/%u" ];
+      };
       u2f = {
         enable = true;
         settings = {
@@ -138,7 +142,21 @@ in
       };
       services = {
         login.u2fAuth = true;
-        sudo.u2fAuth = true;
+        sudo = {
+          u2fAuth = true;
+          # login / sudo
+          # NOTE: We use rssh because sshAgentAuth is old and doesn't support yubikey:
+          # https://github.com/jbeverly/pam_ssh_agent_auth/issues/23
+          # https://github.com/z4yx/pam_rssh
+          rules.auth.rssh = {
+            order =  config.rules.auth.ssh_agent_auth.order - 1;
+            control = "sufficient";
+            modulePath = "${pkgs.pam_rssh}/lib/libpam_rssh.so";
+            settings.authorized_keys_command = pkgs.writeShellScript "get-authorized-keys" ''
+              cat "/etc/ssh/authorized_keys.d/$1"
+            '';
+          };
+        };
       };
     };
   };

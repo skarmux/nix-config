@@ -1,7 +1,5 @@
-{ self, inputs, pkgs, config, lib, ... }:
+{ pkgs, config, lib, ... }:
 {
-  # Home
-
   home-manager.users.skarmux = {
 
     # Import all user-specific configurations and
@@ -9,40 +7,40 @@
     imports = [ ../../../home/skarmux/home.nix ];
     
     home = {
-      packages = [
+      packages = with pkgs; [
         # Browser
-        pkgs.brave
+        brave
         # Messenger
-        pkgs.discord
-        pkgs.element-desktop
-        pkgs.signal-desktop
-        pkgs.telegram-desktop
+        discord
+        element-desktop
+        signal-desktop
+        telegram-desktop
         # Media
-        pkgs.celluloid
-        pkgs.plexamp
-        pkgs.gimp
-        pkgs.inkscape
+        celluloid
+        plexamp
+        gimp
+        inkscape
         # Work
-        # pkgs.davinci-resolve
-        # pkgs.blender
+        # davinci-resolve
+        # blender
         # Streaming
-        pkgs.obs-studio
-        pkgs.twitch-tui
-        # pkgs.ffmpeg_6
+        obs-studio
+        twitch-tui
+        # ffmpeg_6
         # Util
-        pkgs.mdp
-        pkgs.keepassxc
-        pkgs.obsidian
+        mdp
+        keepassxc
+        obsidian
         # Meta Quest 3 Sideloading
-        pkgs.sidequest
+        sidequest
         # Office
-        pkgs.libreoffice
+        libreoffice
         # Torrent
-        pkgs.deluge
+        deluge
         # Emulators
-        # pkgs.ryujinx
-        # pkgs.dolphin-emu
-        pkgs.cool-retro-term
+        # ryujinx
+        # dolphin-emu
+        cool-retro-term
       ];
     };
 
@@ -98,8 +96,8 @@
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
 
     openssh.authorizedKeys.keys = [
-      (builtins.readFile ../../../home/skarmux/id_yc.pub)
-      (builtins.readFile ../../../home/skarmux/id_ya.pub)
+      (builtins.readFile ../../../keys/id_yc.pub)
+      (builtins.readFile ../../../keys/id_ya.pub)
     ];
   };
 

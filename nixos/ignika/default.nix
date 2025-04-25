@@ -1,10 +1,10 @@
-{ inputs, self, pkgs, lib, config, ... }:
+{ self, pkgs, lib, ... }:
 {
   imports = [
+    ./audio.nix
     ./disk.nix
     ./hardware.nix
-    ./users/skarmux.nix
-    inputs.feaston.nixosModules.default
+    ./users
   ] ++ builtins.attrValues self.nixosModules;
 
   networking.hostName = "ignika";
@@ -32,10 +32,6 @@
     displayManager = {
       autoLogin.enable = true;
       autoLogin.user = "skarmux";
-    };
-    feaston = {
-      enable = true;
-      domain = "feaston.localhost";
     };
     openssh = {
       enable = true;

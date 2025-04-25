@@ -1,4 +1,4 @@
-{ lib, inputs, ... }:
+{ inputs, ... }:
 {
   imports = [ inputs.disko.nixosModules.disko ];
 
@@ -38,11 +38,6 @@
                 };
                 "/nix" = {
                   mountpoint = "/nix";
-                  mountOptions = [ "compress=zstd" "noatime" ];
-                };
-                # I don't want weird symlinking happening in my home directory
-                "/home" = {
-                  mountpoint = "/home";
                   mountOptions = [ "compress=zstd" "noatime" ];
                 };
                 "/persist" = {

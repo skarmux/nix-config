@@ -1,11 +1,8 @@
 {
-  description = "Skarmux's nix-config";
-
   outputs = inputs @ { flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         ./devshells
-        ./overlays
         ./home
         ./modules
         ./nixos
