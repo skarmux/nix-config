@@ -8,12 +8,16 @@
     content = {
       type = "gpt";
       partitions = {
+        # We need a specific boot partition for Raspberry Pi 4
+        # to allow booting from USB, where the SSD is attached.
+        # It must start at 1MiB
         ESP = {
-          type = "EF00";
-          size = "512M";
+          type = "EF00"; # may not work
+          start = "1MiB";
+          end = "513MiB";
           content = {
             type = "filesystem";
-            format = "vfat";
+            format = "fat32";
             mountpoint = "/boot";
             mountOptions = [ "umask=0077" ];
           };
