@@ -1,5 +1,8 @@
   { pkgs, ... }:
   {
     imports = [ ./skarmux.nix ];
-    users.defaultUserShell = pkgs.bash;
+    users = {
+      mutableUsers = false;
+      defaultUserShell = pkgs.bash;
+    };
   }

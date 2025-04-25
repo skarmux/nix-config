@@ -4,10 +4,10 @@
     ./users
     ./disk.nix
     ./hardware.nix
-    inputs.feaston.nixosModules.default
+    inputs.impermanence.nixosModules.impermanence
+    # inputs.feaston.nixosModules.default
+    # inputs.homepage.nixosModules.default
   ] ++ builtins.attrValues self.nixosModules;
-
-  networking.hostName = "pewku";
 
   system.stateVersion = "24.11";
 
@@ -21,27 +21,42 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  # programs.ssh = {
-  #   knownHosts = [
-  #     { publicKeyFile = ../ignika/ssh_host_ed25519_key.pub; }
-  #   ];
-  # };
+  programs.fuse.userAllowOther = true;
 
-  environment.systemPackages = with pkgs; [
-    helix
-    git
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      helix
+      git
+    ];
+    persistence."/persist" = {
+      directories = [
+        "/var/log"
+        "/var/lib/acme"
+        "/var/lib/nixos"
+        "/var/lib/systemd/coredump"
+        "/var/lib/feaston"
+      ];
+      files = [
+        # "/etc/machine-id" #FIXME Need to chroot for this mount
+      ];
+    };
+  };
 
   nix.settings.trusted-users = [ "skarmux" ];
 
   services = {
 
-    feaston = {
-      enable = true;
-      enableTLS = false; # FIXME until acme works
-      domain = "feaston.skarmux.tech";
-      port = 6000; # internal
-    };
+    # feaston = {
+    #   enable = true;
+    #   enableTLS = true;
+    #   domain = "feaston.skarmux.tech";
+    #   port = 6000;
+    # };
+
+    # homepage = {
+    #   enable = true;
+    #   domain = "skarmux.tech";
+    # };
     
     # Transfer logs to external syslog server
     # FIXME
@@ -52,7 +67,7 @@
 
     # TODO: Do I need this for resolving DNS?
     #       And does it bite with Tailscale DNS?
-    # resolved.enable = true;
+    resolved.enable = true;
 
     openssh = {
       enable = true;
@@ -73,9 +88,9 @@
       recommendedOptimisation = true;
       recommendedProxySettings = true;
 
-      virtualHosts."cache.skarmux.tech" = lib.mkIf config.services.nix-serve.enable {
-        # forceSSL = true;
-        # enableACME = true;
+      virtualHosts."cache.skarmux.tech" = {
+        forceSSL = true;
+        enableACME = true;
         locations."/" = {
           proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString 3337}";
           recommendedProxySettings = true;
@@ -86,9 +101,13 @@
 
   powerManagement.cpuFreqGovernor = "ondemand";
 
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 80 443 ];
+  networking = {
+    hostName = "pewku";
+    wireless.enable = false;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [ 80 443 ];
+    };
   };
 
   security = {
@@ -119,6 +138,9 @@
     defaultSopsFile = ./secrets.yaml;
     secrets = {
       "cache-priv-key" = {};
+      "skarmux_tech/certificate_key" = {
+        owner = "nginx";
+      };
     };
   };
 }
