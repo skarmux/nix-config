@@ -72,6 +72,7 @@
           ".local/share/Plexamp"
           ".local/state/syncthing"
           ".steam"
+          ".local/share/Steam"
         ];
         files = [
           ".config/background"

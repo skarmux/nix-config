@@ -30,14 +30,19 @@
     ];
     persistence."/persist" = {
       directories = [
+        # Store all logs
         "/var/log"
+        # Let's Encrypt: ACME keys after successful challenge-response
         "/var/lib/acme"
+        # User configuration, etc.
         "/var/lib/nixos"
+        # System crash dumps for analysis
         "/var/lib/systemd/coredump"
+        # Event store database
         "/var/lib/feaston"
       ];
       files = [
-        # "/etc/machine-id" #FIXME Need to chroot for this mount
+        "/etc/machine-id"
       ];
     };
   };
