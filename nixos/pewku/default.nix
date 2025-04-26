@@ -47,7 +47,7 @@
   services = {
 
     feaston = {
-      # enable = true;
+      enable = true;
       enableTLS = true;
       domain = "feaston.skarmux.tech";
       port = 6000;
@@ -96,8 +96,8 @@
           sslCertificateKey = config.sops.secrets."skarmux_tech/certificate_key".path;
         };
         # "cache.skarmux.tech" = {
-        #   forceSSL = true;
-        #   enableACME = true;
+          # forceSSL = true;
+          # enableACME = true;
         #   locations."/" = {
         #     proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString 3337}";
         #     recommendedProxySettings = true;
