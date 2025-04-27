@@ -42,7 +42,9 @@
         "/var/lib/feaston"
       ];
       files = [
-        "/etc/machine-id"
+        # FIXME bind-mount fails on startup
+        # https://discourse.nixos.org/t/impermanence-a-file-already-exists-at-etc-machine-id/20267
+        # "/etc/machine-id"
       ];
     };
   };

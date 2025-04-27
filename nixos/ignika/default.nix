@@ -1,10 +1,11 @@
-{ self, pkgs, ... }:
+{ self, inputs, pkgs, ... }:
 {
   imports = [
     ./audio.nix
     ./disk.nix
     ./hardware.nix
     ./users
+    inputs.impermanence.nixosModules.impermanence
   ] ++ builtins.attrValues self.nixosModules;
 
   networking.hostName = "ignika";
@@ -56,11 +57,29 @@
     fuse.userAllowOther = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    protonvpn-gui # NOTE: Needs to be system level, I think
-    helix
-    git
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      protonvpn-gui # NOTE: Needs to be system level, I think
+      helix
+      git
+    ];
+    persistence."/persist" = {
+      hideMounts = true;
+      directories = [
+        # Store all logs
+        "/var/log"
+        # User configuration, etc.
+        "/var/lib/nixos"
+        # System crash dumps for analysis
+        "/var/lib/systemd/coredump"
+      ];
+      files = [
+        # FIXME bind-mount fails on startup
+        # https://discourse.nixos.org/t/impermanence-a-file-already-exists-at-etc-machine-id/20267
+        # "/etc/machine-id"
+      ];
+    };
+  };
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
 

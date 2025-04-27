@@ -2,7 +2,6 @@
 {
   imports = [
     inputs.catppuccin.homeManagerModules.catppuccin
-    inputs.impermanence.homeManagerModules.impermanence
     ./alacritty.nix
     ./direnv.nix
     ./eza.nix
@@ -34,13 +33,6 @@
     file = {
       ".ssh/id_yc.pub".source = ../../keys/id_yc.pub;
       ".ssh/id_ya.pub".source = ../../keys/id_ya.pub;
-    };
-    persistence."/persist/home/skarmux" = {
-      allowOther = true;
-      defaultDirectoryMethod = "symlink";
-      files = [
-        ".config/sops/age/keys.txt"
-      ];
     };
   };
 

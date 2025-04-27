@@ -42,45 +42,6 @@
         # dolphin-emu
         cool-retro-term
       ];
-
-      persistence."/persist/home/skarmux" = {
-        directories = [
-          "Desktop"
-          "Documents"
-          "Downloads"
-          "Music"
-          "Pictures"
-          "Public"
-          "Templates"
-          "Videos"
-          ".config/BraveSoftware/Brave-Browser"
-          ".config/dconf"
-          ".config/discord"
-          ".config/keepasxc"
-          ".config/libreoffice"
-          ".config/nautilus"
-          ".config/Proton"
-          ".config/protonvpn"
-          ".config/protonfixes"
-          ".config/Signal"
-          ".config/gnome-session"
-          ".local/share/Trash"
-          ".local/share/zoxide"
-          ".local/share/keyrings"
-          ".local/share/gvfs-metadata"
-          ".local/share/TelegramDesktop"
-          ".local/share/Plexamp"
-          ".local/state/syncthing"
-          ".steam"
-          ".local/share/Steam"
-        ];
-        files = [
-          ".config/background"
-          ".config/gnome-initial-setup-done"
-          # ".config/direnv/???"
-        ];
-      };
-
     };
 
     xdg.mimeApps = {
@@ -146,6 +107,54 @@
       (builtins.readFile ../../../keys/id_yc.pub)
       (builtins.readFile ../../../keys/id_ya.pub)
     ];
+  };
+
+  environment.persistence."/persist" = {
+    users.skarmux = {
+      directories = [
+        "Desktop"
+        "Documents"
+        "Downloads"
+        "Music"
+        "Pictures"
+        "Public"
+        "Templates"
+        "Videos"
+        ".config/BraveSoftware/Brave-Browser"
+        ".config/dconf"
+        ".config/discord"
+        ".config/keepasxc"
+        ".config/libreoffice"
+        ".config/nautilus"
+        ".config/Proton"
+        ".config/protonvpn"
+        ".config/protonfixes"
+        ".config/Signal"
+        ".config/gnome-session"
+
+        # TODO: The FreeDesktop specification doesn't specify how
+        #       file-trashing should work if the Trash directory
+        #       is symlinked or bind mounted. Fact is, that trashing
+        #       files (in yazi at least) does not work with a bind-
+        #       mounted $XDG_DATA_HOME/Trash directory.
+        # ".local/share/Trash"
+
+        ".local/share/zoxide"
+        ".local/share/keyrings"
+        ".local/share/gvfs-metadata"
+        ".local/share/TelegramDesktop"
+        ".local/share/Plexamp"
+        ".local/state/syncthing"
+        ".steam"
+        ".local/share/Steam"
+      ];
+      files = [
+        ".config/background"
+        ".config/gnome-initial-setup-done"
+        ".config/sops/age/keys.txt"
+        # ".config/direnv/???"
+      ];
+    };
   };
 
   yubikey = {
