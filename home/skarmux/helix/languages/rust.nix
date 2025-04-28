@@ -2,7 +2,7 @@
   programs.helix.languages = {
     language-server.rust-analyzer = {
       command = "rust-analyzer";
-      args = [ "--stdio" ]; # TODO: Figure out why --stdio is there
+      # args = [ ];
       config = {
         # Use `clippy` for diagnostics
         # TODO Is clippy guaranteed to be insalled via toolchain?

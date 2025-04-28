@@ -137,6 +137,8 @@
         #       is symlinked or bind mounted. Fact is, that trashing
         #       files (in yazi at least) does not work with a bind-
         #       mounted $XDG_DATA_HOME/Trash directory.
+        #       Solution:
+        #       Exclude the Trash dir on the file system purge.
         # ".local/share/Trash"
 
         ".local/share/zoxide"
@@ -145,14 +147,16 @@
         ".local/share/TelegramDesktop"
         ".local/share/Plexamp"
         ".local/state/syncthing"
-        ".steam"
+        ".steam" # <- Games are here!
         ".local/share/Steam"
+        ".local/share/direnv/allow"
       ];
       files = [
         ".config/background"
         ".config/gnome-initial-setup-done"
+        # FIXME Place into sops... Oh, wait, but it is used BY sops...
+        #       Need to rethink attack vectors there.
         ".config/sops/age/keys.txt"
-        # ".config/direnv/???"
       ];
     };
   };

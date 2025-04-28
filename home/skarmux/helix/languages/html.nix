@@ -19,10 +19,10 @@
       ] ++ (lib.optionals config.programs.helix.lsp-ai.enable [
         "lsp-ai"
       ]);
-      text-width = 100;
+      text-width = 140;
       soft-wrap = {
         enable = true;
-        wrap-at-text-width = true;
+        wrap-at-text-width = false;
       };
     }];
   };
