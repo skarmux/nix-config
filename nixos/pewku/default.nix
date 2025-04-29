@@ -26,7 +26,9 @@
   environment = {
     systemPackages = with pkgs; [
       helix
-      git
+      rsync
+      htop
+      dust
     ];
     persistence."/persist" = {
       directories = [

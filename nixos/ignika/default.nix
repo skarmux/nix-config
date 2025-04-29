@@ -62,6 +62,7 @@
       protonvpn-gui # NOTE: Needs to be system level, I think
       helix
       git
+      # uptime-kuma # TODO: Configure
     ];
     persistence."/persist" = {
       hideMounts = true;

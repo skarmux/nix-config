@@ -201,11 +201,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745423933,
-        "narHash": "sha256-5aK9y4tJMFB1lLiJ5rKAY8pNVyKn02LIMadbPB6x2nc=",
+        "lastModified": 1745862616,
+        "narHash": "sha256-qQNP914BxP1NCFuGjOTCkP+I9LLo+CJCo0LJJ0EAl9M=",
         "ref": "refs/heads/main",
-        "rev": "c3e30bfc7bbca5ae0c28cdda52cd4bdc1776b919",
-        "revCount": 189,
+        "rev": "84495e5674fb919737fff68e40f76d71cfb11289",
+        "revCount": 195,
         "type": "git",
         "url": "ssh://git@github.com/skarmux/feaston.git"
       },
