@@ -55,6 +55,16 @@
 
   services = {
 
+    # anubis = {
+    #   defaultOptions = {
+    #     enable = true;
+    #   };
+    #   instances = {
+    #     "feaston" = {
+    #     };
+    #   };
+    # };
+
     feaston = {
       enable = true;
       enableTLS = true;
@@ -99,7 +109,8 @@
 
       virtualHosts = {
         "skarmux.tech" = {
-          onlySSL = true; # TODO: Is 'forceSSL' better?
+          # forceSSL: Redirect HTTP to HTTPS; onlySSL: ignore HTTP entirely
+          forceSSL = true;
           sslCertificate = ./ssl/skarmux_tech/ssl-bundle.crt;
           sslTrustedCertificate = ./ssl/skarmux_tech/SectigoRSADomainValidationSecureServerCA.crt;
           sslCertificateKey = config.sops.secrets."skarmux_tech/certificate_key".path;

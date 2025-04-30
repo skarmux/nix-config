@@ -25,7 +25,7 @@
     # recommended `true` to fix tearing, but makes anything stutter badly.
     forceFullCompositionPipeline = false;
 
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    # package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
 
   environment.sessionVariables = {
