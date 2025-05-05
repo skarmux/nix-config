@@ -21,6 +21,7 @@
       set -g default-terminal "tmux-256color"
       set -g renumber-windows on # prevent numbering gaps
       set -g status-position top # opposite of vim statusline
+      set -g status off
     '';
   };
 

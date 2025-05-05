@@ -1,7 +1,7 @@
 { inputs, self, pkgs, ... }:
 {
   imports = [
-    inputs.catppuccin.homeManagerModules.catppuccin
+    inputs.catppuccin.homeModules.catppuccin
     ./alacritty.nix
     ./direnv.nix
     ./eza.nix
