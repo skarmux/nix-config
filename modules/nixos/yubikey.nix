@@ -23,6 +23,7 @@ let
     ];
     # NOTE: `ykman` does not list serial keys in the order they were plugged in at! (I tested it~ 😇)
     text = ''
+      find /home/*/.ssh/ -type f \( -name 'id_yubikey' -o -name 'id_yubikey.pub' \) -exec rm {} +
       while IFS= read -r serial; do
         case "$serial" in
           ${lib.concatMapStrings (yubikey: ''
@@ -34,8 +35,8 @@ let
           '') cfg.keys}
           *) echo "WARNING: YubiKey ($serial) is not configured for SSH use."; continue ;;
         esac
-        ln -sf "$ssh_public" "/home/$owner/.ssh/id_yubikey.pub"
-        ln -sf "$ssh_private" "/home/$owner/.ssh/id_yubikey"
+        ln -s "$ssh_public" "/home/$owner/.ssh/id_yubikey.pub"
+        ln -s "$ssh_private" "/home/$owner/.ssh/id_yubikey"
         exit 0 # done after the first matched serial key
       done < <(ykman list --serials)
     '';
@@ -78,7 +79,7 @@ in
       });
       example = [{
         serial = 12345678;
-        users = [ "admin" "user" ];
+        owner = "user";
       }];
       description = ''
         Physical YubiKey hardware token configurations. NOTE: When multiple keys

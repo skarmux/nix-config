@@ -54,6 +54,10 @@
         kontroll
         keymapp
       ];
+      # file = {
+      #   ".ssh/id_yc.pub".source = ../../../keys/id_yc.pub;
+      #   ".ssh/id_ya.pub".source = ../../../keys/id_ya.pub;
+      # };
     };
 
     # xdg.mimeApps = {
@@ -94,7 +98,7 @@
         '';
         matchBlocks = {
           "yubikey-hosts" = {
-            host = "gitlab.com github.com";
+            host = "gitlab.com github.com pewku";
             identitiesOnly = true;
             identityFile = [ "~/.ssh/id_yubikey" ];
           };
@@ -193,12 +197,16 @@
   sops.secrets = {
     "skarmux-password".neededForUsers = true;
     "ssh_yubi_a" = {
+      mode = "400";
       owner = config.users.users.skarmux.name;
       # group = config.users.users.skarmux.group;
+      # path = "/home/skarmux/.ssh/id_ya";
     };
     "ssh_yubi_c" = {
+      mode = "400";
       owner = config.users.users.skarmux.name;
       # group = config.users.users.skarmux.group;
+      # path = "/home/skarmux/.ssh/id_yc";
     };
     # "yubico/u2f-keys" = {
     #   owner = config.users.users.skarmux.name;
