@@ -54,10 +54,11 @@
         kontroll
         keymapp
       ];
-      # file = {
-      #   ".ssh/id_yc.pub".source = ../../../keys/id_yc.pub;
-      #   ".ssh/id_ya.pub".source = ../../../keys/id_ya.pub;
-      # };
+
+      file = {
+        # Login/sudo 'known_hosts'-like config for pam_u2f
+        ".config/Yubico/u2f_keys".text = "skarmux:L8qjIWOWGoj0solA3TySPcUw0eOS7ik7nuuleOBE+gX5aMpW6zV1Otbpt43fwwi4kCV+rUMe7Zd19FsLN1h6Gg==,nIB1p7exghHOla/8H/YYE1+slFvcrU1dPOJHylpzr/DwgTji/evnANcwD9CRHJJ1ZkrwDSCRjw4yLn/Uq5rN/A==,es256,+presence:HoxTlnSB0PGZXufQTIev0WrAEmAvuFrIfJHUsIBlIfLNAyXuXXvTfCgVHjYFl/uFzQ5na8lYhS7aI5OtrQHTOg==,74dG2GAw/mveqaGg3C2tKq67shzOi3U4U8nMrCZFXh9ntIEViCzVm8Ejx4gL15t1zJGlUbUAwEQ+aJl9thmXeA==,es256,+presence";
+      };
     };
 
     # xdg.mimeApps = {
@@ -123,11 +124,26 @@
       "networkmanager"
     ]) ++ (lib.optionals config.programs.adb.enable [ "adbusers" ]);
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
-
     openssh.authorizedKeys.keys = [
+      # Read files into strings
       (builtins.readFile ../../../keys/id_yc.pub)
       (builtins.readFile ../../../keys/id_ya.pub)
     ];
+  };
+
+  # Login/sudo with yubikeys
+  security.pam = {
+    services = {
+      login.u2fAuth = true;
+      sudo.u2fAuth = true;
+    };
+    u2f = {
+      enable = true;
+      settings = {
+        cue = false; # set to false since I'm using the yubikey-touch-detector homeModule
+        debug = false;
+      };
+    };
   };
 
   # environment.persistence."/persist" = {
@@ -156,62 +172,47 @@
   #       ".local/share/direnv/allow" # NOTE: I'm slowly starting to dislike direnv... ;(
   #       ".local/share/keyrings"
   #       ".local/share/zoxide" # Store last visited directories
-  #       ".local/share/backgrounds" # [GNOME] This is where gnome stores all user-added backgrounds
   #       ".steam" # <- Games are here!
-  #       # TODO: Both are nix-related. The ~/.nix-profile symlink is pointing to a non-existing profile
-  #       #       and I think that is because I deleted ~/.local/state/nix once.
   #       ".local/state/nix"
   #       ".local/state/home-manager"
   #       ".local/state/syncthing"
   #     ];
   #     files = [
-  #       # Browser
   #       ".config/BraveSoftware/Brave-Browser/Default/Bookmarks"
-  #       # FIXME Place into sops... Oh, wait, but it is used BY sops...
-  #       #       Need to rethink attack vectors there.
-  #       ".config/sops/age/keys.txt"
   #     ];
   #   };
   # };
 
-  yubico = {
-    enable = true;
-    keys = [
-      {
-        serial = 24686370;
-        owner = "skarmux";
-        publicKeyFile = ../../../keys/id_yc.pub;
-        privateKeyFile = config.sops.secrets."ssh_yubi_c".path;
-      }
-      {
-        serial = 25390376;
-        owner = "skarmux";
-        publicKeyFile = ../../../keys/id_ya.pub;
-        privateKeyFile = config.sops.secrets."ssh_yubi_a".path;
-      }
-    ];
-  };
+  yubico.keys = [
+    {
+      serial = 24686370;
+      owner = "skarmux";
+      publicKeyFile = ../../../keys/id_yc.pub;
+      privateKeyFile = config.sops.secrets."yubico/ssh/yc".path;
+    }
+    {
+      serial = 25390376;
+      owner = "skarmux";
+      publicKeyFile = ../../../keys/id_ya.pub;
+      privateKeyFile = config.sops.secrets."yubico/ssh/ya".path;
+    }
+  ];
 
   programs.adb.enable = true; # Required for SideQuest
 
   sops.secrets = {
-    "skarmux-password".neededForUsers = true;
-    "ssh_yubi_a" = {
+    "skarmux-password" = {
+      neededForUsers = true;
+    };
+    "yubico/ssh/ya" = {
       mode = "400";
       owner = config.users.users.skarmux.name;
-      # group = config.users.users.skarmux.group;
-      # path = "/home/skarmux/.ssh/id_ya";
+      group = config.users.users.skarmux.group;
     };
-    "ssh_yubi_c" = {
+    "yubico/ssh/yc" = {
       mode = "400";
       owner = config.users.users.skarmux.name;
-      # group = config.users.users.skarmux.group;
-      # path = "/home/skarmux/.ssh/id_yc";
+      group = config.users.users.skarmux.group;
     };
-    # "yubico/u2f-keys" = {
-    #   owner = config.users.users.skarmux.name;
-    #   inherit (config.users.users.skarmux) group;
-    #   path = "/home/skarmux/.config/Yubico/u2f_keys";
-    # };
   };
 }

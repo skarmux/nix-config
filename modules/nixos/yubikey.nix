@@ -104,10 +104,6 @@ in
         packages = with pkgs; [
           yubikey-personalization
         ];
-        # Mai 10 21:41:20 ignika kernel: usb 3-3.1.2: USB disconnect, device number 42
-        # Mai 10 21:41:20 ignika acpid[1365]: input device has been disconnected, fd 25
-        # Mai 10 21:41:21 ignika systemd[2013]: Stopped target Smart Card.
-        # Mai 10 21:41:21 ignika systemd[1]: Stopped target Smart Card.
         extraRules = ''
           SUBSYSTEM=="usb", \
           ACTION=="add", \
@@ -139,38 +135,8 @@ in
     security.pam = {
       sshAgentAuth = {
         enable = true;
-        # Passwordless sudo when SSH'ing with keys
+        # Passwordless sudo when SSH'ing into remote
         authorizedKeysFiles = [ "/etc/ssh/authorized_keys.d/%u" ];
-      };
-      # u2f = {
-      #   enable = true;
-      #   settings = {
-      #     cue = false; # Tells user they need to press the button
-      #     authFile = "/home/skarmux/.config/Yubico/u2f_keys";
-      #     debug = false;
-      #   };
-      # };
-      services = {
-        login.u2fAuth = true;
-        sudo = {
-          u2fAuth = true;
-          # login / sudo
-          # NOTE: We use rssh because sshAgentAuth is old and doesn't support yubikey:
-          # https://github.com/jbeverly/pam_ssh_agent_auth/issues/23
-          # https://github.com/z4yx/pam_rssh
-          rules.auth.rssh = {
-            order =  config.rules.auth.ssh_agent_auth.order - 1;
-            control = "sufficient";
-            modulePath = "${pkgs.pam_rssh}/lib/libpam_rssh.so";
-            settings.authorized_keys_command = pkgs.writeShellApplication {
-              name = "get-authorized-keys";
-              runtimeInputs = with pkgs; [ coreutils ];
-              text = ''
-                cat "/etc/ssh/authorized_keys.d/$1"
-              '';
-            };
-          };
-        };
       };
     };
   };
