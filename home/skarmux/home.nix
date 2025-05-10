@@ -62,9 +62,5 @@
     age.keyFile = "/home/skarmux/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets.yaml;
     validateSopsFiles = true;
-    secrets = {
-      "ssh/yc".path = "/home/skarmux/.ssh/id_yc";
-      "ssh/ya".path = "/home/skarmux/.ssh/id_ya";
-    };
   };
 }

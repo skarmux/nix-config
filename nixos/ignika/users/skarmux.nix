@@ -123,8 +123,6 @@
     openssh.authorizedKeys.keys = [
       (builtins.readFile ../../../keys/id_yc.pub)
       (builtins.readFile ../../../keys/id_ya.pub)
-      # config.yubico.keys.yubi-a.publicKeyFile
-      # config.yubico.keys.yubi-c.publicKeyFile
     ];
   };
 
@@ -177,13 +175,13 @@
     keys = [
       {
         serial = 24686370;
-        users = [ "skarmux" ];
+        owner = "skarmux";
         publicKeyFile = ../../../keys/id_yc.pub;
         privateKeyFile = config.sops.secrets."ssh_yubi_c".path;
       }
       {
         serial = 25390376;
-        users = [ "skarmux" ];
+        owner = "skarmux";
         publicKeyFile = ../../../keys/id_ya.pub;
         privateKeyFile = config.sops.secrets."ssh_yubi_a".path;
       }
@@ -194,8 +192,14 @@
 
   sops.secrets = {
     "skarmux-password".neededForUsers = true;
-    "ssh_yubi_a" = {};
-    "ssh_yubi_c" = {};
+    "ssh_yubi_a" = {
+      owner = config.users.users.skarmux.name;
+      # group = config.users.users.skarmux.group;
+    };
+    "ssh_yubi_c" = {
+      owner = config.users.users.skarmux.name;
+      # group = config.users.users.skarmux.group;
+    };
     # "yubico/u2f-keys" = {
     #   owner = config.users.users.skarmux.name;
     #   inherit (config.users.users.skarmux) group;

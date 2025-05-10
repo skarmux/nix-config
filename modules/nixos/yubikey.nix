@@ -23,23 +23,19 @@ let
     ];
     # NOTE: `ykman` does not list serial keys in the order they were plugged in at! (I tested it~ 😇)
     text = ''
-      # Start from a blank slate
-      find /home/*/.ssh/ -type l \( -name 'id_yubikey' -o -name 'id_yubikey.pub' \) -exec rm -v {} +
       while IFS= read -r serial; do
         case "$serial" in
           ${lib.concatMapStrings (yubikey: ''
             "${toString yubikey.serial}")
             ssh_private="${yubikey.privateKeyFile}"
             ssh_public="${yubikey.publicKeyFile}"
-            users=(${lib.concatMapStringsSep " " (user: "\"${user}\"") yubikey.users})
+            owner="${yubikey.owner}"
             ;;
           '') cfg.keys}
           *) echo "WARNING: YubiKey ($serial) is not configured for SSH use."; continue ;;
         esac
-        for user in "''${users[@]}"; do 
-          ln -vs "$ssh_public" "/home/$user/.ssh/id_yubikey.pub"
-          ln -vs "$ssh_private" "/home/$user/.ssh/id_yubikey"
-        done
+        ln -sf "$ssh_public" "/home/$owner/.ssh/id_yubikey.pub"
+        ln -sf "$ssh_private" "/home/$owner/.ssh/id_yubikey"
         exit 0 # done after the first matched serial key
       done < <(ykman list --serials)
     '';
@@ -60,9 +56,9 @@ in
               number.
             '';
           };
-          users = mkOption {
-            type = types.listOf types.str;
-            description = "The users who will be using the key.";
+          owner = mkOption {
+            type = types.str;
+            description = "The user using the key.";
           };
           # TODO: Move those file options into an `ssh` submodule?
           publicKeyFile = mkOption {
@@ -107,6 +103,10 @@ in
         packages = with pkgs; [
           yubikey-personalization
         ];
+        # Mai 10 21:41:20 ignika kernel: usb 3-3.1.2: USB disconnect, device number 42
+        # Mai 10 21:41:20 ignika acpid[1365]: input device has been disconnected, fd 25
+        # Mai 10 21:41:21 ignika systemd[2013]: Stopped target Smart Card.
+        # Mai 10 21:41:21 ignika systemd[1]: Stopped target Smart Card.
         extraRules = ''
           SUBSYSTEM=="usb", \
           ACTION=="add", \
@@ -115,7 +115,7 @@ in
 
           SUBSYSTEM=="hid", \
           ACTION=="remove", \
-          ENV{HID_NAME}=="Yubico Yubi", \
+          ENV{HID_NAME}=="Yubico Yubi*", \
           RUN+="${yubikey-ssh-symlink}/bin/yubikey-ssh-symlink"
         '';
         # '' ++ (lib.optional cfg.lockSession ''
