@@ -30,10 +30,6 @@
       fzf # fuzzy file finder
       jq  # json parsing
     ];
-    file = {
-      ".ssh/id_yc.pub".source = ../../keys/id_yc.pub;
-      ".ssh/id_ya.pub".source = ../../keys/id_ya.pub;
-    };
   };
 
   programs = {

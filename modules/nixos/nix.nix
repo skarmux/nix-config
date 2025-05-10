@@ -17,6 +17,7 @@
       "steam"
       "steam-unwrapped" # For adding Proton-GE
       "unrar"
+      "keymapp"
 
       # Microsoft True Type Fonts
       # Arial

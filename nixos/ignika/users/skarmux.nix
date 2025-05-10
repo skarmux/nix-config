@@ -42,6 +42,17 @@
         # dolphin-emu
         cool-retro-term
         libjxl
+        steam
+        # (retroarch.override {
+        #   cores = with libretro; [ # decide what emulators you want to include
+        #     puae # Amiga 500
+        #     scummvm
+        #     dosbox
+        #   ];
+        # })
+        # ZSA voyager
+        kontroll
+        keymapp
       ];
     };
 
@@ -61,6 +72,8 @@
     fonts.fontconfig.enable = true;
 
     services = {
+      # Display a desktop notification (with sound)
+      # when the key needs to be touched.
       yubikey-touch-detector.enable = true;
       syncthing = {
         enable = true;
@@ -73,9 +86,6 @@
     };
 
     programs = {
-      direnv.enable = true;
-      ghostty.enable = true;
-      llm.enable = true;
       ssh = {
         enable = true;
         # Required for yubi-agent
@@ -86,12 +96,13 @@
           "yubikey-hosts" = {
             host = "gitlab.com github.com";
             identitiesOnly = true;
-            identityFile = [
-              "~/.ssh/id_yubikey"
-            ];
+            identityFile = [ "~/.ssh/id_yubikey" ];
           };
         };
       };
+      direnv.enable = true;
+      ghostty.enable = true;
+      llm.enable = true;
     };
   };
 
@@ -112,78 +123,83 @@
     openssh.authorizedKeys.keys = [
       (builtins.readFile ../../../keys/id_yc.pub)
       (builtins.readFile ../../../keys/id_ya.pub)
+      # config.yubico.keys.yubi-a.publicKeyFile
+      # config.yubico.keys.yubi-c.publicKeyFile
     ];
   };
 
-  environment.persistence."/persist" = {
-    users.skarmux = {
-      directories = [
-        "Desktop"
-        "Documents"
-        "Downloads"
-        "Music"
-        "Pictures"
-        "Public"
-        "Templates"
-        "Videos"
-        ".config/BraveSoftware/Brave-Browser"
-        ".config/dconf"
-        ".config/discord"
-        ".config/keepasxc"
-        ".config/libreoffice"
-        ".config/nautilus"
-        ".config/Proton"
-        ".config/protonvpn"
-        ".config/protonfixes"
-        ".config/Signal"
-        ".config/gnome-session"
+  # environment.persistence."/persist" = {
+  #   users.skarmux = {
+  #     directories = [
+  #       "Desktop"
+  #       "Documents"
+  #       "Downloads"
+  #       "Music"
+  #       "Pictures"
+  #       "Public"
+  #       "Templates"
+  #       "Videos"
+  #       ".config/Proton"
+  #       ".config/Signal"
+  #       ".config/discord"
+  #       ".config/keepassxc"
+  #       ".config/libreoffice"
+  #       ".config/nautilus"
+  #       # Proton
+  #       ".config/protonfixes"
+  #       ".config/protonvpn"
+  #       ".local/share/Plexamp"
+  #       ".local/share/Steam"
+  #       ".local/share/TelegramDesktop"
+  #       ".local/share/direnv/allow" # NOTE: I'm slowly starting to dislike direnv... ;(
+  #       ".local/share/keyrings"
+  #       ".local/share/zoxide" # Store last visited directories
+  #       ".local/share/backgrounds" # [GNOME] This is where gnome stores all user-added backgrounds
+  #       ".steam" # <- Games are here!
+  #       # TODO: Both are nix-related. The ~/.nix-profile symlink is pointing to a non-existing profile
+  #       #       and I think that is because I deleted ~/.local/state/nix once.
+  #       ".local/state/nix"
+  #       ".local/state/home-manager"
+  #       ".local/state/syncthing"
+  #     ];
+  #     files = [
+  #       # Browser
+  #       ".config/BraveSoftware/Brave-Browser/Default/Bookmarks"
+  #       # FIXME Place into sops... Oh, wait, but it is used BY sops...
+  #       #       Need to rethink attack vectors there.
+  #       ".config/sops/age/keys.txt"
+  #     ];
+  #   };
+  # };
 
-        # TODO: The FreeDesktop specification doesn't specify how
-        #       file-trashing should work if the Trash directory
-        #       is symlinked or bind mounted. Fact is, that trashing
-        #       files (in yazi at least) does not work with a bind-
-        #       mounted $XDG_DATA_HOME/Trash directory.
-        #       Solution:
-        #       Exclude the Trash dir on the file system purge.
-        # ".local/share/Trash"
-
-        ".local/share/zoxide"
-        ".local/share/keyrings"
-        ".local/share/gvfs-metadata"
-        ".local/share/TelegramDesktop"
-        ".local/share/Plexamp"
-        ".local/state/syncthing"
-        ".steam" # <- Games are here!
-        ".local/share/Steam"
-        ".local/share/direnv/allow"
-      ];
-      files = [
-        ".config/background"
-        ".config/gnome-initial-setup-done"
-        # FIXME Place into sops... Oh, wait, but it is used BY sops...
-        #       Need to rethink attack vectors there.
-        ".config/sops/age/keys.txt"
-      ];
-    };
-  };
-
-  yubikey = {
+  yubico = {
     enable = true;
-    identifiers = {
-      yc = 24686370;
-      ya = 25390376;
-    };
-    lockScreen = false;
+    keys = [
+      {
+        serial = 24686370;
+        users = [ "skarmux" ];
+        publicKeyFile = ../../../keys/id_yc.pub;
+        privateKeyFile = config.sops.secrets."ssh_yubi_c".path;
+      }
+      {
+        serial = 25390376;
+        users = [ "skarmux" ];
+        publicKeyFile = ../../../keys/id_ya.pub;
+        privateKeyFile = config.sops.secrets."ssh_yubi_a".path;
+      }
+    ];
   };
 
   programs.adb.enable = true; # Required for SideQuest
 
   sops.secrets = {
     "skarmux-password".neededForUsers = true;
-    "yubico/u2f_keys" = {
-      owner = config.users.users.skarmux.name;
-      inherit (config.users.users.skarmux) group;
-      path = "/home/skarmux/.config/Yubico/u2f_keys";
-    };
+    "ssh_yubi_a" = {};
+    "ssh_yubi_c" = {};
+    # "yubico/u2f-keys" = {
+    #   owner = config.users.users.skarmux.name;
+    #   inherit (config.users.users.skarmux) group;
+    #   path = "/home/skarmux/.config/Yubico/u2f_keys";
+    # };
   };
 }

@@ -22,8 +22,6 @@
     enableDefaultPackages = true;
     enableGhostscriptFonts = true;
     packages = [
-      pkgs.vistafonts
-      pkgs.corefonts
       (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
       # pkgs.nerd-fonts.jetbrains-mono # upcoming
     ];
@@ -50,23 +48,33 @@
   programs = {
     steam = {
       enable = true;
+      remotePlay.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
       extraCompatPackages = [ pkgs.proton-ge-bin ];
+      gamescopeSession.enable = false;
     };
     gamemode.enable = true;
-    # Required for impermanence home-manager option `fuse.allowOther = true`
-    fuse.userAllowOther = true;
+  };
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    steam = pkgs.steam.override {
+      extraPkgs = pkgs: with pkgs; [
+        gamescope
+        mangohud
+      ];
+    };
   };
 
   environment = {
     systemPackages = with pkgs; [
-      protonvpn-gui # NOTE: Needs to be system level, I think
+      protonvpn-gui # NOTE: Needs to be system level, I think.
       helix
       git
-      # uptime-kuma # TODO: Configure
     ];
     persistence."/persist" = {
-      hideMounts = true;
+      hideMounts = true; # hide in desktop applications like nautilus or dolphin
       directories = [
+        "/home"
         # Store all logs
         "/var/log"
         # User configuration, etc.
