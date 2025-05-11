@@ -11,8 +11,11 @@
 
   i18n = {
     supportedLocales = [
+      # https://sourceware.org/git/?p=glibc.git;a=blob;f=localedata/SUPPORTED
       "de_DE.UTF-8/UTF-8"
       "en_US.UTF-8/UTF-8"
+      "ja_JP.EUC-JP/EUC-JP"
+      "ja_JP.UTF-8/UTF-8"
     ];
     defaultLocale = lib.mkDefault "en_US.UTF-8";
     extraLocaleSettings = {

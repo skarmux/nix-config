@@ -2,12 +2,29 @@
   outputs = inputs @ { flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        ./devshells
         ./home
         ./modules
         ./nixos
       ];
       systems = [ "x86_64-linux" "aarch64-linux" ];
+      perSystem = { pkgs, ... }: {
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs;[
+            nil # nix language server
+            nixpkgs-fmt
+            nh
+            nixd
+            nix-output-monitor # stylised wrapper around `nix`
+            nvd # view packages diff between nix generations
+                # ex: `nvd diff /nix/var/nix/profiles/system-{70,71}-link`
+            sops
+            ssh-to-age
+            # gnupg
+            # pinentry-curses
+            age
+          ];
+        };
+      };
     };
   
   inputs = {

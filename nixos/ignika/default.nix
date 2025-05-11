@@ -23,6 +23,7 @@
     enableGhostscriptFonts = true;
     packages = [
       (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      pkgs.noto-fonts-cjk-serif
       # pkgs.nerd-fonts.jetbrains-mono # upcoming
     ];
   };

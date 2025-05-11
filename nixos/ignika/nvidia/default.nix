@@ -37,8 +37,8 @@
 
     # -----------------------------------------------------------------------
     # Hardware Video Acceleration
-    LIBVA_DRIVER_NAME = "nvidia"; # nouveau | vdpau | nvidia
-    VDPAU_DRIVER = "va_gl";
+    # LIBVA_DRIVER_NAME = "nvidia"; # nouveau | vdpau | nvidia
+    # VDPAU_DRIVER = "va_gl";
 
     # -----------------------------------------------------------------------
     # GLX + OpenGL
@@ -50,7 +50,7 @@
 
     # -----------------------------------------------------------------------
     # Vulkan
-    __VK_LAYER_NV_optimus = "NVIDIA_only";
+    # __VK_LAYER_NV_optimus = "NVIDIA_only";
 
     # -----------------------------------------------------------------------
     # Proton Steam
@@ -61,15 +61,15 @@
   };
 
   environment.systemPackages = with pkgs; [
-    libva # VA-API (Video Acceleration API)
-    vulkan-tools
+    # libva # VA-API (Video Acceleration API)
+    # vulkan-tools
   ];
 
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
     # NVIDIA doesn't support libvdpau, so this package will redirect VDPAU calls to LIBVA.
-    extraPackages = [ pkgs.libvdpau-va-gl ];
+    # extraPackages = [ pkgs.libvdpau-va-gl ];
   };
 
   # Load nvidia driver for Xorg and Wayland

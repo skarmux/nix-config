@@ -131,6 +131,19 @@
     ];
   };
 
+  # Wine
+  environment.systemPackages = with pkgs; [
+    # support both 32-bit and 64-bit applications
+    wineWowPackages.stable
+    # wine-staging (version with experimental features)
+    # wineWowPackages.staging
+    # winetricks (all versions)
+    winetricks
+    # native wayland support (unstable)
+    wineWowPackages.waylandFull
+    vlc
+  ];
+
   # Login/sudo with yubikeys
   security.pam = {
     services = {
@@ -183,6 +196,7 @@
   #   };
   # };
 
+  yubico.enable = true;
   yubico.keys = [
     {
       serial = 24686370;

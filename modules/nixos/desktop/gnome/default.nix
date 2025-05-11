@@ -152,7 +152,7 @@ in
       gnome-connections # remote desktop client
       yelp # help viewer
       gnome-software # app store
-      gnome-console # terminal emulator
+      # gnome-console # terminal emulator
       gnome-tour
       hitori   # sudoku game
       iagno    # go game
