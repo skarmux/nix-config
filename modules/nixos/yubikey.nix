@@ -44,7 +44,6 @@ let
 in
 {
   options.yubico = {
-    enable = mkEnableOption "Start using yubikeys for authentication";
     # lockSession = mkEnableOption "Automatically lock session when yubikey is removed.";
     keys = mkOption {
       type = with types; listOf (submodule {
@@ -89,7 +88,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
 
     environment.systemPackages = with pkgs; [
       yubioath-flutter # gui Authenticator for Desktop
