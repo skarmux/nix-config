@@ -71,6 +71,7 @@
       protonvpn-gui # NOTE: Needs to be system level, I think.
       helix
       git
+      nixd
     ];
     persistence."/persist" = {
       hideMounts = true; # hide in desktop applications like nautilus or dolphin

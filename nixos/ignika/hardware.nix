@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   imports = [
     ./nvidia
@@ -21,12 +20,15 @@
 
   powerManagement.cpuFreqGovernor = "performance";
 
-  hardware.cpu.amd.updateMicrocode = true; # Allow firmware updates
+  hardware = {
+    cpu.amd.updateMicrocode = true; # Allow firmware updates
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+    logitech.wireless.enable = true;
+    keyboard.zsa.enable = true;
+    enableRedistributableFirmware = true;
+  };
 
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;  
-
-  hardware.keyboard.zsa.enable = true;
-
-  hardware.enableRedistributableFirmware = true;
 }

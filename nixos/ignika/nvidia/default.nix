@@ -30,8 +30,8 @@
 
   environment.sessionVariables = {
     # Force GBM as backend
-    # GBM_BACKEND = "nvidia-drm";
-    # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
 
     # WLR_NO_HARDWARE_CURSORS = "1";
 
@@ -50,19 +50,19 @@
 
     # -----------------------------------------------------------------------
     # Vulkan
-    # __VK_LAYER_NV_optimus = "NVIDIA_only";
+    __VK_LAYER_NV_optimus = "NVIDIA_only";
 
     # -----------------------------------------------------------------------
     # Proton Steam
-    # PROTON_HIDE_NVIDIA_GPU = "0";
-    # PROTON_ENABLE_NVAPI = "1";
+    PROTON_HIDE_NVIDIA_GPU = "0";
+    PROTON_ENABLE_NVAPI = "1";
 
-    # DXVK_ENABLE_NVAPI = "1";
+    DXVK_ENABLE_NVAPI = "1";
   };
 
   environment.systemPackages = with pkgs; [
     # libva # VA-API (Video Acceleration API)
-    # vulkan-tools
+    vulkan-tools
   ];
 
   hardware.graphics = {
