@@ -1,7 +1,7 @@
 {
   imports = [
     ./nvidia
-    ./openrgb.nix
+    # ./openrgb.nix
   ];
 
   boot = {

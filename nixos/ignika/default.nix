@@ -15,64 +15,97 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  # boot.kernelPackages = pkgs.linuxPackages_6_14;
 
-  mods.gnome.enable = true;
+  # mods.gnome.enable = true;
+  mods.hyprland.enable = true;
+
+  # Bluetooth
+  services.blueman.enable = true;
+
+  # OpenVPN
+  services.openvpn.servers = {
+    # hacktheboxVPN = {
+    #   config = ''
+    #     config ${config.sops.secrets."openvpn/hackthebox".path}
+    #     config ${../../keys/starting_point_Skarmux.ovpn}
+    #   '';
+    #   autoStart = false;
+    # };
+  };
 
   fonts = {
     enableDefaultPackages = true;
     enableGhostscriptFonts = true;
     packages = [
       (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-      pkgs.noto-fonts-cjk-serif
+      # pkgs.noto-fonts-cjk-serif # for games with japanese fonts
       # pkgs.nerd-fonts.jetbrains-mono # upcoming
     ];
   };
   
-  services = {
-    displayManager = {
-      autoLogin.enable = true;
-      autoLogin.user = "skarmux";
+  services.displayManager = {
+    defaultSession = "hyprland-uwsm";
+    sddm = {
+      enable = true;
+      wayland.enable = true;
+      # settings = {
+      #   Autologin = {
+      #     Session = "hyprland-uwsm";
+      #     User = "skarmux";
+      #   };
+      # };
     };
+  };
+
+  # TODO: What for?
+  # services.xserver.enable = true;
+
+  services = {
+    # displayManager = {
+    #   autoLogin.enable = true;
+    #   autoLogin.user = "skarmux";
+    # };
+    getty.autologinUser = "skarmux";
     openssh = {
       enable = true;
       settings.AllowUsers = [ "skarmux" ];
-    };
-    nginx = {
-      enable = true;
-      recommendedBrotliSettings = true;
-      recommendedGzipSettings = true;
-      recommendedOptimisation = true;
-      recommendedProxySettings = true;
     };
   };
 
   programs = {
     steam = {
       enable = true;
+      gamescopeSession.enable = false;
       remotePlay.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
-      extraCompatPackages = [ pkgs.proton-ge-bin ];
-      gamescopeSession.enable = false;
+    };
+    gamescope = {
+      enable = false;
+      capSysNice = true;
     };
     gamemode.enable = true;
   };
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    steam = pkgs.steam.override {
-      extraPkgs = pkgs: with pkgs; [
-        gamescope
-        mangohud
-      ];
-    };
-  };
-
   environment = {
+    # loginShellInit = ''
+    #   [[ "$(tty)"  = "/dev/tty1" ]] && ./gamescope.sh
+    # '';
     systemPackages = with pkgs; [
       protonvpn-gui # NOTE: Needs to be system level, I think.
       helix
       git
       nixd
+      mangohud
     ];
+    sessionVariables = {
+      XDG_BACKEND = "wayland";
+      # XDG_CURRENT_DESKTOP = "Hyprland";
+      XDG_SESSION_TYPE = "wayland";
+      _JAVA_AWT_WM_NONREPARENTING = "1";
+      # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      LIBSEAT_BACKEND = "logind";
+    };
     persistence."/persist" = {
       hideMounts = true; # hide in desktop applications like nautilus or dolphin
       directories = [
@@ -105,5 +138,10 @@
     };
   };
   
-  sops.defaultSopsFile = ./secrets.yaml;
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    secrets = {
+      "openvpn/hackthebox" = {};
+    };
+  };
 }

@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   programs.ghostty = {
     enableBashIntegration = true;
@@ -9,6 +8,7 @@
       # FIXME: Ghostty crashes when images with alpha channels
       #        are being displayed with yazi
       # background-opacity = 0.8;
+      confirm-close-surface = false;
     };
   };
 }

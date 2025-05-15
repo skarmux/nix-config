@@ -43,6 +43,7 @@
         cool-retro-term
         libjxl
         steam
+        gamescope
         # (retroarch.override {
         #   cores = with libretro; [ # decide what emulators you want to include
         #     puae # Amiga 500

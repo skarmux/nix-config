@@ -10,29 +10,27 @@ in
   config = lib.mkIf cfg.enable {
     programs.hyprland = {
       enable = true;
-      xwayland.enable = true;
+      withUWSM = true; # recommended for most users
+      xwayland.enable = true; # Xwayland can be disabled.
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
     };
 
     nix.settings = {
-      substituters = [
-          "https://hyprland.cachix.org"
-      ];
-      trusted-public-keys = [
-          "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      substituters = [ "https://hyprland.cachix.org" ];
+      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+    };
+
+    environment.systemPackages = [ pkgs.nautilus pkgs.wofi ];
+
+    # Screensharing
+    xdg.portal = {
+      enable = true;
+      extraPortals = [
+        config.programs.hyprland.portalPackage
       ];
     };
 
-    environment.sessionVariables = {
-      XDG_BACKEND = "wayland";
-      XDG_CURRENT_DESKTOP = "Hyprland";
-      XDG_SESSION_TYPE = "wayland";
 
-      _JAVA_AWT_WM_NONREPARENTING = "1";
-
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-
-      LIBSEAT_BACKEND = "logind";
-    };
   };
 }
