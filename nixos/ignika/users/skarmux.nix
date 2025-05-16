@@ -42,8 +42,6 @@
         # dolphin-emu
         cool-retro-term
         libjxl
-        steam
-        gamescope
         # (retroarch.override {
         #   cores = with libretro; [ # decide what emulators you want to include
         #     puae # Amiga 500
@@ -59,6 +57,9 @@
       file = {
         # Login/sudo 'known_hosts'-like config for pam_u2f
         ".config/Yubico/u2f_keys".text = "skarmux:L8qjIWOWGoj0solA3TySPcUw0eOS7ik7nuuleOBE+gX5aMpW6zV1Otbpt43fwwi4kCV+rUMe7Zd19FsLN1h6Gg==,nIB1p7exghHOla/8H/YYE1+slFvcrU1dPOJHylpzr/DwgTji/evnANcwD9CRHJJ1ZkrwDSCRjw4yLn/Uq5rN/A==,es256,+presence:HoxTlnSB0PGZXufQTIev0WrAEmAvuFrIfJHUsIBlIfLNAyXuXXvTfCgVHjYFl/uFzQ5na8lYhS7aI5OtrQHTOg==,74dG2GAw/mveqaGg3C2tKq67shzOi3U4U8nMrCZFXh9ntIEViCzVm8Ejx4gL15t1zJGlUbUAwEQ+aJl9thmXeA==,es256,+presence";
+        ".steam/steam/steam_dev.cfg".text = ''
+          unShaderBackgroundProcessingThreads 8
+        '';
       };
     };
 

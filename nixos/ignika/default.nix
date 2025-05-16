@@ -1,4 +1,28 @@
-{ self, inputs, pkgs, ... }:
+{ self, inputs, pkgs, config, ... }:
+let
+  # replacing `-tenfoot` with `-steamos3 -gamepadui` to make `Exit to Desktop` quit the session.
+  # yes, it works. :)
+  steam-gamescope = let
+    exports = builtins.attrValues (
+      builtins.mapAttrs (n: v: "export ${n}=${v}") config.programs.steam.gamescopeSession.env
+    );
+  in pkgs.writeShellScriptBin "steam-gamescope" ''
+    # ${builtins.concatStringsSep "\n" exports}
+    MANGOHUD=1
+    MANGOHUD_CONFIG=fps,frametime,fsr,hdr,gamemode,wine,hud_compact,frame_timing,cpu_stats,gpu_stats
+    gamescope --steam -r 50 --hdr-enabled --mangoapp -- steam -steamos3 -gamepadui
+  '';
+  gamescopeSessionFile =
+    (pkgs.writeTextDir "share/wayland-sessions/steam.desktop" ''
+      [Desktop Entry]
+      Name=Steam Custom
+      Comment=A digital distribution platform
+      Exec=${steam-gamescope}/bin/steam-gamescope
+      Type=Application
+    '').overrideAttrs(_: {
+      passthru.providedSessions = [ "steam" ];
+    });
+in
 {
   imports = [
     ./audio.nix
@@ -23,28 +47,17 @@
   # Bluetooth
   services.blueman.enable = true;
 
-  # OpenVPN
-  services.openvpn.servers = {
-    # hacktheboxVPN = {
-    #   config = ''
-    #     config ${config.sops.secrets."openvpn/hackthebox".path}
-    #     config ${../../keys/starting_point_Skarmux.ovpn}
-    #   '';
-    #   autoStart = false;
-    # };
-  };
-
   fonts = {
     enableDefaultPackages = true;
     enableGhostscriptFonts = true;
     packages = [
       (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-      # pkgs.noto-fonts-cjk-serif # for games with japanese fonts
-      # pkgs.nerd-fonts.jetbrains-mono # upcoming
     ];
   };
   
   services.displayManager = {
+    sessionPackages = [ gamescopeSessionFile ];
+    # will be pre-selected in the greeter
     defaultSession = "hyprland-uwsm";
     sddm = {
       enable = true;
@@ -58,15 +71,11 @@
     };
   };
 
-  # TODO: What for?
-  # services.xserver.enable = true;
-
   services = {
     # displayManager = {
     #   autoLogin.enable = true;
     #   autoLogin.user = "skarmux";
     # };
-    getty.autologinUser = "skarmux";
     openssh = {
       enable = true;
       settings.AllowUsers = [ "skarmux" ];
@@ -76,27 +85,41 @@
   programs = {
     steam = {
       enable = true;
-      gamescopeSession.enable = false;
+      gamescopeSession = {
+        enable = true; # TODO: Writing my own session since I need to attach certain flags to steam
+        args = [ "-r 50" "--mangoapp" "--hdr-enabled" ];
+        env = {
+          MANGOHUD = "true";
+          MANGOHUD_CONFIG = "fps,frametime,fsr,hdr,gamemode,wine,hud_compact,frame_timing,cpu_stats,gpu_stats";
+        };
+      };
       remotePlay.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
+      # package = pkgs.steam.override {
+      #   extraEnv = { };
+      # };
+      extraPackages = with pkgs; [
+        # mangohud
+      ];
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+      ];
+      # extest.enable = true;
     };
-    gamescope = {
-      enable = false;
-      capSysNice = true;
-    };
+    gamescope.capSysNice = false; # FIXME Can't set this to `true`. Gamescope crashes on startup.
+    # TODO: Activate gamemode with steam session
     gamemode.enable = true;
   };
 
   environment = {
-    # loginShellInit = ''
-    #   [[ "$(tty)"  = "/dev/tty1" ]] && ./gamescope.sh
-    # '';
     systemPackages = with pkgs; [
       protonvpn-gui # NOTE: Needs to be system level, I think.
       helix
       git
       nixd
-      mangohud
+      # Use `Switch to Desktop` option to close the gamescope session
+      (pkgs.writeShellScriptBin "steamos-session-select" "steam -shutdown")
+      mangohud # TODO: Do need it on system level to be used by the gamescope session??
     ];
     sessionVariables = {
       XDG_BACKEND = "wayland";
@@ -125,23 +148,7 @@
     };
   };
 
-  # boot.kernelPackages = pkgs.linuxPackages_zen;
-
-  security = {
-    sudo = {
-      # Only `wheel` group users can execute sudo
-      execWheelOnly = true;
-      # Always ask for sudo password!
-      # configFile = ''
-      #   Defaults timestamp_timeout=0
-      # '';
-    };
-  };
+  security.sudo.execWheelOnly = true;
   
-  sops = {
-    defaultSopsFile = ./secrets.yaml;
-    secrets = {
-      "openvpn/hackthebox" = {};
-    };
-  };
+  sops.defaultSopsFile = ./secrets.yaml;
 }
