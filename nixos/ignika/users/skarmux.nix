@@ -5,43 +5,34 @@
     # Import all user-specific configurations and
     # minimum package selection
     imports = [ ../../../home/skarmux/home.nix ];
-    
+
     home = {
       packages = with pkgs; [
-        # Browser
         brave
-        # Messenger
         discord
         element-desktop
+        fractal
         signal-desktop
         telegram-desktop
-        # Media
-        celluloid
-        plexamp
-        gimp
-        inkscape
-        # Work
+        imv # image viewer
+        libjxl # jpeg xl
+        celluloid # video player
+        plexamp # music streaming
+        gimp # raster graphics
+        inkscape # vector graphics
         # davinci-resolve
         # blender
-        # Streaming
-        obs-studio
-        twitch-tui
-        # ffmpeg_6
-        # Util
-        mdp
+        obs-studio # screen recording & streaming
+        twitch-tui # twitch chat
+        mdp # markdown presentation tool
         keepassxc
         obsidian
-        # Meta Quest 3 Sideloading
-        sidequest
-        # Office
-        libreoffice
-        # Torrent
-        deluge
-        # Emulators
+        sidequest # quest 3 sideloading
+        libreoffice # office
+        deluge # torrenting
         # ryujinx
         # dolphin-emu
         cool-retro-term
-        libjxl
         # (retroarch.override {
         #   cores = with libretro; [ # decide what emulators you want to include
         #     puae # Amiga 500
@@ -52,15 +43,27 @@
         # ZSA voyager
         kontroll
         keymapp
+
+        # hackthebox
+        inetutils # ftp, etc...
+        nmap # port scanning util `-sV` for version scan
+        samba # access smb network shares
+        redis # in-memory database
+        gobuster # check web urls with wordlists
+        mariadb-client
       ];
 
       file = {
         # Login/sudo 'known_hosts'-like config for pam_u2f
         ".config/Yubico/u2f_keys".text = "skarmux:L8qjIWOWGoj0solA3TySPcUw0eOS7ik7nuuleOBE+gX5aMpW6zV1Otbpt43fwwi4kCV+rUMe7Zd19FsLN1h6Gg==,nIB1p7exghHOla/8H/YYE1+slFvcrU1dPOJHylpzr/DwgTji/evnANcwD9CRHJJ1ZkrwDSCRjw4yLn/Uq5rN/A==,es256,+presence:HoxTlnSB0PGZXufQTIev0WrAEmAvuFrIfJHUsIBlIfLNAyXuXXvTfCgVHjYFl/uFzQ5na8lYhS7aI5OtrQHTOg==,74dG2GAw/mveqaGg3C2tKq67shzOi3U4U8nMrCZFXh9ntIEViCzVm8Ejx4gL15t1zJGlUbUAwEQ+aJl9thmXeA==,es256,+presence";
-        ".steam/steam/steam_dev.cfg".text = ''
-          unShaderBackgroundProcessingThreads 8
-        '';
       };
+
+    };
+
+    # Dark Mode for GNOME and GNOME apps
+    dconf = {
+      enable = true;
+      settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };
 
     # xdg.mimeApps = {
@@ -121,7 +124,7 @@
       "wheel"
       "video"
       "audio"
-      "i2c" # For zsa voyager
+      "i2c" # control connected devices
     ] ++ (lib.optionals config.networking.networkmanager.enable [
       "networkmanager"
     ]) ++ (lib.optionals config.programs.adb.enable [ "adbusers" ]);
@@ -133,19 +136,6 @@
     ];
   };
 
-  # Wine
-  environment.systemPackages = with pkgs; [
-    # support both 32-bit and 64-bit applications
-    wineWowPackages.stable
-    # wine-staging (version with experimental features)
-    # wineWowPackages.staging
-    # winetricks (all versions)
-    winetricks
-    # native wayland support (unstable)
-    wineWowPackages.waylandFull
-    vlc
-  ];
-
   # Login/sudo with yubikeys
   security.pam = {
     services = {
@@ -154,10 +144,7 @@
     };
     u2f = {
       enable = true;
-      settings = {
-        cue = false; # set to false since I'm using the yubikey-touch-detector homeModule
-        debug = false;
-      };
+      settings.cue = true;
     };
   };
 

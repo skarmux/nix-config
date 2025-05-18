@@ -1,38 +1,29 @@
-{ self, inputs, pkgs, config, ... }:
-let
-  # replacing `-tenfoot` with `-steamos3 -gamepadui` to make `Exit to Desktop` quit the session.
-  # yes, it works. :)
-  steam-gamescope = let
-    exports = builtins.attrValues (
-      builtins.mapAttrs (n: v: "export ${n}=${v}") config.programs.steam.gamescopeSession.env
-    );
-  in pkgs.writeShellScriptBin "steam-gamescope" ''
-    # ${builtins.concatStringsSep "\n" exports}
-    MANGOHUD=1
-    MANGOHUD_CONFIG=fps,frametime,fsr,hdr,gamemode,wine,hud_compact,frame_timing,cpu_stats,gpu_stats
-    gamescope --steam -r 50 --hdr-enabled --mangoapp -- steam -steamos3 -gamepadui
-  '';
-  gamescopeSessionFile =
-    (pkgs.writeTextDir "share/wayland-sessions/steam.desktop" ''
-      [Desktop Entry]
-      Name=Steam Custom
-      Comment=A digital distribution platform
-      Exec=${steam-gamescope}/bin/steam-gamescope
-      Type=Application
-    '').overrideAttrs(_: {
-      passthru.providedSessions = [ "steam" ];
-    });
-in
+{ self, inputs, pkgs, ... }:
 {
   imports = [
     ./audio.nix
     ./disk.nix
     ./hardware.nix
     ./users
+    ./steam.nix
     inputs.impermanence.nixosModules.impermanence
   ] ++ builtins.attrValues self.nixosModules;
 
-  networking.hostName = "ignika";
+  networking = {
+    hostName = "ignika";
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [];
+      allowedUDPPortRanges = [
+        # { from = 4000; to = 4007; } # example
+      ];
+      interfaces = {
+        "eth0" = {
+          # allowed[...]Port(s) = {};
+        };
+      };
+    };
+  };
 
   system.stateVersion = "24.11";
 
@@ -41,74 +32,33 @@ in
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   # boot.kernelPackages = pkgs.linuxPackages_6_14;
 
-  # mods.gnome.enable = true;
   mods.hyprland.enable = true;
-
-  # Bluetooth
-  services.blueman.enable = true;
 
   fonts = {
     enableDefaultPackages = true;
     enableGhostscriptFonts = true;
     packages = [
-      (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      (pkgs.nerdfonts.override { fonts = [
+        "JetBrainsMono"
+        "FiraCode"
+      ]; })
     ];
   };
   
-  services.displayManager = {
-    sessionPackages = [ gamescopeSessionFile ];
-    # will be pre-selected in the greeter
-    defaultSession = "hyprland-uwsm";
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-      # settings = {
-      #   Autologin = {
-      #     Session = "hyprland-uwsm";
-      #     User = "skarmux";
-      #   };
-      # };
-    };
-  };
-
   services = {
-    # displayManager = {
-    #   autoLogin.enable = true;
-    #   autoLogin.user = "skarmux";
-    # };
-    openssh = {
-      enable = true;
-      settings.AllowUsers = [ "skarmux" ];
+    displayManager = {
+      autoLogin.enable = true;
+      autoLogin.user = "skarmux";
+      defaultSession = "hyprland-uwsm";
+      sddm.enable = true;
+      sddm.wayland.enable = true;
     };
+    openssh.enable = true;
+    openssh.settings.AllowUsers = [ "skarmux" ];
   };
 
   programs = {
-    steam = {
-      enable = true;
-      gamescopeSession = {
-        enable = true; # TODO: Writing my own session since I need to attach certain flags to steam
-        args = [ "-r 50" "--mangoapp" "--hdr-enabled" ];
-        env = {
-          MANGOHUD = "true";
-          MANGOHUD_CONFIG = "fps,frametime,fsr,hdr,gamemode,wine,hud_compact,frame_timing,cpu_stats,gpu_stats";
-        };
-      };
-      remotePlay.openFirewall = true;
-      localNetworkGameTransfers.openFirewall = true;
-      # package = pkgs.steam.override {
-      #   extraEnv = { };
-      # };
-      extraPackages = with pkgs; [
-        # mangohud
-      ];
-      extraCompatPackages = with pkgs; [
-        proton-ge-bin
-      ];
-      # extest.enable = true;
-    };
-    gamescope.capSysNice = false; # FIXME Can't set this to `true`. Gamescope crashes on startup.
-    # TODO: Activate gamemode with steam session
-    gamemode.enable = true;
+    openvpn3.enable = true;
   };
 
   environment = {
@@ -116,10 +66,8 @@ in
       protonvpn-gui # NOTE: Needs to be system level, I think.
       helix
       git
-      nixd
-      # Use `Switch to Desktop` option to close the gamescope session
-      (pkgs.writeShellScriptBin "steamos-session-select" "steam -shutdown")
-      mangohud # TODO: Do need it on system level to be used by the gamescope session??
+      nixd # nix language server
+      overskride # manage bluetooth connections
     ];
     sessionVariables = {
       XDG_BACKEND = "wayland";

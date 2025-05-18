@@ -33,6 +33,7 @@
   };
   
   inputs = {
+    hyprcursor-phinger.url = "github:jappie3/hyprcursor-phinger";
     catppuccin.url = "github:catppuccin/nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     disko.inputs.nixpkgs.follows = "nixpkgs";

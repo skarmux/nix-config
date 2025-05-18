@@ -26,7 +26,6 @@
     forceFullCompositionPipeline = false;
 
     package = config.boot.kernelPackages.nvidiaPackages.latest;
-    # package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
   environment.sessionVariables = {
