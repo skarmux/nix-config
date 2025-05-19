@@ -1,8 +1,5 @@
 {
-  nix = ./nix.nix;
-  sops = ./sops.nix;
-  desktop = ./desktop;
-  networking = ./networking;
-  home-manager = ./home-manager.nix;
+  arcade = ./arcade.nix;
   yubikey = ./yubikey.nix;
+  protonvpn = ./protonvpn.nix;
 }

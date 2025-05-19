@@ -3,7 +3,7 @@
     enableBashIntegration = true;
     enableFishIntegration = true;
     enableZshIntegration = true;
-    clearDefaultKeybinds = true;
+    # clearDefaultKeybinds = true; # I need ctr+v for now
     settings = {
       font-family = "FiraCode Nerd Font Propo";
       font-style-bold = "Bold";

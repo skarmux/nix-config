@@ -16,8 +16,4 @@
   # Sops needs access to persisted private keys to
   # generate /run/secrets before booting is completed
   fileSystems."/persist".neededForBoot = true;
-
-  home-manager.sharedModules = [
-    inputs.sops-nix.homeManagerModules.sops
-  ];
 }

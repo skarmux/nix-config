@@ -1,12 +1,5 @@
 { lib, ... }:
 {
-  imports = [ ./openssh.nix ];
-
-  networking = {
-    firewall.enable = lib.mkDefault true;
-    networkmanager.enable = lib.mkDefault true;
-  }; 
-
   time.timeZone = lib.mkDefault "Europe/Berlin";
 
   i18n = {

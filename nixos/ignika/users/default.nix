@@ -1,8 +1,10 @@
-  { pkgs, ... }:
+  { inputs, pkgs, ... }:
   {
     imports = [ ./skarmux.nix ];
     
-    home-manager.backupFileExtension = "backup";
+    home-manager.sharedModules = [
+      inputs.sops-nix.homeManagerModules.sops
+    ];
 
     users = {
       mutableUsers = false;

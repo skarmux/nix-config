@@ -26,37 +26,17 @@
     forceFullCompositionPipeline = false;
 
     package = config.boot.kernelPackages.nvidiaPackages.latest;
+    # package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
   environment.sessionVariables = {
     # Force GBM as backend
     # GBM_BACKEND = "nvidia-drm"; # FIXME Causes gamescope to crash
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-
-    # WLR_NO_HARDWARE_CURSORS = "1";
-
-    # -----------------------------------------------------------------------
+    # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    
     # Hardware Video Acceleration
     LIBVA_DRIVER_NAME = "nvidia"; # nouveau | vdpau | nvidia
     VDPAU_DRIVER = "va_gl";
-
-    # -----------------------------------------------------------------------
-    # GLX + OpenGL
-
-    # Refresh Rate & Flickering
-    __GL_GSYNC_ALLOWED = "1";
-    __GL_VRR_ALLOWED = "1";
-    # WLR_DRM_NO_ATOMIC = "1"; # Use legacy DRM interface
-
-    # -----------------------------------------------------------------------
-    # Vulkan
-    __VK_LAYER_NV_optimus = "NVIDIA_only";
-
-    # -----------------------------------------------------------------------
-    # Proton Steam
-    PROTON_HIDE_NVIDIA_GPU = "0";
-    PROTON_ENABLE_NVAPI = "1";
-    # DXVK_ENABLE_NVAPI = "1";
   };
 
   environment.systemPackages = with pkgs; [

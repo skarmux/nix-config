@@ -19,6 +19,9 @@
       "unrar"
       "keymapp"
 
+      # Retroarch
+      "libretro-snes9x"
+
       # Microsoft True Type Fonts
       # Arial
       # Comic Sans

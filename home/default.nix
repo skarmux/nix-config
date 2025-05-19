@@ -8,7 +8,7 @@
       };
       extraSpecialArgs = { inherit self inputs pkgs; };
       modules = [
-        ./skarmux/home.nix
+        ./skarmux.nix
         {
           imports = [ inputs.sops-nix.homeManagerModules.sops ];
         }

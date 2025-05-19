@@ -2,22 +2,23 @@
 {
   imports = [
     inputs.catppuccin.homeModules.catppuccin
-    ./alacritty.nix
-    ./direnv.nix
-    ./eza.nix
-    ./ghostty.nix
-    ./git
-    ./gpg.nix
-    ./helix
-    ./llm
-    ./shell
-    ./starship.nix
-    ./tmux.nix
-    ./wezterm.nix
-    ./yazi.nix
-    ./zathura.nix
-    ./zellij
-    ./zoxide.nix
+    ./common/alacritty.nix
+    ./common/compression.nix
+    ./common/direnv.nix
+    ./common/eza.nix
+    ./common/ghostty.nix
+    ./common/git
+    ./common/gpg.nix
+    ./common/helix
+    ./common/llm
+    ./common/shell
+    ./common/starship.nix
+    ./common/tmux.nix
+    ./common/wezterm.nix
+    ./common/yazi.nix
+    ./common/zathura.nix
+    ./common/zellij
+    ./common/zoxide.nix
   ]
   ++ builtins.attrValues self.homeModules;
   
@@ -29,6 +30,8 @@
       bat # cat replacement
       fzf # fuzzy file finder
       jq  # json parsing
+
+
     ];
   };
 
@@ -47,8 +50,6 @@
     yazi.enable = true;
     zoxide.enable = true;
   };
-
-  compression.enable = true;
 
   catppuccin = {
     enable = true; # global

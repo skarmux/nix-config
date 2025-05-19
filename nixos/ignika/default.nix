@@ -6,6 +6,12 @@
     ./hardware.nix
     ./users
     ./steam.nix
+    ../common/home-manager.nix
+    ../common/hyprland
+    ../common/locale.nix
+    ../common/nix.nix
+    ../common/openssh.nix
+    ../common/sops.nix
     inputs.impermanence.nixosModules.impermanence
   ] ++ builtins.attrValues self.nixosModules;
 
@@ -23,16 +29,16 @@
         };
       };
     };
+    networkmanager.enable = true;
   };
+
+  arcade.enable = true;
 
   system.stateVersion = "24.11";
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  # boot.kernelPackages = pkgs.linuxPackages_6_14;
-
-  mods.hyprland.enable = true;
 
   fonts = {
     enableDefaultPackages = true;

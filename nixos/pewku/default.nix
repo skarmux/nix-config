@@ -4,6 +4,10 @@
     ./users
     ./disk.nix
     ./hardware.nix
+    ../common/sops.nix
+    ../common/openssh.nix
+    ../common/nix.nix
+    ../common/locale.nix
     inputs.impermanence.nixosModules.impermanence
     inputs.feaston.nixosModules.default
     inputs.homepage.nixosModules.default

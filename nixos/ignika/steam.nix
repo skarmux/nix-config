@@ -1,71 +1,66 @@
-{ config, pkgs, ... }:
-let
-  # replacing `-tenfoot` with `-steamos3 -gamepadui` to make `Exit to Desktop` quit the session.
-  # yes, it works. :)
-  # steam-gamescope = let
-    # exports = builtins.attrValues (
-    #   builtins.mapAttrs (n: v: "export ${n}=${v}") config.programs.steam.gamescopeSession.env
-    # );
-    # Write this into the shellScriptBin
-    # ${builtins.concatStringsSep "\n" exports}
-  # in
-  # pkgs.writeShellScriptBin "steam-gamescope" ''
-  #   export MANGOHUD_CONFIG=fps,frametime,fsr,hdr,gamemode,wine,hud_compact,frame_timing,cpu_stats,gpu_stats
-  #   LD_PRELOAD="" gamescope --steam --hdr-enabled --mangoapp -- steam -steamos3 -gamepadui
-  # '';
-
-  # gamescopeSessionFile =
-  #   (pkgs.writeTextDir "share/wayland-sessions/steam.desktop" ''
-  #     [Desktop Entry]
-  #     Name=Steam Custom
-  #     Comment=A digital distribution platform
-  #     Exec=${steam-gamescope}/bin/steam-gamescope
-  #     Type=Application
-  #   '').overrideAttrs(_: {
-  #     passthru.providedSessions = [ "steam" ];
-  #   });
-in
+{ pkgs, lib, ... }:
 {
-  # services = {
-  #   displayManager = {
-  #     sessionPackages = [ gamescopeSessionFile ];
-  #   };
-  # };
-  
   programs = {
     steam = {
       enable = true;
       gamescopeSession = {
         enable = true;
-        args = [ "--backend drm" "--expose-wayland" "--mangoapp" "--hdr-enabled" ];
-        env = {
-          MANGOHUD = "1";
-          MANGOHUD_CONFIG = "fps,frametime,fsr,hdr,gamemode,wine,hud_compact,frame_timing,cpu_stats,gpu_stats";
-          LD_PRELOAD = "";
-        };
+        args = [ "--mangoapp" "--hdr-enabled" "-W 3840" "-H 2560" ];
+        # env = { };
       };
       remotePlay.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
       package = pkgs.steam.override {
-        extraEnv = { };
+        extraEnv = {
+          PROTON_HIDE_NVIDIA_GPU = "1";
+          PROTON_ENABLE_NVAPI = "1";
+          VKD3D_DISABLE_EXTENSIONS = "VK_NV_low_latency2";
+          VKD3D_CONFIG = lib.concatStringsSep "," [
+            "no_upload_hv"
+            "force_host_cached"
+          ];
+          __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
+          LD_PRELOAD="$LD_PRELOAD:${pkgs.gamemode}/lib/libgamemode.so";
+        };
       };
-      # extraPackages = with pkgs; [
-      #   mangohud
-      # ];
+      extraPackages = with pkgs; [
+        mangohud
+        gamemode
+      ];
       extraCompatPackages = with pkgs; [
         proton-ge-bin
       ];
       # extest.enable = true;
     };
-    gamescope.capSysNice = false; # FIXME Can't set this to `true`. Gamescope crashes on startup.
-    gamemode.enable = true;
+    gamescope = {
+      enable = true;
+      capSysNice = true; # FIXME Can't set this to `true`. Gamescope crashes on startup.
+      # args = [ "--rt" "--hdr-enabled" "--mangoapp" ];
+      env = {
+        __NV_PRIME_RENDER_OFFLOAD = "1";
+        __VK_LAYER_NV_optimus = "NVIDIA_only";
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      };
+    };
+    gamemode = {
+      enable = true;
+      settings = {
+        general = {
+          renice = 10;
+        };
+        # Warning: GPU optimisations have the potential to damage hardware
+        # gpu = {
+        #   apply_gpu_optimisations = "accept-responsibility";
+        #   gpu_device = 0;
+        #   amd_performance_level = "high";
+        # };
+        custom = {
+          start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+          end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+        };
+      };
+    };
   };
-
-  environment.systemPackages = with pkgs; [
-    mangohud
-    # Use `Switch to Desktop` option to close the gamescope session
-    # (pkgs.writeShellScriptBin "steamos-session-select" "steam -shutdown")
-  ];
 
   home-manager.users.skarmux = {
     home.file = {

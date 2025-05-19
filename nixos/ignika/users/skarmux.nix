@@ -4,7 +4,7 @@
 
     # Import all user-specific configurations and
     # minimum package selection
-    imports = [ ../../../home/skarmux/home.nix ];
+    imports = [ ../../../home/skarmux.nix ];
 
     home = {
       packages = with pkgs; [
@@ -33,13 +33,6 @@
         # ryujinx
         # dolphin-emu
         cool-retro-term
-        # (retroarch.override {
-        #   cores = with libretro; [ # decide what emulators you want to include
-        #     puae # Amiga 500
-        #     scummvm
-        #     dosbox
-        #   ];
-        # })
         # ZSA voyager
         kontroll
         keymapp
@@ -125,6 +118,7 @@
       "video"
       "audio"
       "i2c" # control connected devices
+      "gamemode"
     ] ++ (lib.optionals config.networking.networkmanager.enable [
       "networkmanager"
     ]) ++ (lib.optionals config.programs.adb.enable [ "adbusers" ]);
