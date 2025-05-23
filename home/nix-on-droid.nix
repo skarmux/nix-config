@@ -18,10 +18,8 @@
     # requires the host to build them
     # Not sure about the cachix cache though...
 
-    allowUnfree = lib.mkForce false;
-    allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "unrar"
-    ];
+    allowUnfree = true;
+    allowUnfreePredicate = (_: true);
   };
 
   programs = {
