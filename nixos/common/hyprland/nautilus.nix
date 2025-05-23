@@ -13,7 +13,6 @@
     nautilus
     adwaita-icon-theme # default icon theme
     gnome-themes-extra
-    gnome-keyring # storing credentials for network shares
   ];
 
   nixpkgs.overlays = [(self: super: {
@@ -30,5 +29,8 @@
   })];
 
   # Access network shares
-  services.gvfs.enable = true;
+  services = {
+    gvfs.enable = true; # Filesystem
+    gnome.gnome-keyring.enable = true; # Credentials
+  };
 }

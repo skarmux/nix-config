@@ -32,6 +32,10 @@
     networkmanager.enable = true;
   };
 
+  # systemd = {
+  #   services.NetworkManager-wait-online.enable = false;
+  # };
+
   arcade.enable = true;
 
   system.stateVersion = "24.11";

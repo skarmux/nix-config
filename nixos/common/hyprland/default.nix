@@ -29,6 +29,7 @@
       # Screensharing
       pipewire
       wireplumber
+      eww
     ] ++ [
     /*
       BenQ 3:2

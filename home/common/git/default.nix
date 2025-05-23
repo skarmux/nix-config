@@ -46,6 +46,8 @@
     packages = with pkgs; [
       git-crypt 
       gitleaks
+      gitui
+      delta
     ];
   };
 }

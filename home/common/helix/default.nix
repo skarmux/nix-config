@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   imports = [
     ./helix-lsp-ai
@@ -16,6 +17,7 @@
   programs.helix = {
     settings = {
       editor = import ./editor.nix;
+      theme = lib.mkForce "base16_transparent";
       keys.normal = {
         # Allow `esc` to close multi-cursor mode
         esc = [ "collapse_selection" "keep_primary_selection" ];

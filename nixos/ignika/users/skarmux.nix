@@ -8,7 +8,7 @@
 
     home = {
       packages = with pkgs; [
-        brave
+        brave # FIXME Always launch with `--ozone-platform=wayland`
         discord
         element-desktop
         fractal
@@ -36,6 +36,7 @@
         # ZSA voyager
         kontroll
         keymapp
+        evince
 
         # hackthebox
         inetutils # ftp, etc...
@@ -48,7 +49,21 @@
 
       file = {
         # Login/sudo 'known_hosts'-like config for pam_u2f
-        ".config/Yubico/u2f_keys".text = "skarmux:L8qjIWOWGoj0solA3TySPcUw0eOS7ik7nuuleOBE+gX5aMpW6zV1Otbpt43fwwi4kCV+rUMe7Zd19FsLN1h6Gg==,nIB1p7exghHOla/8H/YYE1+slFvcrU1dPOJHylpzr/DwgTji/evnANcwD9CRHJJ1ZkrwDSCRjw4yLn/Uq5rN/A==,es256,+presence:HoxTlnSB0PGZXufQTIev0WrAEmAvuFrIfJHUsIBlIfLNAyXuXXvTfCgVHjYFl/uFzQ5na8lYhS7aI5OtrQHTOg==,74dG2GAw/mveqaGg3C2tKq67shzOi3U4U8nMrCZFXh9ntIEViCzVm8Ejx4gL15t1zJGlUbUAwEQ+aJl9thmXeA==,es256,+presence";
+        ".config/Yubico/u2f_keys".text = lib.concatStringsSep ":" [
+          "skarmux"
+          (lib.concatStringsSep "," [
+            "L8qjIWOWGoj0solA3TySPcUw0eOS7ik7nuuleOBE+gX5aMpW6zV1Otbpt43fwwi4kCV+rUMe7Zd19FsLN1h6Gg=="
+            "nIB1p7exghHOla/8H/YYE1+slFvcrU1dPOJHylpzr/DwgTji/evnANcwD9CRHJJ1ZkrwDSCRjw4yLn/Uq5rN/A=="
+            "es256"
+            "+presence"
+          ])
+          (lib.concatStringsSep "," [
+            "HoxTlnSB0PGZXufQTIev0WrAEmAvuFrIfJHUsIBlIfLNAyXuXXvTfCgVHjYFl/uFzQ5na8lYhS7aI5OtrQHTOg=="
+            "74dG2GAw/mveqaGg3C2tKq67shzOi3U4U8nMrCZFXh9ntIEViCzVm8Ejx4gL15t1zJGlUbUAwEQ+aJl9thmXeA=="
+            "es256"
+            "+presence"
+          ])
+        ];
       };
 
     };
