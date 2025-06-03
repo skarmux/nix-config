@@ -90,9 +90,6 @@
     fonts.fontconfig.enable = true;
 
     services = {
-      # Display a desktop notification (with sound)
-      # when the key needs to be touched.
-      yubikey-touch-detector.enable = true;
       syncthing = {
         enable = true;
         # https://docs.syncthing.net/users/syncthing.html

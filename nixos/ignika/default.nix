@@ -67,6 +67,7 @@
 
   programs = {
     openvpn3.enable = true;
+    yubikey-touch-detector.enable = true;
   };
 
   environment = {
