@@ -6,6 +6,10 @@
     # Not sure about the cachix cache though...
 
     allowUnfree = lib.mkForce false;
+    permittedInsecurePackages = [
+      # Vintage Story
+      "dotnet-runtime-7.0.20"
+    ];
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       "davinci-resolve"
       "discord"
@@ -19,6 +23,10 @@
       "unrar"
       "keymapp"
       "minecraft-launcher"
+
+      # Vintage Story
+      "vintagestory"
+      "dotnet-runtime-7.0.20"
 
       # Retroarch
       "libretro-snes9x"
