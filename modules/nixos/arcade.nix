@@ -30,13 +30,10 @@ in
     ];
 
     environment.systemPackages = with pkgs; [
-      (retroarch.override {
-        cores = with libretro; [
+      (retroarch.withCores (cores: with cores; [
           dolphin
-          snes9x
-          beetle-psx-hw
-        ];
-      })
+        
+      ]))
       # (pkgs.mkDerivation {
       #   pname = "libretro-common-shaders";
       #   version = "0.1.0";

@@ -47,11 +47,9 @@
   fonts = {
     enableDefaultPackages = true;
     enableGhostscriptFonts = true;
-    packages = [
-      (pkgs.nerdfonts.override { fonts = [
-        "JetBrainsMono"
-        "FiraCode"
-      ]; })
+    packages = with pkgs; [
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.fira-code
     ];
   };
   

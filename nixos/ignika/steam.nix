@@ -20,7 +20,7 @@
             "force_host_cached"
           ];
           __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
-          LD_PRELOAD="$LD_PRELOAD:${pkgs.gamemode}/lib/libgamemode.so";
+          # LD_PRELOAD="$LD_PRELOAD:${pkgs.gamemode}/lib/libgamemode.so";
         };
       };
       extraPackages = with pkgs; [

@@ -18,6 +18,7 @@
       "steam-unwrapped" # For adding Proton-GE
       "unrar"
       "keymapp"
+      "minecraft-launcher"
 
       # Retroarch
       "libretro-snes9x"
