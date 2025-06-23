@@ -40,9 +40,22 @@
 
   system.stateVersion = "24.11";
 
+  system.autoUpgrade = {
+  enable = true;
+  flake = inputs.self.outPath;
+  flags = [
+    "--update-input"
+    "nixpkgs"
+    "-L" # print build logs
+  ];
+  dates = "02:00";
+  randomizedDelaySec = "45min";
+};
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   fonts = {
     enableDefaultPackages = true;
@@ -68,6 +81,7 @@
   programs = {
     openvpn3.enable = true;
     yubikey-touch-detector.enable = true;
+    kdeconnect.enable = true;
   };
 
   environment = {

@@ -1,5 +1,4 @@
 # https://yazi-rs.github.io/docs/configuration/yazi/
-{ config, lib, pkgs, ... }:
 {
   programs.yazi = {
 

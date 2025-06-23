@@ -12,6 +12,9 @@
     })
   ];
 
+  # for languages server qmlls (Quickshell syntax)
+  qt.enable = true;
+
   home-manager.users.skarmux = {
 
     # Import all user-specific configurations and
@@ -20,6 +23,7 @@
 
     home = {
       packages = with pkgs; [
+        btop
         brave # FIXME Always launch with `--ozone-platform=wayland`
         discord
         element-desktop
@@ -50,6 +54,7 @@
         keymapp
         evince
         vintagestory
+        insomnia
 
         # hackthebox
         inetutils # ftp, etc...
@@ -81,10 +86,13 @@
 
     };
 
+    wayland.windowManager.hyprland.enable = true;
+
     # Dark Mode for GNOME and GNOME apps
     dconf = {
       enable = true;
-      settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+      # NOTE: Disabled in favor of stylix
+      # settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };
 
     # xdg.mimeApps = {
@@ -131,6 +139,7 @@
       direnv.enable = true;
       ghostty.enable = true;
       llm.enable = true;
+      wofi.enable = true;
     };
   };
 

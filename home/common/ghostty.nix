@@ -14,7 +14,7 @@
       # FIXME: Ghostty crashes when images with alpha channels
       #        are being displayed with yazi
       background = "#000000";
-      background-opacity = 0.1;
+      background-opacity = 0.8;
       background-blur = false; # blur is done by hyprland
       window-padding-balance = true;
       window-padding-color = "extend-always";

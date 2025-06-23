@@ -7,6 +7,10 @@
         # Use `clippy` for diagnostics
         # TODO Is clippy guaranteed to be insalled via toolchain?
         check = { command = "clippy"; };
+        cargo = {
+          features = ["all"];
+          allFeatures = true;
+        };
       };
       # timeout
       # environment
@@ -24,7 +28,7 @@
         formatter = {
           command = "rustfmt";
         };
-        text-width = 80;
+        text-width = 100;
         auto-format = true;
         auto-pairs = {
           "(" = ")";
@@ -36,6 +40,10 @@
           "=" = ";";
         };
         language-servers = [ "rust-analyzer" ];
+        soft-wrap = {
+          enable = true;
+          wrap-at-text-width = false;
+        };
       }
     ];
   };

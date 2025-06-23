@@ -80,8 +80,8 @@
     ];
     programs.hyprcursor-phinger.enable = true;
     home.sessionVariables = {
-      HYPRCURSOR_THEME = "phinger-cursors-dark-hyprcursor";
-      HYPRCURSOR_SIZE = "24";
+      # HYPRCURSOR_THEME = "phinger-cursors-dark-hyprcursor";
+      HYPRCURSOR_SIZE = "48";
     };
   };
 }

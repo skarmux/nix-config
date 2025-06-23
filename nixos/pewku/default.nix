@@ -59,6 +59,43 @@
 
   services = {
 
+    # postgres
+    # postgresql = {
+    #   enable = true;
+    #   ensureDatabases = [ "sjc" ];
+    #   enableTCPIP = true;
+    #   # port = 5432;
+    #   # database users can only access databases of the same name
+    #   authentication = pkgs.lib.mkOverride 10 ''
+    #     #type database  DBuser  auth-method   optional_ident_map
+    #     local sameuser  all     peer          map=superuser_map
+    #     # ipv4
+    #     host  all       all     127.0.0.1/32  trust
+    #     # ipv6
+    #     host  all       all     ::1/128       trust
+    #   '';
+    #   identMap = ''
+    #     # ArbitraryMapName systemUser DBUser
+    #     superuser_map      root      postgres
+    #     superuser_map      skarmux   postgres
+    #     # Let other names login as themselves
+    #     superuser_map      /^(.*)$   \1
+    #   '';
+    #   initialScript = pkgs.writeText "backend-initScript" ''
+    #     CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
+    #     CREATE DATABASE nixcloud;
+    #     GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
+    #   '';
+    # };
+    # /postgres
+
+    vikunja = {
+      enable = true;
+      port = 3456;
+      frontendScheme = "http";
+      frontendHostname = "projects.skarmux.tech";
+    };
+
     # anubis = {
     #   defaultOptions = {
     #     enable = true;
@@ -115,9 +152,15 @@
         "skarmux.tech" = {
           # forceSSL: Redirect HTTP to HTTPS; onlySSL: ignore HTTP entirely
           forceSSL = true;
-          sslCertificate = ./ssl/skarmux_tech/ssl-bundle.crt;
-          sslTrustedCertificate = ./ssl/skarmux_tech/SectigoRSADomainValidationSecureServerCA.crt;
-          sslCertificateKey = config.sops.secrets."skarmux_tech/certificate_key".path;
+          enableACME = true;
+        };
+        "projects.skarmux.tech" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:${toString config.services.vikunja.port}/";
+            recommendedProxySettings = true;
+          };
         };
         # "cache.skarmux.tech" = {
           # forceSSL = true;
@@ -170,9 +213,6 @@
     defaultSopsFile = ./secrets.yaml;
     secrets = {
       "cache-priv-key" = {};
-      "skarmux_tech/certificate_key" = {
-        owner = "nginx";
-      };
     };
   };
 }

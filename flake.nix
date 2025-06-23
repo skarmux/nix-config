@@ -19,6 +19,7 @@
                 # ex: `nvd diff /nix/var/nix/profiles/system-{70,71}-link`
             sops
             ssh-to-age
+            deploy-rs
             # gnupg
             # pinentry-curses
             age
@@ -49,7 +50,10 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:mic92/sops-nix";
     stylix.inputs.home-manager.follows = "home-manager";
-    stylix.url = "github:danth/stylix";
+    # stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.url = "github:nix-community/stylix/release-25.05";
+    quickshell.url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+    quickshell.inputs.nixpkgs.follows = "nixpkgs";
     # Personal
     feaston.inputs.nixpkgs.follows = "nixpkgs";
     feaston.url = "git+ssh://git@github.com/skarmux/feaston.git";

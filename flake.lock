@@ -201,11 +201,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745862616,
-        "narHash": "sha256-qQNP914BxP1NCFuGjOTCkP+I9LLo+CJCo0LJJ0EAl9M=",
+        "lastModified": 1749826549,
+        "narHash": "sha256-KbmkjGooSl5ltD0yfKOxMHDjBImtp+WR0wM7rbsTTJY=",
         "ref": "refs/heads/main",
-        "rev": "84495e5674fb919737fff68e40f76d71cfb11289",
-        "revCount": 195,
+        "rev": "64fbb46d52a8a49cca60a576c7f3b9620d6af8c4",
+        "revCount": 206,
         "type": "git",
         "url": "ssh://git@github.com/skarmux/feaston.git"
       },
@@ -628,11 +628,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1748888571,
-        "narHash": "sha256-VF3PeH4gJyKPYuhbEAN9/C/F6LdNA1/C4jRUP3n2NhU=",
+        "lastModified": 1749135406,
+        "narHash": "sha256-/MMPkGLyPtHNCwihX3QRItLCnDzr6rctbfzWSfn2lgg=",
         "ref": "refs/heads/main",
-        "rev": "b1d0a727cc594e5329c5971d73391c7529e1c80e",
-        "revCount": 6157,
+        "rev": "abdfc5ea40c0793117f34bf6c465840500cf7cb0",
+        "revCount": 6162,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/hyprwm/Hyprland"
@@ -939,11 +939,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1748889542,
-        "narHash": "sha256-Hb4iMhIbjX45GcrgOp3b8xnyli+ysRPqAgZ/LZgyT5k=",
+        "lastModified": 1750400657,
+        "narHash": "sha256-3vkjFnxCOP6vm5Pm13wC/Zy6/VYgei/I/2DWgW4RFeA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "10d7f8d34e5eb9c0f9a0485186c1ca691d2c5922",
+        "rev": "b2485d56967598da068b5a6946dadda8bfcbcd37",
         "type": "github"
       },
       "original": {
@@ -955,16 +955,16 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1748460289,
-        "narHash": "sha256-7doLyJBzCllvqX4gszYtmZUToxKvMUrg45EUWaUYmBg=",
+        "lastModified": 1749237914,
+        "narHash": "sha256-N5waoqWt8aMr/MykZjSErOokYH6rOsMMXu3UOVH5kiw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "96ec055edbe5ee227f28cdbc3f1ddf1df5965102",
+        "rev": "70c74b02eac46f4e4aa071e45a6189ce0f6d9265",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "ref": "nixos-25.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1018,6 +1018,26 @@
         "type": "github"
       }
     },
+    "quickshell": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1749292015,
+        "narHash": "sha256-y2rhYVVmetiNCg3UdN6qy/MpOTY8Mu2uOiJhfgdatsI=",
+        "ref": "refs/heads/master",
+        "rev": "ee570ec623a59561c96de2eea5a4af51385db38e",
+        "revCount": 567,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/outfoxxed/quickshell"
+      }
+    },
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
@@ -1033,6 +1053,7 @@
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs_5",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "quickshell": "quickshell",
         "sops-nix": "sops-nix",
         "stylix": "stylix"
       }
@@ -1081,15 +1102,16 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1748887638,
-        "narHash": "sha256-AExfT8rMb6Ya37Gm3dimm+e4eeLGzya55JS6VWb3nfQ=",
-        "owner": "danth",
+        "lastModified": 1749389855,
+        "narHash": "sha256-//wZBnlBJ7Ki5/ZdafiAZwVFZd/2HhKqEbOupo/HcRA=",
+        "owner": "nix-community",
         "repo": "stylix",
-        "rev": "3ca2c4478a1e984d2007c57467c6986bcdcb2629",
+        "rev": "bf5ab9df57a3d77847289c39c3a537bd6e6ac6f4",
         "type": "github"
       },
       "original": {
-        "owner": "danth",
+        "owner": "nix-community",
+        "ref": "release-25.05",
         "repo": "stylix",
         "type": "github"
       }
