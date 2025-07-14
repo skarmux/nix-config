@@ -12,7 +12,7 @@
 { config, pkgs, lib, ... }:
 let
   inherit (lib) mkOption mkEnableOption types mkIf;
-  
+
   cfg = config.yubico;
 
   yubikey-ssh-symlink = pkgs.writeShellApplication {
@@ -65,7 +65,7 @@ in
           # TODO: Move those file options into an `ssh` submodule?
           publicKeyFile = mkOption {
             type = types.path;
-            description =  ''
+            description = ''
               Path to the public key file.
             '';
           };

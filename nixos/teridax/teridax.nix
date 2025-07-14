@@ -1,7 +1,7 @@
 { pkgs, config, lib, ... }:
 {
   imports = [
-    ./global 
+    ./global
     ./yubikey
     ./firefox
     # ./hyprland

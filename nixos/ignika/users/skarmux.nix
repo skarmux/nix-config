@@ -2,7 +2,7 @@
 {
   nixpkgs.overlays = [
     (final: prev: {
-      vintagestory = prev.vintagestory.overrideAttrs ( oldAttrs: rec {
+      vintagestory = prev.vintagestory.overrideAttrs (oldAttrs: rec {
         version = "1.20.11";
         src = pkgs.fetchurl {
           url = "https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_${version}.tar.gz";
@@ -23,9 +23,12 @@
 
     home = {
       packages = with pkgs; [
+        prismlauncher
+        vscode
+        gparted
         btop
         brave # FIXME Always launch with `--ozone-platform=wayland`
-        discord
+        discord-ptb
         element-desktop
         fractal
         signal-desktop
@@ -36,6 +39,7 @@
         plexamp # music streaming
         gimp # raster graphics
         inkscape # vector graphics
+        firefox
         # davinci-resolve
         # blender
         obs-studio # screen recording & streaming
@@ -95,18 +99,18 @@
       # settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
     };
 
-    # xdg.mimeApps = {
-    #   enable = true; # .config/mimeapps.list
-    #   defaultApplications = {
-    #     "image/jxl" = [ "org.gnome.Loupe.desktop" ];
-    #     "image/png" = [ "org.gnome.Loupe.desktop" ];
-    #     "image/gif" = [ "org.gnome.Loupe.desktop" ];
-    #     "image/jpg" = [ "org.gnome.Loupe.desktop" ];
-    #     "image/bmp" = [ "org.gnome.Loupe.desktop" ];
-    #     "application/pdf" = [ "org.gnome.Evince.desktop" ];
-    #   };
-    #   associations.added = { };
-    # };
+    xdg.mimeApps = {
+      enable = true; # .config/mimeapps.list
+      # defaultApplications = {
+      #   "image/jxl" = [ "org.gnome.Loupe.desktop" ];
+      #   "image/png" = [ "org.gnome.Loupe.desktop" ];
+      #   "image/gif" = [ "org.gnome.Loupe.desktop" ];
+      #   "image/jpg" = [ "org.gnome.Loupe.desktop" ];
+      #   "image/bmp" = [ "org.gnome.Loupe.desktop" ];
+      #   "application/pdf" = [ "org.gnome.Evince.desktop" ];
+      # };
+      # associations.added = { };
+    };
 
     fonts.fontconfig.enable = true;
 
@@ -136,10 +140,12 @@
           };
         };
       };
+      alacritty.enable = true;
       direnv.enable = true;
       ghostty.enable = true;
       llm.enable = true;
       wofi.enable = true;
+      nushell.enable = true;
     };
   };
 
@@ -147,6 +153,7 @@
 
   users.users.skarmux = {
     isNormalUser = true;
+    # shell = pkgs.nushell;
     extraGroups = [
       "wheel"
       "video"

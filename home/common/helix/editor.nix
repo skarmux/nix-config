@@ -10,11 +10,11 @@
   continue-comments = false;
   auto-completion = true;
   path-completion = true;
-  auto-format = false;
+  auto-format = true;
   idle-timeout = 0;
   preview-completion-insert = true;
   completion-trigger-len = 1;
-  completion-replace = true;
+  completion-replace = false;
   auto-info = true;
   true-color = true;
   undercurl = false;
@@ -23,7 +23,7 @@
   color-modes = true;
   text-width = 80;
   default-line-ending = "lf";
-  insert-final-newline = true;
+  insert-final-newline = false;
 
   clipboard-provider = "tmux";
 
@@ -39,9 +39,9 @@
       "position"
     ];
     separator = "|";
-    # mode.normal = "NORMAL";
-    # mode.insert = "INSERT";
-    mode.select = "VIS";
+    mode.normal = "NORMAL";
+    mode.insert = "INSERT";
+    mode.select = "VISUAL";
   };
 
   lsp = {

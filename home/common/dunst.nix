@@ -10,11 +10,11 @@
         follow = "none";
 
         ### Geometry
-        width = "(100,300)";
+        width = "(100,600)";
         height = "(0,300)";
         origin = "top-center";
-        offset = "(0,50)";
-        scale = 2;
+        offset = "(0,10)";
+        scale = 4;
         notification_limit = 3;
 
         ### Progress bar
@@ -28,14 +28,14 @@
         icon_corner_radius = 0;
         icon_corners = "all";
         indicate_hidden = "yes";
-        transparency = 0;
+        # transparency = 0;
         separator_height = 6;
         padding = 10;
         horizontal_padding = 8;
         text_icon_padding = 12;
-        frame_width = 1;
+        frame_width = 2;
         # frame_color = "#a0a0a0";
-        gap_size = 6;
+        gap_size = 10;
         # separator_color = "frame";
         sort = "yes";
 
@@ -43,7 +43,7 @@
         line_height = 0;
         markup = "full";
         format = "<b>%s</b>\n%b";
-        alignment = "left";
+        alignment = "center";
         vertical_alignment = "center";
         show_age_threshold = -1;
         ellipsize = "middle";
@@ -55,9 +55,9 @@
         ### Icons
         enable_recursive_icon_lookup = true;
         # icon_theme = "Adwaita, Papirus, Papirus-Dark";
-        icon_position = "right";
+        icon_position = "left";
         min_icon_size = 32;
-        max_icon_size = 128;
+        max_icon_size = 64;
         # icon_path = ./;
 
         ### History
@@ -69,7 +69,7 @@
         # browser = /usr/bin/xdg-open;
         always_run_script = true;
         corner_radius = 10;
-        corners = "bottom, top-left";
+        corners = "all";
         ignore_dbusclose = false;
 
         ### Wayland
@@ -85,9 +85,9 @@
         per_monitor_dpi = false;
       };
 
-      urgency_low = {};
-      urgency_normal = {};
-      urgency_critical = {};
+      # urgency_low = { };
+      # urgency_normal = { };
+      # urgency_critical = { };
     };
     # configFile = ;
   };

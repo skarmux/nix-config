@@ -24,14 +24,16 @@
       wl-clipboard # wanna use `wl-copy` from terminal
       pavucontrol # control audio devices
       # Screenshot
-      grim
-      slurp
+      grim # screenshot
+      slurp # screen area selection
+      imagemagick # trim 1 pixel border from screenshot
+      swappy
       # Screensharing
       pipewire
       wireplumber
       eww
     ] ++ [
-    /*
+      /*
       BenQ 3:2
       3840x2560@59.98Hz
       3840x2560@49.98Hz
@@ -43,7 +45,7 @@
       3840x2160@23.98Hz
       BenQ 4:3
       3240x2160@59.99Hz
-    */
+      */
       (pkgs.writeShellApplication {
         name = "monitor-movie";
         runtimeInputs = [ config.programs.hyprland.package ];
@@ -74,14 +76,10 @@
     extraPortals = [ config.programs.hyprland.portalPackage ];
   };
 
-  home-manager.users.skarmux = {
-    imports = [
-      inputs.hyprcursor-phinger.homeManagerModules.hyprcursor-phinger
-    ];
-    programs.hyprcursor-phinger.enable = true;
-    home.sessionVariables = {
-      # HYPRCURSOR_THEME = "phinger-cursors-dark-hyprcursor";
-      HYPRCURSOR_SIZE = "48";
-    };
-  };
+  # home-manager.users.skarmux = {
+  #   imports = [
+  #     inputs.hyprcursor-phinger.homeManagerModules.hyprcursor-phinger
+  #   ];
+  #   programs.hyprcursor-phinger.enable = true;
+  # };
 }

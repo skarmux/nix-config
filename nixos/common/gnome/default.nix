@@ -13,7 +13,7 @@
   };
 
   environment.systemPackages = with pkgs.gnomeExtensions; [
-    switcher        # App Launcher/Switcher
+    switcher # App Launcher/Switcher
     just-perfection # Tweak Gnome Shell
     transparent-top-bar
   ];
@@ -128,12 +128,12 @@
   environment.gnome.excludePackages = with pkgs; [
     orca # screen reader
     # gnome-disk-utility
-    atomix   # puzzle game
-    cheese   # webcam tool
+    atomix # puzzle game
+    cheese # webcam tool
     epiphany # web browser
     # evince # document viewer
-    geary    # email reader
-    gedit    # text editor
+    geary # email reader
+    gedit # text editor
     # gnome-characters
     gnome-music
     gnome-photos
@@ -146,9 +146,9 @@
     gnome-software # app store
     # gnome-console # terminal emulator
     gnome-tour
-    hitori   # sudoku game
-    iagno    # go game
-    tali     # poker game
-    totem    # video player (broken on wayland)
+    hitori # sudoku game
+    iagno # go game
+    tali # poker game
+    totem # video player (broken on wayland)
   ];
 }

@@ -1,7 +1,6 @@
 { self, inputs, pkgs, ... }:
 {
   imports = [
-    ./audio.nix
     ./disk.nix
     ./hardware.nix
     ./users
@@ -19,7 +18,7 @@
     hostName = "ignika";
     firewall = {
       enable = true;
-      allowedTCPPorts = [];
+      allowedTCPPorts = [ ];
       allowedUDPPortRanges = [
         # { from = 4000; to = 4007; } # example
       ];
@@ -36,26 +35,32 @@
   #   services.NetworkManager-wait-online.enable = false;
   # };
 
+  # One of my custom modules, enabling retroarch with a
+  # gamescope session
   arcade.enable = true;
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 
-  system.autoUpgrade = {
-  enable = true;
-  flake = inputs.self.outPath;
-  flags = [
-    "--update-input"
-    "nixpkgs"
-    "-L" # print build logs
-  ];
-  dates = "02:00";
-  randomizedDelaySec = "45min";
-};
+  # system.autoUpgrade = {
+  #   enable = true;
+  #   flake = inputs.self.outPath;
+  #   flags = [
+  #     "--update-input"
+  #     "nixpkgs"
+  #     "-L" # print build logs
+  #   ];
+  #   dates = "02:00";
+  #   randomizedDelaySec = "45min";
+  # };
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    kernelPackages = pkgs.linuxPackages_zen;
+  };
 
   fonts = {
     enableDefaultPackages = true;
@@ -65,17 +70,38 @@
       nerd-fonts.fira-code
     ];
   };
-  
+
   services = {
+    tailscale = {
+      enable = true;
+      useRoutingFeatures = "client";
+    };
+    # xserver = {
+    #   enable = true;
+    #   displayManager.setupCommands = "
+    #     xrandr --output DP-1 --auto --primary
+    #   ";
+    # };
     displayManager = {
-      autoLogin.enable = true;
-      autoLogin.user = "skarmux";
+      autoLogin = {
+        enable = true;
+        user = "skarmux";
+      };
       defaultSession = "hyprland-uwsm";
-      sddm.enable = true;
-      sddm.wayland.enable = true;
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+        # theme = "";
+      };
     };
     openssh.enable = true;
     openssh.settings.AllowUsers = [ "skarmux" ];
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
   };
 
   programs = {
@@ -91,7 +117,7 @@
       git
       nixd # nix language server
       overskride # manage bluetooth connections
-    ];
+    ] ++ [ inputs.quickshell.packages.${pkgs.system}.default ];
     sessionVariables = {
       XDG_BACKEND = "wayland";
       # XDG_CURRENT_DESKTOP = "Hyprland";
@@ -119,7 +145,10 @@
     };
   };
 
-  security.sudo.execWheelOnly = true;
-  
+  security = {
+    sudo.execWheelOnly = true;
+    rtkit.enable = true;
+  };
+
   sops.defaultSopsFile = ./secrets.yaml;
 }

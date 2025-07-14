@@ -5,7 +5,7 @@ in
 {
   options = {
     services.protonvpn = {
-      enable = lib.mkEnableOption "Enable ProtonVPN (using Wireguard)."; 
+      enable = lib.mkEnableOption "Enable ProtonVPN (using Wireguard).";
 
       autostart = lib.mkOption {
         default = true;
@@ -48,7 +48,7 @@ in
           Wireguard certificate.'';
         };
 
-        dns =  {
+        dns = {
           enable = lib.mkOption {
             default = true;
             example = "true";

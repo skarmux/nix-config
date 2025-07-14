@@ -31,8 +31,8 @@ in
 
     environment.systemPackages = with pkgs; [
       (retroarch.withCores (cores: with cores; [
-          dolphin
-        
+        dolphin
+
       ]))
       # (pkgs.mkDerivation {
       #   pname = "libretro-common-shaders";
@@ -46,6 +46,6 @@ in
       #   '';
       # })
     ];
-  
+
   };
 }

@@ -38,7 +38,7 @@ in
     ripgrep
     ripgrep-all
   ];
-  
+
   programs = {
     fish = { inherit shellAbbrs shellAliases; };
     bash = { shellAliases = shellAliases // shellAbbrs; };

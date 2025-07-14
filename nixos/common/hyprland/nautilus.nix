@@ -5,7 +5,7 @@
     dconf.enable = true;
     nautilus-open-any-terminal = {
       enable = true;
-      terminal = "ghostty";
+      terminal = "alacritty";
     };
   };
 
@@ -15,18 +15,20 @@
     gnome-themes-extra
   ];
 
-  nixpkgs.overlays = [(self: super: {
-    gnome = super.gnome.overrideScope (gself: gsuper: {
-      # gvfs = pkgs.gvfs.override { gnomeSupport = true; };
-      # Add GStreamer plugin to nautilus
-      nautilus = gsuper.nautilus.overrideAttrs (nsuper: {
-        buildInputs = nsuper.buildInputs ++ (with pkgs.gst_all_1; [
-          gst-plugins-good
-          gst-plugins-bad
-        ]);
+  nixpkgs.overlays = [
+    (self: super: {
+      gnome = super.gnome.overrideScope (gself: gsuper: {
+        # gvfs = pkgs.gvfs.override { gnomeSupport = true; };
+        # Add GStreamer plugin to nautilus
+        nautilus = gsuper.nautilus.overrideAttrs (nsuper: {
+          buildInputs = nsuper.buildInputs ++ (with pkgs.gst_all_1; [
+            gst-plugins-good
+            gst-plugins-bad
+          ]);
+        });
       });
-    });
-  })];
+    })
+  ];
 
   # Access network shares
   services = {

@@ -1,6 +1,6 @@
 {
   programs.starship = {
-    
+
     enableNushellIntegration = true;
 
     settings = {

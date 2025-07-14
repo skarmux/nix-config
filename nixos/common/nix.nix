@@ -12,7 +12,7 @@
     ];
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       "davinci-resolve"
-      "discord"
+      "discord-ptb"
       "makemkv"
       "nvidia-settings"
       "nvidia-x11"
@@ -42,7 +42,7 @@
       # Trebuchet
       # Verdana
       # Webdings
-      "corefonts" 
+      "corefonts"
 
       # Microsoft True Type Fonts (Windows Vista)
       # Calibri
@@ -52,6 +52,7 @@
       # Constantia
       # Corbel
       "vista-fonts"
+      "vscode"
     ];
   };
 
@@ -75,7 +76,7 @@
       dates = "monthly";
       options = "--delete-older-than 30d";
     };
-  
+
     settings = {
       allowed-users = [ "@wheel" ];
       auto-optimise-store = lib.mkDefault true;

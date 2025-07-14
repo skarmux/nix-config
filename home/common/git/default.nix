@@ -13,8 +13,8 @@
         pull = { ff = "only"; };
         push = { autoSetupRemote = "true"; };
         init = { defaultBranch = "main"; };
-        commit = { 
-          gpgSign = false; 
+        commit = {
+          gpgSign = false;
           template = "~/.gitmessage";
         };
       };
@@ -44,7 +44,7 @@
   home = {
     file.".gitmessage".source = ./gitmessage.txt;
     packages = with pkgs; [
-      git-crypt 
+      git-crypt
       gitleaks
       gitui
       delta

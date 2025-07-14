@@ -16,7 +16,7 @@
             nixd
             nix-output-monitor # stylised wrapper around `nix`
             nvd # view packages diff between nix generations
-                # ex: `nvd diff /nix/var/nix/profiles/system-{70,71}-link`
+            # ex: `nvd diff /nix/var/nix/profiles/system-{70,71}-link`
             sops
             ssh-to-age
             deploy-rs
@@ -32,9 +32,9 @@
     extra-substituters = [ "https://hyprland.cachix.org" ];
     extra-trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
   };
-  
+
   inputs = {
-    hyprcursor-phinger.url = "github:jappie3/hyprcursor-phinger";
+    # hyprcursor-phinger.url = "github:jappie3/hyprcursor-phinger";
     catppuccin.url = "github:catppuccin/nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     disko.inputs.nixpkgs.follows = "nixpkgs";

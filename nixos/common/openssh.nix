@@ -6,7 +6,7 @@ in
   services.openssh = {
     ports = [ 22 ];
     allowSFTP = false;
-    
+
     settings = {
       AllowAgentForwarding = "no";
       AllowStreamLocalForwarding = "no";

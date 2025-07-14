@@ -1,7 +1,7 @@
 { lib, config, ... }:
 let
   inherit (lib) mkOption types mkIf mkEnableOption;
-  
+
   cfg = config.font-profiles;
 
   mkFontOption = kind: {
@@ -18,7 +18,8 @@ let
       example = "pkgs.fira-code";
     };
   };
-in {
+in
+{
   options.font-profiles = {
     enable = mkEnableOption "Whether to enable font profiles";
     monospace = mkFontOption "monospace";

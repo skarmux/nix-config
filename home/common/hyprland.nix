@@ -1,339 +1,415 @@
-{ ... }:
+{ pkgs, ... }:
 {
-   imports = [
-     ./dunst.nix
-     ./wofi.nix
-   ];
-   wayland.windowManager.hyprland = {
-     settings = {
-       ################
-       ### MONITORS ###
-       ################
+  imports = [
+    ./dunst.nix
+    ./wofi.nix
+  ];
 
-       # See https://wiki.hyprland.org/Configuring/Monitors/
+  home.packages = with pkgs; [
+    brave
+    nautilus
+    wofi
+    grim
+    slurp
+    swappy
+  ];
 
-       monitor = [
-         "desc:BNQ BenQ RD280UA HAR0021601Q,preferred,0x0,1,bitdepth,10"
-         # "desc:LG Electronics LG TV SSCR2 0x01010101,3840x2160@119.879997,3840x0,1,bitdepth,10,vrr,1"
-         "desc:LG Electronics LG TV SSCR2 0x01010101,disable"
-       ];
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      ipc = "on";
+      preload = [
+        "/home/skarmux/Downloads/wp8872162-tokyo-night-anime-wallpapers.png"
+      ];
+      wallpaper = [
+        "DP-1,/home/skarmux/Downloads/wp8872162-tokyo-night-anime-wallpapers.png"
+      ];
+    };
+  };
 
-       ###################
-       ### MY PROGRAMS ###
-       ###################
+  wayland.windowManager.hyprland = {
+    settings = {
+      ################
+      ### MONITORS ###
+      ################
 
-       # See https://wiki.hyprland.org/Configuring/Keywords/
+      # See https://wiki.hyprland.org/Configuring/Monitors/
 
-       "$terminal" = "ghostty --gtk-single-instance=true";
-       "$fileManager" = "nautilus";
-       "$menu" = "wofi --show drun";
-       "$browser" = "brave";
+      monitor = [
+        "desc:BNQ BenQ RD280UA HAR0021601Q,preferred,0x0,1"
+        "desc:LG Electronics LG TV SSCR2 0x01010101,3840x2160@119.879997,3840x0,1,bitdepth,10,vrr,1"
+        # "desc:LG Electronics LG TV SSCR2 0x01010101,disable"
+      ];
 
-       #################
-       ### AUTOSTART ###
-       #################
-       exec-once = [
-         "eww daemon"
-         "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
-       ];
+      ###################
+      ### MY PROGRAMS ###
+      ###################
 
-       #############################
-       ### ENVIRONMENT VARIABLES ###
-       #############################
+      # See https://wiki.hyprland.org/Configuring/Keywords/
 
-       # See https://wiki.hyprland.org/Configuring/Environment-variables/
-       # env = {
-       #   XCURSOR_SIZE = 48;
-       #   HYPRCURSOR_SIZE = 48;
-       # };
+      # "$terminal" = "ghostty --gtk-single-instance=true";
+      "$terminal" = "alacritty";
+      "$fileManager" = "nautilus";
+      "$launcher" = "pkill wofi || wofi --show drun";
+      "$browser" = "brave";
+      "$screenshot" = "grim -g \"$(slurp)\" - | wl-copy";
+      "$screenshot_edit" = "wl-paste | swappy -f -";
+      "$dashboard" = "eww open --config ~/.config/eww/dashboard --toggle dashboard";
 
-       ###################
-       ### PERMISSIONS ###
-       ###################
+      #################
+      ### AUTOSTART ###
+      #################
 
-       # See https://wiki.hyprland.org/Configuring/Permissions/
+      exec-once = [
+        # "eww daemon" # FIXME: Does not suffice for fast initial startup
+        # "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
+        "firefox"
+        "discordptb"
+        "steam"
+        "brave-browser"
+        "hyprpaper"
+      ];
 
-       # permissions = {};
+      #############################
+      ### ENVIRONMENT VARIABLES ###
+      #############################
 
-       #####################
-       ### LOOK AND FEEL ###
-       #####################
+      # See https://wiki.hyprland.org/Configuring/Environment-variables/
 
-       # Refer to https://wiki.hyprland.org/Configuring/Variables/
+      env = [
+        "XCURSOR_SIZE,48"
+        "HYPRCURSOR_SIZE,48"
+      ];
 
-       # https://wiki.hyprland.org/Configuring/Variables/#general
-       general = {
-         gaps_in = 5;
-         gaps_out = 20;
-         border_size = 2;
-         # https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
-         # "col.active_border" = lib.mkForce "rgba(33ccffee) rgba(00ff99ee) 45deg";
-         # "col.inactive_border" = lib.mkForce "rgba(595959aa)";
+      ###################
+      ### PERMISSIONS ###
+      ###################
 
-         # Set to true enable resizing windows by clicking and dragging on borders and gaps
-         resize_on_border = false;
-         # extend_border_grab_area = true
-         # hover_icon_on_border = true
+      # See https://wiki.hyprland.org/Configuring/Permissions/
 
-         # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
-         allow_tearing = false;
+      permissions = {};
 
-         layout = "dwindle";
-       };
+      #####################
+      ### LOOK AND FEEL ###
+      #####################
 
-       # https://wiki.hyprland.org/Configuring/Variables/#decoration
-       decoration = {
-         rounding = 10;
-         rounding_power = 2;
+      # Refer to https://wiki.hyprland.org/Configuring/Variables/
 
-         # Change transparency of focused and unfocused windows
-         active_opacity = 1.0;
-         inactive_opacity = 1.0;
+      # https://wiki.hyprland.org/Configuring/Variables/#general
+      general = {
+        gaps_in = 20;
+        gaps_out = 40;
+        border_size = 2;
+        # https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
+        # "col.active_border" = lib.mkForce "rgba(33ccffee) rgba(00ff99ee) 45deg";
+        # "col.inactive_border" = lib.mkForce "rgba(595959aa)";
 
-         # https://wiki.hyprland.org/Configuring/Variables/#blur
-         blur = {
-             enabled = true;
-             size = 12;
-             passes = 3;
+        # Set to true enable resizing windows by clicking and dragging on borders and gaps
+        resize_on_border = false;
+        # extend_border_grab_area = true
+        # hover_icon_on_border = true
 
-             vibrancy = 0.1696;
+        # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
+        allow_tearing = false;
 
-             special = true;
-             popups = false;
-         };
+        layout = "dwindle";
+      };
 
-         shadow = {
-             enabled = true;
-             range = 4;
-             render_power = 3;
-             # color = lib.mkForce "rgba(1a1a1aee)";
-         };
-       };
+      # https://wiki.hyprland.org/Configuring/Variables/#decoration
+      decoration = {
+        rounding = 10;
+        rounding_power = 2;
 
-       # https://wiki.hyprland.org/Configuring/Variables/#animations
-       animations = {
-         enabled = "yes";
+        # Change transparency of focused and unfocused windows
+        active_opacity = 1.0;
+        inactive_opacity = 1.0;
 
-         # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
+        # https://wiki.hyprland.org/Configuring/Variables/#blur
+        blur = {
+          enabled = true;
+          size = 12;
+          passes = 3;
 
-         bezier = [
-           "easeOutQuint,0.23,1,0.32,1"
-           "easeInOutCubic,0.65,0.05,0.36,1"
-           "linear,0,0,1,1"
-           "almostLinear,0.5,0.5,0.75,1.0"
-           "quick,0.15,0,0.1,1"
-         ];
+          vibrancy = 0.1696;
 
-         animation = [
-           "global, 1, 10, default"
-           "border, 1, 5.39, easeOutQuint"
-           "windows, 1, 4.79, easeOutQuint"
-           "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
-           "windowsOut, 1, 1.49, linear, popin 87%"
-           "fadeIn, 1, 1.73, almostLinear"
-           "fadeOut, 1, 1.46, almostLinear"
-           "fade, 1, 3.03, quick"
-           "layers, 1, 3.81, easeOutQuint"
-           "layersIn, 1, 4, easeOutQuint, fade"
-           "layersOut, 1, 1.5, linear, fade"
-           "fadeLayersIn, 1, 1.79, almostLinear"
-           "fadeLayersOut, 1, 1.39, almostLinear"
-           "workspaces, 1, 1.94, almostLinear, fade"
-           "workspacesIn, 1, 1.21, almostLinear, fade"
-           "workspacesOut, 1, 1.94, almostLinear, fade"
-         ];
-       };
+          special = true;
+          popups = false;
+        };
 
-       # Ref https://wiki.hyprland.org/Configuring/Workspace-Rules/
-       # "Smart gaps" / "No gaps when only"
-       # uncomment all if you wish to use that.
-       workspace = [
-         "w[tv1], gapsout:0, gapsin:0"
-         "f[1], gapsout:0, gapsin:0"
-         "1, m[desc:BNQ BenQ RD280UA HAR0021601Q]"
-         "5, m[desc:LG Electronics LG TV SSCR2 0x01010101]"
-       ];
+        shadow = {
+          enabled = true;
+          range = 4;
+          render_power = 3;
+          # color = lib.mkForce "rgba(1a1a1aee)";
+        };
+      };
 
-       # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
-       dwindle = {
-           pseudotile = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-           preserve_split = true; # You probably want this
-       };
+      # https://wiki.hyprland.org/Configuring/Variables/#animations
+      animations = {
+        enabled = "yes";
 
-       # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
-       master = {
-           new_status = "master";
-       };
+        # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 
-       # https://wiki.hyprland.org/Configuring/Variables/#misc
-       misc = {
-           force_default_wallpaper = -1; # Set to 0 or 1 to disable the anime mascot wallpapers
-           disable_hyprland_logo = false; # If true disables the random hyprland logo / anime girl background. :(
-       };
+        bezier = [
+          "easeOutQuint,0.23,1,0.32,1"
+          "easeInOutCubic,0.65,0.05,0.36,1"
+          "linear,0,0,1,1"
+          "almostLinear,0.5,0.5,0.75,1.0"
+          "quick,0.15,0,0.1,1"
+        ];
 
-       #############
-       ### INPUT ###
-       #############
+        animation = [
+          "global, 1, 10, default"
+          "border, 1, 5.39, easeOutQuint"
+          "windows, 1, 4.79, easeOutQuint"
+          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
+          "windowsOut, 1, 1.49, linear, popin 87%"
+          "fadeIn, 1, 1.73, almostLinear"
+          "fadeOut, 1, 1.46, almostLinear"
+          "fade, 1, 3.03, quick"
+          "layers, 1, 3.81, easeOutQuint"
+          "layersIn, 1, 4, easeOutQuint, fade"
+          "layersOut, 1, 1.5, linear, fade"
+          "fadeLayersIn, 1, 1.79, almostLinear"
+          "fadeLayersOut, 1, 1.39, almostLinear"
+          "workspaces, 1, 1.94, almostLinear, fade"
+          "workspacesIn, 1, 1.21, almostLinear, fade"
+          "workspacesOut, 1, 1.94, almostLinear, fade"
+        ];
+      };
 
-       # https://wiki.hyprland.org/Configuring/Variables/#input
-       input = {
-           kb_layout = "us";
-           kb_variant = "";
-           kb_model = "";
-           kb_options = "";
-           kb_rules = "";
+      # Ref https://wiki.hyprland.org/Configuring/Workspace-Rules/
+      workspace = [
+        # "Smart gaps" / "No gaps when only"
+        # uncomment all if you wish to use that.
+        # "w[tv1], gapsout:0, gapsin:0"
+        # "f[1], gapsout:0, gapsin:0"
 
-           repeat_rate = 30;
-           repeat_delay = 175;
+        # Dedicate workspace 6 to LG
+        "1, m[desc:BNQ BenQ RD280UA HAR0021601Q]"
+        "6, m[desc:LG Electronics LG TV SSCR2 0x01010101]"
+      ];
 
-           follow_mouse = 1;
+      # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
+      dwindle = {
+        pseudotile = true; # Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+        preserve_split = true; # You probably want this
+      };
 
-           sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+      # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
+      master = {
+        new_status = "master";
+      };
 
-           accel_profile = "flat";
+      # https://wiki.hyprland.org/Configuring/Variables/#misc
+      misc = {
+        force_default_wallpaper = -1; # Set to 0 or 1 to disable the anime mascot wallpapers
+        disable_hyprland_logo = false; # If true disables the random hyprland logo / anime girl background. :(
+      };
 
-           touchpad = {
-               natural_scroll = false;
-           };
-       };
+      #############
+      ### INPUT ###
+      #############
 
-       # https://wiki.hyprland.org/Configuring/Variables/#gestures
-       gestures = {
-           workspace_swipe = false;
-       };
+      # https://wiki.hyprland.org/Configuring/Variables/#input
+      input = {
+        kb_layout = "us";
+        kb_variant = "";
+        kb_model = "";
+        kb_options = "";
+        kb_rules = "";
 
-       # Example per-device config
-       # See https://wiki.hyprland.org/Configuring/Keywords/#per-device-input-configs for more
-       device = [
-         {
-             name = "sony-interactive-entertainment-dualsense-wireless-controller-touchpad";
-             # The touchpad would add unwanted mouse inputs through hyprland when running games
-             # using the dualsense button mappings.
-             enabled = false;
-         }
-         {
-             name = "zsa-technology-labs-voyager";
-             kb_layout = "us";
-             kb_variant = "altgr-intl";
-         }
-       ];
+        repeat_rate = 30;
+        repeat_delay = 175;
 
-       ###################
-       ### KEYBINDINGS ###
-       ###################
+        follow_mouse = 1;
 
-       # See https://wiki.hyprland.org/Configuring/Keywords/
-       "$mainMod" = "SUPER";
+        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
 
-       # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-       bind = [
-         "$mainMod, Q, exec, $terminal"
-         "$mainMod, W, exec, $browser"
-         "$mainMod, K, killactive,"
-         "$mainMod, M, exit,"
-         "$mainMod, E, exec, $fileManager"
-         "$mainMod, V, togglefloating,"
-         "Ctrl, Space, exec, $menu # NOTE: For muscle memory"
-         "$mainMod, P, pseudo, # dwindle"
-         "$mainMod, J, togglesplit, # dwindle"
+        accel_profile = "flat";
 
-         # Move focus with mainMod + arrow keys
-         "$mainMod, left, movefocus, l"
-         "$mainMod, right, movefocus, r"
-         "$mainMod, up, movefocus, u"
-         "$mainMod, down, movefocus, d"
+        touchpad = {
+          natural_scroll = false;
+        };
+      };
 
-         # Switch workspaces with mainMod + [0-9]
-         "$mainMod, 1, workspace, 1"
-         "$mainMod, 2, workspace, 2"
-         "$mainMod, 3, workspace, 3"
-         "$mainMod, 4, workspace, 4"
-         "$mainMod, 5, workspace, 5"
+      # https://wiki.hyprland.org/Configuring/Variables/#gestures
+      gestures = {
+        workspace_swipe = false;
+      };
 
-         # Move active window to a workspace with mainMod + SHIFT + [0-9]
-         "$mainMod SHIFT, 1, movetoworkspace, 1"
-         "$mainMod SHIFT, 2, movetoworkspace, 2"
-         "$mainMod SHIFT, 3, movetoworkspace, 3"
-         "$mainMod SHIFT, 4, movetoworkspace, 4"
-         "$mainMod SHIFT, 5, movetoworkspace, 5"
+      # Example per-device config
+      # See https://wiki.hyprland.org/Configuring/Keywords/#per-device-input-configs for more
+      device = [
+        {
+          name = "sony-interactive-entertainment-dualsense-wireless-controller-touchpad";
+          # The touchpad would add unwanted mouse inputs through hyprland when running games.
+          enabled = false;
+        }
+        {
+          name = "zsa-technology-labs-voyager";
+          kb_layout = "us";
+          kb_variant = "altgr-intl";
+        }
+      ];
 
-         # Example special workspace (scratchpad)
-         "$mainMod, S, togglespecialworkspace, magic"
-         "$mainMod SHIFT, S, movetoworkspace, special:magic"
+      ###################
+      ### KEYBINDINGS ###
+      ###################
 
-         # Scroll through existing workspaces with mouse
-         ", mouse_left, workspace, e-1"
-         ", mouse_right, workspace, e+1"
-       ];
+      # See https://wiki.hyprland.org/Configuring/Keywords/
+      "$mainMod" = "SUPER";
 
-       bindm = [
-         # Move/resize windows with mainMod + LMB/RMB and dragging
-         "$mainMod, mouse:272, movewindow"
-         "$mainMod, mouse:273, resizewindow"
-       ];
+      # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
+      bind = [
+        "$mainMod, Q, exec, $terminal"
+        "$mainMod, W, exec, $browser"
+        "$mainMod, K, killactive,"
+        "$mainMod, M, exit,"
+        "$mainMod, E, exec, $fileManager"
+        "$mainMod, V, togglefloating,"
+        "$mainMod, S, exec, $screenshot"
+        "$mainMod SHIFT, S, exec, $screenshot_edit"
+        "Ctrl, Space, exec, $launcher"
+        "$mainMod, P, pseudo, # dwindle"
+        "$mainMod, J, togglesplit, # dwindle"
 
-       bindel = [
-         # Laptop multimedia keys for volume and LCD brightness
-         ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-         ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-         ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-         ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-         ",XF86MonBrightnessUp, exec, brightnessctl s 10%+"
-         ",XF86MonBrightnessDown, exec, brightnessctl s 10%-"
-       ];
+        # Move focus with mainMod + arrow keys
+        "$mainMod, left, movefocus, l"
+        "$mainMod, right, movefocus, r"
+        "$mainMod, up, movefocus, u"
+        "$mainMod, down, movefocus, d"
 
-       bindl = [
-         # Requires playerctl
-         ", XF86AudioNext, exec, playerctl next"
-         ", XF86AudioPause, exec, playerctl play-pause"
-         ", XF86AudioPlay, exec, playerctl play-pause"
-         ", XF86AudioPrev, exec, playerctl previous"
-       ];
+        # Move window to another position on screen
+        "$mainMod SHIFT, left, swapwindow, l"
+        "$mainMod SHIFT, right, swapwindow, r"
+        "$mainMod SHIFT, up, swapwindow, u"
+        "$mainMod SHIFT, down, swapwindow, d"
 
-       bindr = [
-         # Toggle dashboard
-         "SUPER, Super_L, exec, eww open --config ~/.config/eww/dashboard --toggle dashboard"
-       ];
+        # Switch workspaces with mainMod + [0-9]
+        "$mainMod, 1, workspace, 1"
+        "$mainMod, 2, workspace, 2"
+        "$mainMod, 3, workspace, 3"
+        "$mainMod, 4, workspace, 4"
+        "$mainMod, 5, workspace, 5"
 
-       
-       ##############################
-       ### WINDOWS AND WORKSPACES ###
-       ##############################
+        # Move active window to a workspace with mainMod + SHIFT + [0-9]
+        "$mainMod SHIFT, 1, movetoworkspace, 1"
+        "$mainMod SHIFT, 2, movetoworkspace, 2"
+        "$mainMod SHIFT, 3, movetoworkspace, 3"
+        "$mainMod SHIFT, 4, movetoworkspace, 4"
+        "$mainMod SHIFT, 5, movetoworkspace, 5"
 
-       # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
-       # See https://wiki.hyprland.org/Configuring/Workspace-Rules/ for workspace rules
+        # Example special workspace (scratchpad)
+        # "$mainMod, S, togglespecialworkspace, magic"
+        # "$mainMod SHIFT, S, movetoworkspace, special:magic"
 
-       # Example windowrule
-       # windowrule = float,class:^(kitty)$,title:^(kitty)$
+        # Scroll through existing workspaces with mouse
+        # mouse:274 middle click
+        # mouse:275 back
+        # mouse:276 forward
+        # mouse_(left|right|up|down) scroll wheel
+        ", mouse:275, workspace, e-1"
+        ", mouse:276, workspace, e+1"
+      ];
 
-       windowrule = [
-         "bordersize 0, floating:0, onworkspace:w[tv1]"
-         "rounding 0, floating:0, onworkspace:w[tv1]"
-         "bordersize 0, floating:0, onworkspace:f[1]"
-         "rounding 0, floating:0, onworkspace:f[1]"
-         # Ignore maximize requests from apps. You'll probably like this.
-         "suppressevent maximize, class:.*"
-         # Fix some dragging issues with XWayland
-         "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
-         #
-         "float, class:org.pulseaudio.pavucontrol"
-         "size 50% 50%, class:org.pulseaudio.pavucontrol"
-         "float, class:org.keepassxc.KeePassXC"
-         "size 50% 50%, class:org.keepassxc.KeePassXC"
-         "float, class:xdg-desktop-portal-gtk"
-         "float, class:io.github.kaii_lb.Overskride"
-       ];
+      bindm = [
+        # Move/resize windows with mainMod + LMB/RMB and dragging
+        "$mainMod, mouse:272, movewindow"
+        "$mainMod, mouse:273, resizewindow"
+      ];
 
-       layerrule = [
-         # ignorezero: mask blur. Do not blur on 100% transparent pixels
-         "blur, eww-dashboard"
-         "ignorezero, eww-dashboard"
-         "dimaround, eww-dashboard"
+      bindel = [
+        # Laptop multimedia keys for volume and LCD brightness
+        # ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+        # ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        # ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        # ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+        # ",XF86MonBrightnessUp, exec, brightnessctl s 10%+"
+        # ",XF86MonBrightnessDown, exec, brightnessctl s 10%-"
+      ];
 
-         "blur, wofi"
-         "ignorezero, wofi"
-         "dimaround, wofi"
-       ];
-     }; # settings
-   }; # hyprland
+      bindl = [
+        # Requires playerctl
+        # ", XF86AudioNext, exec, playerctl next"
+        # ", XF86AudioPause, exec, playerctl play-pause"
+        # ", XF86AudioPlay, exec, playerctl play-pause"
+        # ", XF86AudioPrev, exec, playerctl previous"
+      ];
+
+      bindr = [
+        # Toggle dashboard
+        "SUPER, Super_L, exec, $dashboard"
+      ];
+
+
+      ##############################
+      ### WINDOWS AND WORKSPACES ###
+      ##############################
+
+      # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
+      # See https://wiki.hyprland.org/Configuring/Workspace-Rules/ for workspace rules
+
+      # Example windowrule
+      # windowrule = float,class:^(kitty)$,title:^(kitty)$
+
+      windowrule = [
+        # Disable border and border rounding for single window
+        # "bordersize 0, floating:0, onworkspace:w[tv1]"
+        # "rounding 0, floating:0, onworkspace:w[tv1]"
+        # "bordersize 0, floating:0, onworkspace:f[1]"
+        # "rounding 0, floating:0, onworkspace:f[1]"
+        
+        # Ignore maximize requests from apps. You'll probably like this.
+        "suppressevent maximize, class:.*"
+
+        # Fix some dragging issues with XWayland
+        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+
+        # Privacy
+        "noscreenshare 1, class:org.keepassxc.KeePassXC"
+        "noscreenshare 1, class:brave-browser"
+        "noscreenshare 1, class:firefox"
+        "noscreenshare 1, class:discord"
+        "noscreenshare 1, class:Signal"
+        "noscreenshare 1, class:org.telegram.desktop"
+        "noscreenshare 1, class:Element"
+        "noscreenshare 1, class:org.gnome.Nautilus"
+
+        # Fix workspaces for applications
+        "workspace 1, class:com.mitchellh.ghostty"
+        "workspace 2, class:brave-browser"
+        "workspace 4, class:firefox"
+        "workspace 5, class:steam"
+        "workspace 5, class:discord"
+
+        # Floating
+        "float, class:io.github.kaii_lb.Overskride"
+        "float, class:org.pulseaudio.pavucontrol"
+        "float, class:org.keepassxc.KeePassXC"
+        "float, class:xdg-desktop-portal-gtk"
+        "float, class:steam, title:Steam Settings"
+        "float, class:steam, title:Friends List"
+        
+        "stayfocused, class:io.github.kaii_lb.Overskride"
+        "stayfocused, class:org.pulseaudio.pavucontrol"
+
+        "size 50% 50%, class:io.github.kaii_lb.Overskride"
+        "size 50% 50%, class:org.pulseaudio.pavucontrol"
+        "size 50% 50%, class:org.keepassxc.KeePassXC"
+      ];
+
+      layerrule = [
+        # ignorezero: mask blur. Do not blur on 100% transparent pixels
+        "blur, eww-dashboard"
+        "ignorezero, eww-dashboard"
+        "dimaround, eww-dashboard"
+
+        "blur, wofi"
+        "ignorezero, wofi"
+        "dimaround, wofi"
+        "noanim, wofi"
+      ];
+    }; # settings
+  }; # hyprland
 }

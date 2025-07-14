@@ -21,10 +21,10 @@ in
     (mkIf (cfg.file-picker == "tmux") {
       # File tree picker in Helix with tmux
       # https://yazi-rs.github.io/docs/tips/#helix-with-tmux
-    
+
       programs.yazi.enable = true;
       programs.tmux.enable = true;
-        
+
       home.file.".config/helix/yazi-picker.sh" = {
         text = ''
           #!/usr/bin/env bash
@@ -46,14 +46,14 @@ in
       };
     })
 
-  
+
     (mkIf (cfg.file-picker == "zellij") {
       # File tree picker in Helix with zellij
       # https://yazi-rs.github.io/docs/tips/#helix-with-zellij
-    
+
       programs.yazi.enable = true;
       programs.zellij.enable = true;
-    
+
       home.file.".config/helix/yazi-picker.sh" = {
         text = ''
           #!/usr/bin/env bash

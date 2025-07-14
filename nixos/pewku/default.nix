@@ -33,6 +33,7 @@
       rsync
       htop
       dust
+      lazysql
     ];
     persistence."/persist" = {
       directories = [
@@ -89,6 +90,24 @@
     # };
     # /postgres
 
+    # Set an admin user: `sude paperless-manage createsuperuser`
+    paperless = {
+      enable = true;
+      consumptionDirIsPublic = true;
+      settings = {
+        PAPERLESS_CONSUMER_IGNORE_PATTERN = [
+          ".DS_STORE/*"
+          "desktop.ini"
+        ];
+        PAPERLESS_OCR_LANGUAGE = "deu+eng";
+        PAPERLESS_OCR_USER_ARGS = {
+          optimize = 1;
+          pdfa_image_compression = "lossless";
+        };
+        PAPERLESS_URL = "https://paperless.skarmux.tech";
+      };
+    };
+
     vikunja = {
       enable = true;
       port = 3456;
@@ -117,11 +136,11 @@
       enable = true;
       domain = "skarmux.tech";
     };
-    
+
     # Transfer logs to external syslog server
     # FIXME
     # rsyslogd.enable = true;
-    
+
     # Use this system as exit-node
     # tailscale.useRoutingFeatures = "server";
 
@@ -142,7 +161,7 @@
 
     nginx = {
       enable = true;
-      
+
       recommendedBrotliSettings = true;
       recommendedGzipSettings = true;
       recommendedOptimisation = true;
@@ -162,9 +181,17 @@
             recommendedProxySettings = true;
           };
         };
+        "paperless.skarmux.tech" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:28981/";
+            recommendedProxySettings = true;
+          };
+        };
         # "cache.skarmux.tech" = {
-          # forceSSL = true;
-          # enableACME = true;
+        # forceSSL = true;
+        # enableACME = true;
         #   locations."/" = {
         #     proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString 3337}";
         #     recommendedProxySettings = true;
@@ -212,7 +239,7 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = {
-      "cache-priv-key" = {};
+      "cache-priv-key" = { };
     };
   };
 }

@@ -9,7 +9,7 @@
       };
 
       # Raspberry Pi
-      
+
       pewku = inputs.nixpkgs.lib.nixosSystem {
         specialArgs = { inherit self inputs; };
         modules = [ ./pewku ];
@@ -26,8 +26,10 @@
       };
     };
 
-    checks = builtins.mapAttrs (system: deployLib:
-      deployLib.deployChecks self.deploy
-    ) inputs.deploy-rs.lib;
+    checks = builtins.mapAttrs
+      (system: deployLib:
+        deployLib.deployChecks self.deploy
+      )
+      inputs.deploy-rs.lib;
   };
 }

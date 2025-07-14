@@ -3,7 +3,7 @@
   sops.secrets = {
     "skarmux_tech/certificate_key" = {
       owner = "nginx";
-      sopsFile = ./secrets.yaml; 
+      sopsFile = ./secrets.yaml;
     };
   };
 
@@ -16,4 +16,4 @@
         sslCertificateKey = config.sops.secrets."skarmux_tech/certificate_key".path;
       };
     };
-}
+  }

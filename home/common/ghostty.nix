@@ -3,30 +3,21 @@
     enableBashIntegration = true;
     enableFishIntegration = true;
     enableZshIntegration = true;
-    # clearDefaultKeybinds = true; # I need ctr+v for now
+
+    clearDefaultKeybinds = true; # I need ctrl+v for now
+
     settings = {
-      font-family = "FiraCode Nerd Font Propo";
-      font-style-bold = "Bold";
-      font-synthetic-style = false;
-      font-size = 20;
-      alpha-blending = "linear-corrected";
-      cursor-style = "block_hollow";
-      # FIXME: Ghostty crashes when images with alpha channels
-      #        are being displayed with yazi
-      background = "#000000";
-      background-opacity = 0.8;
+      # alpha-blending = "linear-corrected";
+      cursor-style = "bar"; # block | bar | underline | block_hollow
+
       background-blur = false; # blur is done by hyprland
+
       window-padding-balance = true;
       window-padding-color = "extend-always";
+      window-padding-x = 10;
+      window-padding-y = 10;
+
       confirm-close-surface = false;
-      # NOTE: Not working right now. The `global:` keyword is
-      #       only supported on macOS. Is it even useful without
-      #       global accessibiliy?
-      # quick-terminal-position = "center";
-      # quick-terminal-screen = "mouse";
-      # keybind = [
-      #   "super+t=toggle_quick_terminal"
-      # ];
     };
   };
 }

@@ -23,13 +23,13 @@
       modules = [ ./deck.nix ];
     };
 
-    nix-on-droid = inputs.home-manager.lib.homeManagerConfiguration rec {
-      pkgs = import inputs.nixpkgs {
-        system = "aarch64-linux";
-      };
-      extraSpecialArgs = { inherit self inputs pkgs; };
-      modules = [ ./nix-on-droid.nix ];
-    };
+    # nix-on-droid = inputs.home-manager.lib.homeManagerConfiguration rec {
+    #   pkgs = import inputs.nixpkgs {
+    #     system = "aarch64-linux";
+    #   };
+    #   extraSpecialArgs = { inherit self inputs pkgs; };
+    #   modules = [ ./nix-on-droid.nix ];
+    # };
 
   };
 }

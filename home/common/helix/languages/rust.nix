@@ -8,7 +8,7 @@
         # TODO Is clippy guaranteed to be insalled via toolchain?
         check = { command = "clippy"; };
         cargo = {
-          features = ["all"];
+          features = [ "all" ];
           allFeatures = true;
         };
       };
@@ -37,7 +37,7 @@
           "\"" = "\"";
           "`" = "`";
           "<" = ">";
-          "=" = ";";
+          # "=" = ";";
         };
         language-servers = [ "rust-analyzer" ];
         soft-wrap = {

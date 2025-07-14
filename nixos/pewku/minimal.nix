@@ -52,18 +52,18 @@
   powerManagement.cpuFreqGovernor = "performance";
 
   users.users =
-  {
-    root.openssh.authorizedKeys = {
-      keys = [
-        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOkPglvGlOsIUrTMQdL7DLPMXmDRzYF3wJzH/Ee2VU/dAAAABHNzaDo= skarmux@ignika"
-        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBZmLgjKCWzv8nWieD5rQKpOBJnRXGZxqtXk9o5peHpZAAAABHNzaDo= skarmux@ignika"
-      ];
+    {
+      root.openssh.authorizedKeys = {
+        keys = [
+          "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOkPglvGlOsIUrTMQdL7DLPMXmDRzYF3wJzH/Ee2VU/dAAAABHNzaDo= skarmux@ignika"
+          "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBZmLgjKCWzv8nWieD5rQKpOBJnRXGZxqtXk9o5peHpZAAAABHNzaDo= skarmux@ignika"
+        ];
+      };
+      nixos.openssh.authorizedKeys = {
+        keys = [
+          "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOkPglvGlOsIUrTMQdL7DLPMXmDRzYF3wJzH/Ee2VU/dAAAABHNzaDo= skarmux@ignika"
+          "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBZmLgjKCWzv8nWieD5rQKpOBJnRXGZxqtXk9o5peHpZAAAABHNzaDo= skarmux@ignika"
+        ];
+      };
     };
-    nixos.openssh.authorizedKeys = {
-      keys = [
-        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOkPglvGlOsIUrTMQdL7DLPMXmDRzYF3wJzH/Ee2VU/dAAAABHNzaDo= skarmux@ignika"
-        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBZmLgjKCWzv8nWieD5rQKpOBJnRXGZxqtXk9o5peHpZAAAABHNzaDo= skarmux@ignika"
-      ];
-    };
-  };
 }

@@ -4,9 +4,9 @@
     (pkgs.writeShellApplication {
       name = "ex";
       runtimeInputs = with pkgs; [
-        p7zip  # 7z
-        unzip  # zip
-        unrar  # rar
+        p7zip # 7z
+        unzip # zip
+        unrar # rar
       ];
       text = ''
         if [ -f "$1" ] ; then

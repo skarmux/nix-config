@@ -6,7 +6,7 @@
 
     nodev."/" = {
       fsType = "tmpfs";
-      mountOptions = ["size=4G"];
+      mountOptions = [ "size=4G" ];
     };
 
     disk.main = {

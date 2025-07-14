@@ -12,7 +12,7 @@
       sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
     };
   };
-  
+
   # Sops needs access to persisted private keys to
   # generate /run/secrets before booting is completed
   fileSystems."/persist".neededForBoot = true;

@@ -6,20 +6,11 @@
     ./common/shell
   ]
   ++ builtins.attrValues self.homeModules;
-  
+
   home = {
     username = "nix-on-droid";
     homeDirectory = "/data/data/com.termux.nix/files/home";
     stateVersion = "24.11";
-  };
-
-  nixpkgs.config = {
-    # cache.nixos.org does not process unfree packages which
-    # requires the host to build them
-    # Not sure about the cachix cache though...
-
-    allowUnfree = true;
-    allowUnfreePredicate = (_: true);
   };
 
   programs = {

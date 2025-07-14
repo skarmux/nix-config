@@ -23,7 +23,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    
+
     home.packages = [ pkgs.lsp-ai ];
 
     # Sops secrets need to be loaded from files at runtime
@@ -35,18 +35,18 @@ in
     programs.helix.languages.language-server.lsp-ai = {
 
       command = "lsp-ai";
-    
+
       # args = [ "--stdio" ];
       # timeout
       # environment = { };
       # required-root-patterns
-          
+
       config = {
-    
+
         # NOTE: Not configurable yet. Waiting for updates.
         #       Allows for the use of vector databases and such.
         # https://github.com/SilasMarvin/lsp-ai/wiki/Configuration#memory
-        memory = { file_store = {}; };
+        memory = { file_store = { }; };
 
         # https://github.com/SilasMarvin/lsp-ai/wiki/Configuration#models
         models = {
@@ -146,7 +146,7 @@ in
 
         completion = {
           model = "model2";
-          parameters = {};
+          parameters = { };
         };
       };
     };

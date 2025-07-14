@@ -3,22 +3,22 @@
   # Home
 
   # home-manager.users.skarmux = {
-    # imports = [ ../../../home/skarmux/home.nix ];
+  # imports = [ ../../../home/skarmux/home.nix ];
 
-    # home = {
-    #   username = "skarmux";
-    #   homeDirectory = "/home/skarmux";
-    #   stateVersion = "24.11";
-    # };
+  # home = {
+  #   username = "skarmux";
+  #   homeDirectory = "/home/skarmux";
+  #   stateVersion = "24.11";
+  # };
 
-    # services.syncthing = {
-    #   enable = true;
-    #   # https://docs.syncthing.net/users/syncthing.html
-    #   extraOptions = [
-    #     "--gui-address=https://127.0.0.1:8384"
-    #     "--no-default-folder" # Don't create ~/Sync
-    #   ];
-    # };
+  # services.syncthing = {
+  #   enable = true;
+  #   # https://docs.syncthing.net/users/syncthing.html
+  #   extraOptions = [
+  #     "--gui-address=https://127.0.0.1:8384"
+  #     "--no-default-folder" # Don't create ~/Sync
+  #   ];
+  # };
   # };
 
   # NixOS

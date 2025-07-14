@@ -11,7 +11,7 @@
 
     settings = {
       manager = {
-        ratio = [ 0 1 3 ];
+        ratio = [ 0 1 0 ];
         sort_by = "alphabetical";
         sort_sensitive = false;
         sort_dir_first = true;

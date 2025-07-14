@@ -6,17 +6,19 @@
       };
       window = {
         dynamic_padding = true;
-        padding.x = 15;
-        opacity = 0.9;
+        padding.x = 5;
+        blur = false; # Done by hyprland
       };
       cursor = {
-        style = "Block";
-        unfocused_hollow = true;
+        style = "Beam"; # Block | Underline | Beam
+        # unfocused_hollow = true;
       };
-      font = {
-        size = 10.25;
+      selection = {
+        save_to_clipboard = true;
       };
-      mouse.hide_when_typing = false;
+      mouse = {
+        hide_when_typing = true;
+      };
     };
   };
 }

@@ -16,7 +16,7 @@
         '';
       }
     ];
-    
+
     extraConfig = ''
       set -g default-terminal "tmux-256color"
       set -g renumber-windows on # prevent numbering gaps

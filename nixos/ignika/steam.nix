@@ -1,6 +1,7 @@
 { pkgs, lib, ... }:
 {
   programs = {
+
     steam = {
       enable = true;
       gamescopeSession = {
@@ -12,14 +13,14 @@
       localNetworkGameTransfers.openFirewall = true;
       package = pkgs.steam.override {
         extraEnv = {
-          PROTON_HIDE_NVIDIA_GPU = "1";
-          PROTON_ENABLE_NVAPI = "1";
-          VKD3D_DISABLE_EXTENSIONS = "VK_NV_low_latency2";
-          VKD3D_CONFIG = lib.concatStringsSep "," [
-            "no_upload_hv"
-            "force_host_cached"
-          ];
-          __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
+          # PROTON_HIDE_NVIDIA_GPU = "0";
+          # PROTON_ENABLE_NVAPI = "1";
+          # VKD3D_DISABLE_EXTENSIONS = "VK_NV_low_latency2";
+          # VKD3D_CONFIG = lib.concatStringsSep "," [
+          #   "no_upload_hv"
+          #   "force_host_cached"
+          # ];
+          # __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
           # LD_PRELOAD="$LD_PRELOAD:${pkgs.gamemode}/lib/libgamemode.so";
         };
       };
@@ -32,6 +33,7 @@
       ];
       # extest.enable = true;
     };
+
     gamescope = {
       enable = true;
       capSysNice = true; # FIXME Can't set this to `true`. Gamescope crashes on startup.
@@ -42,6 +44,7 @@
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };
     };
+
     gamemode = {
       enable = true;
       settings = {
@@ -60,9 +63,21 @@
         };
       };
     };
-  };
+
+  }; # programs
 
   home-manager.users.skarmux = {
+    home.sessionVariables = {
+      # PROTON_HIDE_NVIDIA_GPU = "0";
+      # PROTON_ENABLE_NVAPI = "1";
+      # VKD3D_DISABLE_EXTENSIONS = "VK_NV_low_latency2";
+      # VKD3D_CONFIG = lib.concatStringsSep "," [
+      #   "no_upload_hv"
+      #   "force_host_cached"
+      # ];
+      # __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
+      # LD_PRELOAD="$LD_PRELOAD:${pkgs.gamemode}/lib/libgamemode.so";
+    };
     home.file = {
       # Ensure that more than one core is used for vulkan shader processing
       ".steam/steam/steam_dev.cfg".text = ''
