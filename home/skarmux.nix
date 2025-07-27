@@ -1,4 +1,4 @@
-{ inputs, self, pkgs, config, ... }:
+{ inputs, self, pkgs, lib, config, ... }:
 {
   imports = [
     inputs.catppuccin.homeModules.catppuccin
@@ -11,8 +11,13 @@
     ./common/shell
     ./common/starship.nix
     ./common/hyprland.nix
+    ./common/alacritty.nix
   ]
   ++ builtins.attrValues self.homeModules;
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "unrar"
+  ];
 
   home = {
     username = "skarmux";

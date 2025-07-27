@@ -3,11 +3,11 @@ let
   cfg = config.arcade;
 
   retroarch-gamescope = pkgs.writeShellScriptBin "retroarch-gamescope" ''
-    gamescope -r 60 -W 3840 -H 2560 -w 3840 -h 2560 --hdr-enabled -- retroarch
+    gamescope -r 60 -W 3840 -H 2560 -w 3840 -h 2560 --hdr-enabled --prefer-output DP-1 -- retroarch
   '';
 
   retroarchSessionFile =
-    (pkgs.writeTextDir "share/wayland-sessions/steam.desktop" ''
+    (pkgs.writeTextDir "share/wayland-sessions/retroarch.desktop" ''
       [Desktop Entry]
       Name=RetroArch
       Comment=An emulation hub
@@ -15,7 +15,7 @@ let
       Type=Application
     '').overrideAttrs
       (_: {
-        passthru.providedSessions = [ "steam" ];
+        passthru.providedSessions = [ "retroarch" ];
       });
 in
 {
@@ -24,6 +24,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+
+    services.udev.packages = [ pkgs.dolphin-emu ];
 
     services.displayManager.sessionPackages = [
       retroarchSessionFile

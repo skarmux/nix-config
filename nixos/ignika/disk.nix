@@ -36,7 +36,9 @@
               };
               "/persist" = {
                 mountpoint = "/persist";
-                mountOptions = [ "compress-force=zstd:1" "noatime" "discard=async" "space_cache=v2" ];
+                # Allowing `atime` since I think it is linked to the cached shaders of Monster Hunter Wilds
+                # to be recognized as invalid when starting the game.
+                mountOptions = [ "compress-force=zstd:1" "discard=async" "space_cache=v2" ];
               };
             };
           };

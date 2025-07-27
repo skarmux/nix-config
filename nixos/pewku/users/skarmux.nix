@@ -1,4 +1,3 @@
-{ config, ... }:
 {
   # Home
 
@@ -36,8 +35,8 @@
 
     openssh.authorizedKeys.keys = [
       # Access only with hardware keys. No exceptions!
-      (builtins.readFile ../../../keys/id_yc.pub)
-      (builtins.readFile ../../../keys/id_ya.pub)
+      (builtins.readFile ../../../keys/id_ecdsa_yk_32885183.pub)
+      (builtins.readFile ../../../keys/id_ecdsa_yk_25390376.pub)
     ];
   };
 

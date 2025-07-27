@@ -1,4 +1,5 @@
 # https://yazi-rs.github.io/docs/configuration/yazi/
+# FIXME: Yazi can't delete shader cache in MHWilds install root. Why?
 {
   programs.yazi = {
 
@@ -10,7 +11,7 @@
     enableZshIntegration = true;
 
     settings = {
-      manager = {
+      mgr = {
         ratio = [ 0 1 0 ];
         sort_by = "alphabetical";
         sort_sensitive = false;

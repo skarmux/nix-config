@@ -1,4 +1,4 @@
-{ self, inputs, pkgs, ... }:
+{ self, inputs, pkgs, config, ... }:
 {
   imports = [
     ./disk.nix
@@ -19,6 +19,10 @@
     firewall = {
       enable = true;
       allowedTCPPorts = [ ];
+      allowedUDPPorts = [
+        # FIXME: Open the port only when the application is running
+        # 24727 # AusweisApp2 Geräte Kopplung NFC Scan
+      ];
       allowedUDPPortRanges = [
         # { from = 4000; to = 4007; } # example
       ];
@@ -55,8 +59,12 @@
 
   boot = {
     loader = {
-      systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+      systemd-boot = {
+        enable = true;
+        # Prevent boot partition from running out of disk space.
+        configurationLimit = 10;
+      };
     };
     binfmt.emulatedSystems = [ "aarch64-linux" ];
     kernelPackages = pkgs.linuxPackages_zen;
@@ -72,35 +80,72 @@
   };
 
   services = {
+    udev.packages = [ pkgs.dolphin-emu ];
     tailscale = {
       enable = true;
       useRoutingFeatures = "client";
     };
-    # xserver = {
+    # greetd = {
     #   enable = true;
-    #   displayManager.setupCommands = "
-    #     xrandr --output DP-1 --auto --primary
-    #   ";
+    #   settings = rec {
+    #     # default_session = {
+    #     #   command = "${pkgs.sway}/bin/sway --config ${swayConfig}";
+    #     # };
+    #     initial_session = {
+    #       command = "Hyprland";
+    #       user = "skarmux";
+    #     };
+    #     default_session = initial_session;
+    #   };
     # };
     displayManager = {
       autoLogin = {
-        enable = true;
+        enable = false;
         user = "skarmux";
       };
       defaultSession = "hyprland-uwsm";
       sddm = {
         enable = true;
         wayland.enable = true;
-        # theme = "";
+        # TODO: Install a theme
+        #       https://www.reddit.com/r/NixOS/comments/14dlvbr/sddm_theme/
+        theme = "";
       };
     };
-    openssh.enable = true;
+    openssh.enable = false;
     openssh.settings.AllowUsers = [ "skarmux" ];
     pipewire = {
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      wireplumber = {
+        extraConfig = {
+          # "wh-1000xm4" = {
+          #   "monitor.bluez.rules" = [
+          #     {
+          #       matches = [
+          #         {
+          #           "device.name" = "-bluez_card.*";
+          #           "device.product.id" = "";
+          #           "device.vendor.id" = "";
+          #         }
+          #       ];
+          #       actions = {
+          #         update-props = {
+          #           "bluez5.a2dp.ldac.quality" = "hq";
+          #         };
+          #       };
+          #     }
+          #   ];
+          # };
+        };
+        configPackages = [
+          (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/11-bluetooth-policy.conf" ''
+            wireplumber.settings = { bluetooth.autoswitch-to-headset-profile = false }
+          '')
+        ];
+      };
     };
   };
 

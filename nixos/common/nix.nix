@@ -12,6 +12,7 @@
     ];
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       "davinci-resolve"
+      "discord"
       "discord-ptb"
       "makemkv"
       "nvidia-settings"
@@ -52,6 +53,7 @@
       # Constantia
       # Corbel
       "vista-fonts"
+
       "vscode"
     ];
   };

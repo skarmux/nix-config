@@ -23,12 +23,27 @@
 
     home = {
       packages = with pkgs; [
-        prismlauncher
+        prismlauncher # Minecraft
+
+        # FIXME: Needs firewall whitelisting to use smartphone
+        #        as card reader over network
+        #        24727/udp https://www.opensuse-forum.de/thread/64593-leap-15-2-ausweisapp2-l%C3%A4sst-sich-nicht-koppeln/?postID=289095#post289095
+        ausweisapp
+
+        dolphin-emu
+        timewarrior
+        taskwarrior3
+        taskwarrior-tui
+
+        yubikey-personalization-gui
+        
         vscode
         gparted
         btop
         brave # FIXME Always launch with `--ozone-platform=wayland`
+        discord
         discord-ptb
+        vesktop
         element-desktop
         fractal
         signal-desktop
@@ -53,9 +68,7 @@
         # ryujinx
         # dolphin-emu
         cool-retro-term
-        # ZSA voyager
-        kontroll
-        keymapp
+
         evince
         vintagestory
         insomnia
@@ -67,6 +80,10 @@
         redis # in-memory database
         gobuster # check web urls with wordlists
         mariadb-client
+      ] ++ [
+        (pkgs.writeShellScriptBin "clear-mhw-cache" ''
+          rm --force ~/.steam/steam/steamapps/common/MonsterHunterWilds/{shader.cache2,vkd3d-proton.cache}
+        '')
       ];
 
       file = {
@@ -86,6 +103,7 @@
             "+presence"
           ])
         ];
+
       };
 
     };
@@ -136,6 +154,8 @@
           "yubikey-hosts" = {
             host = "gitlab.com github.com pewku";
             identitiesOnly = true;
+            # `id_yubikey` is a symlink to whichever of multiple
+            # yubikeys is connected.
             identityFile = [ "~/.ssh/id_yubikey" ];
           };
         };
@@ -166,8 +186,8 @@
     hashedPasswordFile = config.sops.secrets.skarmux-password.path;
     openssh.authorizedKeys.keys = [
       # Read files into strings
-      (builtins.readFile ../../../keys/id_yc.pub)
-      (builtins.readFile ../../../keys/id_ya.pub)
+      (builtins.readFile ../../../keys/id_ecdsa_yk_25390376.pub)
+      (builtins.readFile ../../../keys/id_ecdsa_yk_32885183.pub)
     ];
   };
 
@@ -220,34 +240,38 @@
   #   };
   # };
 
-  yubico.enable = true;
-  yubico.keys = [
-    {
-      serial = 24686370;
-      owner = "skarmux";
-      publicKeyFile = ../../../keys/id_yc.pub;
-      privateKeyFile = config.sops.secrets."yubico/ssh/yc".path;
-    }
-    {
-      serial = 25390376;
-      owner = "skarmux";
-      publicKeyFile = ../../../keys/id_ya.pub;
-      privateKeyFile = config.sops.secrets."yubico/ssh/ya".path;
-    }
-  ];
-
   programs.adb.enable = true; # Required for SideQuest
+
+  yubico = {
+    enable = true;
+    keys = [
+      { # YubiKey 5 NFC (5.4.3) [OTP+FIDO+CCID]
+        serial = 25390376;
+        owner = "skarmux";
+        publicKeyFile = ../../../keys/id_ecdsa_yk_25390376.pub;
+        privateKeyFile = config.sops.secrets."yubico/ssh/id_ecdsa_yk_25390376".path;
+      }
+      { # YubiKey 5C (5.7.4) [OTP+FIDO+CCID]
+        serial = 32885183;
+        owner = "skarmux";
+        # TODO: How do I get public/private SSH keys?
+        # https://developers.yubico.com/SSH/Securing_SSH_with_FIDO2.html
+        publicKeyFile = ../../../keys/id_ecdsa_yk_32885183.pub;
+        privateKeyFile = config.sops.secrets."yubico/ssh/id_ecdsa_yk_32885183".path;
+      }
+    ];
+  };
 
   sops.secrets = {
     "skarmux-password" = {
       neededForUsers = true;
     };
-    "yubico/ssh/ya" = {
+    "yubico/ssh/id_ecdsa_yk_25390376" = {
       mode = "400";
       owner = config.users.users.skarmux.name;
       group = config.users.users.skarmux.group;
     };
-    "yubico/ssh/yc" = {
+    "yubico/ssh/id_ecdsa_yk_32885183" = {
       mode = "400";
       owner = config.users.users.skarmux.name;
       group = config.users.users.skarmux.group;

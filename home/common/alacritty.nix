@@ -6,7 +6,7 @@
       };
       window = {
         dynamic_padding = true;
-        padding.x = 5;
+        padding = { x = 15; };
         blur = false; # Done by hyprland
       };
       cursor = {
