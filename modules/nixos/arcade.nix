@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
 let
-  cfg = config.arcade;
+  cfg = config.retroSession;
 
   retroarch-gamescope = pkgs.writeShellScriptBin "retroarch-gamescope" ''
     gamescope -r 60 -W 3840 -H 2560 -w 3840 -h 2560 --hdr-enabled --prefer-output DP-1 -- retroarch
@@ -19,13 +19,16 @@ let
       });
 in
 {
-  options.arcade = {
+  options.retroSession = {
     enable = lib.mkEnableOption "Retro Gaming";
   };
 
   config = lib.mkIf cfg.enable {
 
-    services.udev.packages = [ pkgs.dolphin-emu ];
+    services.udev.packages = with pkgs; [
+      # Support the official GameCube adapter
+      dolphin-emu
+    ];
 
     services.displayManager.sessionPackages = [
       retroarchSessionFile

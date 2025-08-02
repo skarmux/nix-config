@@ -2,13 +2,24 @@
   outputs = inputs @ { flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        ./home
+        ./config
         ./modules
-        ./nixos
       ];
       systems = [ "x86_64-linux" "aarch64-linux" ];
       perSystem = { pkgs, ... }: {
         devShells.default = pkgs.mkShell {
+          shellHook = ''
+          cat <<EOF
+          Building an ISO:
+          $ nix build .#nixosConfigurations.iso.config.system.build.isoImage
+
+          Retrieve SSH key handles from Yubikey (~/.ssh/<here>):
+          $ ssh-keygen -K
+
+          Update SOPS secrets keys:
+          $ sops updatekeys <path>/secrets.yml
+          EOF
+          '';
           packages = with pkgs;[
             nil # nix language server
             nixpkgs-fmt
@@ -34,7 +45,6 @@
   };
 
   inputs = {
-    # hyprcursor-phinger.url = "github:jappie3/hyprcursor-phinger";
     catppuccin.url = "github:catppuccin/nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -50,11 +60,10 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:mic92/sops-nix";
     stylix.inputs.home-manager.follows = "home-manager";
-    # stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.url = "github:nix-community/stylix/release-25.05";
     quickshell.url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
     quickshell.inputs.nixpkgs.follows = "nixpkgs";
-    # Personal
     feaston.inputs.nixpkgs.follows = "nixpkgs";
     feaston.url = "git+ssh://git@github.com/skarmux/feaston.git";
     homepage.inputs.nixpkgs.follows = "nixpkgs";

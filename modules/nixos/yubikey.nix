@@ -28,8 +28,8 @@ let
         case "$serial" in
           ${lib.concatMapStrings (yubikey: ''
             "${toString yubikey.serial}")
-            ssh_private="${yubikey.privateKeyFile}"
-            ssh_public="${yubikey.publicKeyFile}"
+            ssh_private="${yubikey.ssh.private}"
+            ssh_public="${yubikey.ssh.public}"
             owner="${yubikey.owner}"
             ;;
           '') cfg.keys}
@@ -62,18 +62,24 @@ in
             type = types.str;
             description = "The user using the key.";
           };
-          # TODO: Move those file options into an `ssh` submodule?
-          publicKeyFile = mkOption {
+          ssh.public = mkOption {
             type = types.path;
             description = ''
               Path to the public key file.
             '';
           };
-          privateKeyFile = mkOption {
+          ssh.private = mkOption {
             type = types.path;
             description = ''
               Path to where the private key is stored. Note that the private key 
               only works in conjunction with the hardware key.
+            '';
+          };
+          u2f = mkOption {
+            type = types.str;
+            description = ''
+              Key for universal 2-factor authentication for passwordless sudo.
+              Generate one using `pamu2fcfg`. Make sure to trim the `<username>:` prefix.
             '';
           };
         };
@@ -97,6 +103,30 @@ in
       yubikey-manager # cli `ykman` Manager Configuration Tool
       pam_u2f # sudo authentication
     ];
+
+    home-manager.users.skarmux = {
+
+      # TODO
+      home.file.".config/Yubico/u2f_keys".text = "skarmux:" + lib.concatStringsSep ":" (builtins.map(key: key.u2f) cfg.keys);
+
+      programs.ssh = {
+        # Required for `services.yubikey-agent`
+        extraConfig = ''
+          AddKeysToAgent yes
+        '';
+        matchBlocks = {
+          # Instruct SSH to use the `id_yubikey` symlink
+          "yubikey-hosts" = {
+            host = "gitlab.com github.com pewku";
+            identitiesOnly = true;
+            # `id_yubikey` is a symlink to whichever of multiple
+            # yubikeys is connected.
+            identityFile = [ "~/.ssh/id_yubikey" ];
+          };
+        };
+      };
+
+    };
 
     services = {
       yubikey-agent.enable = true; # SSH Agent
@@ -138,6 +168,17 @@ in
         enable = true;
         # Passwordless sudo when SSH'ing into remote
         authorizedKeysFiles = [ "/etc/ssh/authorized_keys.d/%u" ];
+      };
+      # Login/sudo with yubikeys
+      # FIXME: The symlinking job might need to run in order for both keys to work
+      #        for the sddm login.
+      services = {
+        login.u2fAuth = true;
+        sudo.u2fAuth = true;
+      };
+      u2f = {
+        enable = true;
+        settings.cue = true;
       };
     };
   };
