@@ -27,8 +27,6 @@ in
 
     authenticatorApp = mkEnableOption "Install the `yubioath-flutter` GUI authenticator app for 2FA codes.";
 
-    # lockSession = mkEnableOption "Automatically lock session when yubikey is removed.";
-
     keys = mkOption {
       description = ''
         Physical YubiKey hardware token configurations. NOTE: When multiple keys
@@ -78,7 +76,7 @@ in
           ssh.public = ./path/to/id_ecdsa_sk.pub;
         };
       };
-      default = [ ];
+      default = { };
     };
   };
 
@@ -187,14 +185,6 @@ in
           ENV{HID_NAME}=="Yubico Yubi*", \
           RUN+="${yubikey-ssh-symlink}/bin/yubikey-ssh-symlink"
         '';
-        # '' ++ (lib.optional cfg.lockSession ''
-        #   ACTION=="remove",\
-        #   ENV{ID_BUS}=="usb",\
-        #   ENV{ID_MODEL_ID}=="0407",\
-        #   ENV{ID_VENDOR_ID}=="1050",\
-        #   ENV{ID_VENDOR}=="Yubico",\
-        #   RUN+="loginctl lock-sessions"
-        # '');
       };
     };
 

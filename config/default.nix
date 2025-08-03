@@ -12,55 +12,35 @@
       # WORK / WSL #
       ##############
 
-      # skarmux = inputs.home-manager.lib.homeManagerConfiguration rec {
-      #   pkgs = import inputs.nixpkgs {
-      #     system = "x86_64-linux";
-      #   };
-      #   extraSpecialArgs = { inherit self inputs pkgs; };
-      #   modules = builtins.attrValues self.homeModules ++ [
-      #     inputs.stylix.homeModules.stylix
-      #     ./home/base.nix
-      #     ./home/hackthebox.nix
-      #     ({ lib, ... }: {
-      #       home = {
-      #         username = "skarmux";
-      #         stateVersion = "25.05";
-      #       };
-      #       nixpkgs.config = {
-      #         allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      #           "unrar"
-      #           "vscode"
-      #         ];
-      #       };
-      #     })
-      #   ];
-      # };
+      skarmux = inputs.home-manager.lib.homeManagerConfiguration rec {
+        pkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+        };
+        extraSpecialArgs = { inherit self inputs pkgs; };
+        modules = builtins.attrValues self.homeModules ++ [
+          inputs.stylix.homeModules.stylix
+          ./home/base.nix
+          ./home/hackthebox.nix
+        ];
+      };
 
       ##############
       # STEAM DECK #
       ##############
 
-      # deck = inputs.home-manager.lib.homeManagerConfiguration rec {
-      #   pkgs = import inputs.nixpkgs {
-      #     system = "x86_64-linux";
-      #   };
-      #   extraSpecialArgs = { inherit self inputs pkgs; };
-      #   modules = builtins.attrValues self.homeModules ++ [
-      #     inputs.stylix.homeModules.stylix
-      #     ({ lib, ... }: {
-      #       home = {
-      #         username = "deck";
-      #         stateVersion = "25.05";
-      #       };
-      #       nixpkgs.config = {
-      #         allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      #           "unrar"
-      #           "vscode"
-      #         ];
-      #       };
-      #     })
-      #   ];
-      # };
+      deck = inputs.home-manager.lib.homeManagerConfiguration rec {
+        pkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+        };
+        extraSpecialArgs = { inherit self inputs pkgs; };
+        modules = builtins.attrValues self.homeModules ++ [
+          inputs.stylix.homeModules.stylix
+          ./home/base.nix
+          {
+            home.username = "deck";
+          }
+        ];
+      };
 
     };
 
@@ -147,6 +127,13 @@
           ./global
           ./hardware/yubikey
           ./nixos/pewku
+          {
+            home-manager.users.skarmux = {
+              imports = builtins.attrValues self.homeModules ++ [
+                ./home/base.nix
+              ];
+            };
+          }
         ];
       };
 
@@ -156,34 +143,27 @@
 
       # Keep it minimal, as everything has to live within ram!
 
-      # iso = inputs.nixpkgs.lib.nixosSystem {
-      #   specialArgs = { inherit self inputs; };
-      #   system = "x86_64-linux";
-      #   modules = builtins.attrValues self.nixosModules ++ [
-      #     ({ pkgs, modulesPath, ... }: {
-      #       imports = [
-      #         (modulesPath + "/installer/cd-dvd/installation-cd-graphical-plasma5.nix")
-      #         inputs.home-manager.nixosModules.home-manager
-      #         ./hardware/yubikey
-      #         {
-      #           users.users.skarmux = {
-      #             isNormalUser = true;
-      #           };
-      #           home-manager.users.skarmux.home = {
-      #             username = "skarmux";
-      #             stateVersion = "25.05";
-      #           };
-      #         }
-      #       ];
-      #       environment.systemPackages = with pkgs; [
-      #         disko
-      #         sops
-      #         helix
-      #         age
-      #       ];
-      #     })
-      #   ];
-      # };
+      iso = inputs.nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit self inputs; };
+        system = "x86_64-linux";
+        modules = builtins.attrValues self.nixosModules ++ [
+          ({ pkgs, modulesPath, ... }: {
+            imports = [
+              (modulesPath + "/installer/cd-dvd/installation-cd-graphical-plasma5.nix")
+              inputs.home-manager.nixosModules.home-manager
+              # inputs.sops-nix.nixosModules.sops
+              # ./global
+            ];
+            yubico.enable = true; # requires home-manager
+            environment.systemPackages = with pkgs; [
+              disko
+              sops
+              helix
+              age
+            ];
+          })
+        ];
+      };
 
     };
 

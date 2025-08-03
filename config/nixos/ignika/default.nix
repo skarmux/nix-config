@@ -32,6 +32,7 @@
   };
 
   yubico = {
+    authorizeSSH = true;
     passwordlessSudo = true;
     authenticatorApp = true;
   };
