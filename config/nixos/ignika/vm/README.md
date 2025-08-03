@@ -1,0 +1,2 @@
+I did something weird to unlink/link the only gpu from the host machine to the qemu instance of windows.
+This is currently untested and I need to get it going again in the future for Windows shenanigans that don't work on linux.

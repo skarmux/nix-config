@@ -1,21 +1,45 @@
 [![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
 
-```
-Good references
-https://github.com/nmasur/dotfiles
-https://github.com/niksingh710/ndots
-https://github.com/Misterio77/nix-config
-```
-
-# Updating
-
-If the commit hash to nixpkgs after a `nix flake update nixpkgs` is too new so
-that there are no cached binaries yet, you can replace it with the latest from
-https://status.nixos.org: `nix flake lock --override-input github:nixos/nixpkgs/<commit_hash>`
-
-Unfree or packages with overrides will always be built from source!
-
 # Installation
+
+## Live image
+
+### Generating a custom live image
+
+Use a nix-enabled system to generate a live image (for a given machine). Since we need at least `disko` and `sops` to set everything up, we're gonna need a customized live image to boot from, that has the binaries for those two already built. If we were to install them in-place on the live system, the ram filesystem might exceed its limits when a build triggers, dependencies get pulled and lots of C++ gets compiled.
+
+TODO: I'm considering adding an authentication manager to the live image, that allows for use of my yubikeys which store resident ssh keys (the private key file is a mere handle for the real private key living on the yubikey hardware). Those I could import with something like `ssh-keygen -K` and then use those keys to unlock the sops secrets.
+
+The nixos configuration for the live image is declared in `nixos/default.nix`. Add packages at will. I'll be happy with `disko`, `sops` + `age` & `helix` as a bare minimum.
+
+Build the image:
+```sh
+nix build .#nixosConfigurations.iso.config.system.build.isoImage
+```
+
+The resulting image can be found in `result/iso`.
+
+### Booting into live image
+
+- Pull the latest version if THIS repository.
+- Prepare the drive using the disko configuration.
+- 
+
+```
+# nix-shell
+# sudo nix run 'github:nix-community/disko/latest#disko-install' -- --flake 'github:skarmux/nix-config#ignika' --disk main /dev/sdX
+# ssh-keygen -t ed25519 -C "teridax" -f /mnt/etc/ssh/ssh_host_ed25519_key
+```
+
+# Install
+```
+nixos-install --flake .#teridax --no-root-passwd
+```
+When there is tmpfs mounted that is too small for the nix-build temporary files,
+you can temporarily increase its size using remount:
+```
+mount -o remount,size=new_size /path/to/tmpfs
+```
 
 ## Remote setup with `disko` and `nixos-anywhere`
 
@@ -37,29 +61,24 @@ nix run github:nix-community/nixos-anywhere -- \
   - I think skarmux is configured for password-less sudo?
 
 
-## Install from Live image
+# Updating
 
-```
-# nix-shell
-# sudo nix run 'github:nix-community/disko/latest#disko-install' -- --flake 'github:skarmux/nix-config#ignika' --disk main /dev/sdX
-# ssh-keygen -t ed25519 -C "teridax" -f /mnt/etc/ssh/ssh_host_ed25519_key
-```
+## Going back a commit to pull the latest cached binaries
 
-# Install
-```
-nixos-install --flake .#teridax --no-root-passwd
-```
-When there is tmpfs mounted that is too small for the nix-build temporary files,
-you can temporarily increase its size using remount:
-```
-mount -o remount,size=new_size /path/to/tmpfs
-```
+If the commit hash to nixpkgs after a `nix flake update nixpkgs` is too new so
+that there are no cached binaries yet, you can replace it with the latest from
+https://status.nixos.org: `nix flake lock --override-input github:nixos/nixpkgs/<commit_hash>`
 
+Unfree or packages with overrides will always be built from source!
 
 # Change /mnt/etc/nixos permissions back
 ```
 chmod -v 755 /mnt/etc/nixos
 ```
+
+# SOPS
+
+Host ssh keys are being used to decrypt sops secrets at runtime.
 
 # GPG & SSH
 
@@ -96,3 +115,9 @@ Disable registered serial number from PGP key, to enable usage of the backup yub
 $ cat ~/.config/nix/nix.conf
 access-tokens = github.com=<github api token>
 ```
+
+# Credit
+
+- https://github.com/nmasur/dotfiles
+- https://github.com/niksingh710/ndots
+- https://github.com/Misterio77/nix-config

@@ -1,4 +1,3 @@
 .direnv
 result*
-/nixos/pewku/ssh_host_ed25519_key
-/nixos-anywhere.sh
+/config/nixos/pewku/ssh_host_ed25519_key
