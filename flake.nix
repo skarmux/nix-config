@@ -22,7 +22,7 @@
           '';
           packages = with pkgs;[
             nil # nix language server
-            nixpkgs-fmt
+            nixpkgs-fmt # formatter
             nh
             nixd
             nix-output-monitor # stylised wrapper around `nix`

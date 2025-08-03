@@ -31,6 +31,11 @@
     networkmanager.enable = true;
   };
 
+  yubico = {
+    passwordlessSudo = true;
+    authenticatorApp = true;
+  };
+
   retroSession.enable = true;
 
   boot = {

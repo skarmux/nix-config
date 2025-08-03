@@ -10,16 +10,22 @@ creation_rules:
     key_groups:
     - age:
       - *skarmux
-  - path_regex: config/nixos/teridax/secrets.ya?ml$
+  - path_regex: config/hardware/yubikey/secrets.ya?ml$
     key_groups:
     - age:
       - *skarmux
+      - *ignika
       - *teridax
   - path_regex: config/nixos/ignika/secrets.ya?ml$
     key_groups:
     - age:
       - *skarmux
       - *ignika
+  - path_regex: config/nixos/teridax/secrets.ya?ml$
+    key_groups:
+    - age:
+      - *skarmux
+      - *teridax
   - path_regex: config/nixos/pewku/secrets.ya?ml$
     key_groups:
     - age:

@@ -52,13 +52,13 @@
     wayland.windowManager.hyprland.settings = {
       # I can live with `auto-right` as I'm a single monitor user and
       # have only one configuration with my TV where I'll have `auto-right`.
-      monitors = let
+      monitor = let
         scale = "1";
-      in builtins.mapAttrs (name: m: 
+      in builtins.attrValues (builtins.mapAttrs (name: m: 
         "${m.port}, ${toString m.width}x${toString m.height}@${toString m.refresh}, ${
         if m.primary then "0x0" else "auto-right"}, ${scale}${
         if m.vrr then ", vrr, 3" else ""} # ${name}"
-      ) config.monitors;
+      ) config.monitors);
     };
   };
 }

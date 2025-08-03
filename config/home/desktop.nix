@@ -66,22 +66,7 @@
     };
 
     programs = {
-        ssh = {
-            enable = true;
-            # Required for yubi-agent
-            extraConfig = ''
-                AddKeysToAgent yes
-            '';
-            matchBlocks = {
-                "yubikey-hosts" = {
-                    host = "gitlab.com github.com pewku";
-                    identitiesOnly = true;
-                    # `id_yubikey` is a symlink to whichever of multiple
-                    # yubikeys is connected.
-                    identityFile = [ "~/.ssh/id_yubikey" ];
-                };
-            };
-        };
+        ssh.enable = true;
         direnv.enable = true;
         # llm.enable = true;
         wofi.enable = true;
