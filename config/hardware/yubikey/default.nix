@@ -60,14 +60,14 @@
 
   sops.secrets = {
 
-    "25390376/id_ecdsa_sk" = {
+    "25390376/id_ed25519_sk" = {
       sopsFile = ./secrets.yaml;
       mode = "400";
       owner = "skarmux";
       group = config.users.users.skarmux.group;
     };
 
-    "32885183/id_ecdsa_sk" = {
+    "32885183/id_ed25519_sk" = {
       sopsFile = ./secrets.yaml;
       mode = "400";
       owner = "skarmux";
