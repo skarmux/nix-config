@@ -1,34 +1,43 @@
-{ config, lib, modulesPath, ... }:
+{ pkgs, ... }:
 {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
     ./disk.nix
   ];
 
   boot = {
-    initrd = {
-      availableKernelModules = [
-        "xhci_pci"
-        "ahci"
-        "usbhid"
-        "usb_storage"
-        "sd_mod"
-        "sr_mod"
-        "rtsx_pci_sdmmc"
-      ];
-      kernelModules = [
-      ];
-    };
-    kernelModules = [
-      "kvm-intel"
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ahci"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+      "sr_mod"
+      "rtsx_pci_sdmmc"
     ];
+    kernelModules = [ "kvm-intel" ];
     kernelParams = [
-      # Enable builtin keyboard on boot screen to unlock luks encrypted drive
+      # Enable builtin keyboard on initramfs screen to unlock luks encrypted drive
       # https://discussion.fedoraproject.org/t/fujitsu-lifebook-e5510-keyboard-not-detected/70907/18
       "i8042.nomux=1"
       "i8042.reset"
     ];
-    extraModulePackages = [ ];
+  };
+
+  nixpkgs.hostPlatform = "x86_64-linux";
+
+  powerManagement.cpuFreqGovernor = "ondemand";
+
+  monitors = {
+    "" = {
+      primary = true;
+      port = "eDP-1";
+    };
+    # "BNQ BenQ RD280UA HAR0021601Q" = {
+    #   port = "DP-1";
+    # };
+    # "LG Electronics LG TV SSCR2 0x01010101" = {
+    #   port = "HDMI-A-1";
+    # };
   };
 
   networking = {
@@ -37,7 +46,40 @@
     interfaces.wlp2s0.useDHCP = true;
   };
 
-  nixpkgs.hostPlatform = "x86_64-linux";
+  hardware = {
+    cpu.intel.updateMicrocode = true;
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+    logitech.wireless.enable = true; # FIXME Move to config/hardware
+    enableRedistributableFirmware = true;
+  };
 
-  hardware.cpu.intel.updateMicrocode = true;
+  #############
+  ### AUDIO ###
+  #############
+
+  security.rtkit.enable = true;
+
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true;
+    };
+    pulse.enable = true;
+    wireplumber = {
+      configPackages = [
+        (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/11-bluetooth-policy.conf" ''
+          wireplumber.settings = { bluetooth.autoswitch-to-headset-profile = false }
+        '')
+      ];
+    };
+  };
+
 }

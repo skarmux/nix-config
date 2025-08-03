@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware
@@ -97,10 +97,8 @@
     ];
     sessionVariables = {
       XDG_BACKEND = "wayland";
-      # XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_TYPE = "wayland";
       _JAVA_AWT_WM_NONREPARENTING = "1";
-      # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
       LIBSEAT_BACKEND = "logind";
     };
     persistence."/persist" = {
@@ -113,11 +111,6 @@
         "/var/lib/nixos"
         # System crash dumps for analysis
         "/var/lib/systemd/coredump"
-      ];
-      files = [
-        # FIXME bind-mount fails on startup
-        # https://discourse.nixos.org/t/impermanence-a-file-already-exists-at-etc-machine-id/20267
-        # "/etc/machine-id"
       ];
     };
   };

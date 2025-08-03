@@ -18,6 +18,19 @@
 
           Update SOPS secrets keys:
           $ sops updatekeys <path>/secrets.yml
+
+          Installation:
+          $ disko --mode disko --flake .#<sys>
+          $ mkdir -p /mnt/persist/etc/ssh
+          $ ssh-keygen -A -f /mnt/persist
+          $ mkdir -p ~/.config/sops/age
+          $ cp <keys.txt> ~/.config/sops/age/keys.txt
+          $ ssh-to-age < /mnt/persist/etc/ssh/ssh_host_ed25519.pub
+          > age$...
+          $ hx .sops.yaml
+          $ sops updatekeys config/nixos/<sys>/secrets.yaml
+          $ sops updatekeys config/hardware/yubikey/secrets.yaml
+          $ sudo nixos-install --flake .#<sys> --no-root-password
           EOF
           '';
           packages = with pkgs;[

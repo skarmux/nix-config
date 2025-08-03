@@ -40,7 +40,7 @@
       enable = true;
       powerOnBoot = true;
     };
-    logitech.wireless.enable = true;
+    logitech.wireless.enable = true; # FIXME Move to config/hardware
     enableRedistributableFirmware = true;
   };  
 }

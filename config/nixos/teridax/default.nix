@@ -2,32 +2,92 @@
 {
   imports = [
     ./hardware
+    # ./programs
+    # ./services
     ./users
     ../../optional/hyprland.nix
+    ../../optional/nautilus.nix
   ];
 
   system.stateVersion = "25.05";
 
-  networking.hostName = "teridax";
-  
-  boot = {
-    kernelPackages = pkgs.linuxPackages_zen;
-    supportedFilesystems = [ "ntfs" ];
-    loader.systemd-boot.enable = true;
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
+  networking = {
+    hostName = "teridax";
+    firewall = {
+      enable = true;
+      # interfaces = {
+      #   "eth0" = {};
+      # };
+    };
+    networkmanager.enable = true;
   };
 
-  hardware = {
-    enableRedistributableFirmware = true;
-    graphics = {
+  yubico = {
+    authorizeSSH = true;
+    passwordlessSudo = true;
+    authenticatorApp = true;
+  };
+  
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 10;
+      };
+    };
+    binfmt.emulatedSystems = [
+      "aarch64-linux"
+    ];
+    kernelPackages = pkgs.linuxPackages_zen;
+  };
+
+  fonts = {
+    enableDefaultPackages = true;
+    enableGhostscriptFonts = true;
+    packages = with pkgs.nerd-fonts; [
+      jetbrains-mono
+      fira-code
+    ];
+  };
+
+  services = {
+    tailscale = {
       enable = true;
-      enable32Bit = true;
+      useRoutingFeatures = "client";
+    };
+    displayManager = {
+      autoLogin = {
+        enable = true;
+        user = "skarmux";
+      };
+      defaultSession = "hyprland-uwsm";
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
     };
   };
 
-  powerManagement.cpuFreqGovernor = "ondemand";
+  programs = {
+    openvpn3.enable = true;
+    kdeconnect.enable = true;
+  };
 
   environment = {
+    systemPackages = with pkgs; [
+      protonvpn-gui # NOTE: Needs to be system level, I think.
+      helix
+      git
+      nixd # nix language server
+      overskride # manage bluetooth connections
+    ];
+    sessionVariables = {
+      XDG_BACKEND = "wayland";
+      XDG_SESSION_TYPE = "wayland";
+      _JAVA_AWT_WM_NONREPARENTING = "1";
+      LIBSEAT_BACKEND = "logind";
+    };
     persistence."/persist" = {
       hideMounts = true; # hide in desktop applications like nautilus or dolphin
       directories = [
@@ -39,13 +99,15 @@
         # System crash dumps for analysis
         "/var/lib/systemd/coredump"
       ];
-      files = [
-        # FIXME bind-mount fails on startup
-        # https://discourse.nixos.org/t/impermanence-a-file-already-exists-at-etc-machine-id/20267
-        # "/etc/machine-id"
-      ];
     };
   };
+
+  security = {
+    sudo.execWheelOnly = true;
+    rtkit.enable = true;
+  };
+
+  sops.defaultSopsFile = ./secrets.yaml;
 
   home-manager.users.skarmux = {
     wayland.windowManager.hyprland = {
@@ -90,5 +152,4 @@
  
   };
 
-  sops.defaultSopsFile = ./secrets.yaml;
 }

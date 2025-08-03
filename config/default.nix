@@ -149,13 +149,24 @@
         modules = builtins.attrValues self.nixosModules ++ [
           ({ pkgs, modulesPath, ... }: {
             imports = [
-              (modulesPath + "/installer/cd-dvd/installation-cd-graphical-plasma5.nix")
-              inputs.home-manager.nixosModules.home-manager
-              # inputs.sops-nix.nixosModules.sops
-              # ./global
+              (modulesPath + "/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix")
+              inputs.home-manager.nixosModules.home-manager # needed by yubikey module
+              inputs.sops-nix.nixosModules.sops
+              ./global
             ];
-            yubico.enable = true; # requires home-manager
+           
+            services = {
+              yubikey-agent.enable = true; # SSH Agent
+              pcscd.enable = true; # Smartcard functionality
+              udev = {
+                packages = with pkgs; [
+                  yubikey-personalization
+                ];
+              };
+            };
+
             environment.systemPackages = with pkgs; [
+              yubikey-manager
               disko
               sops
               helix
