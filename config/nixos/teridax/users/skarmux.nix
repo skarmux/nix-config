@@ -1,18 +1,16 @@
 { config, ... }:
 {
-  users = {
-    users.skarmux = {
-      isNormalUser = true;
-      # shell = pkgs.nushell;
-      extraGroups = [
-        "wheel"
-        "video"
-        "audio"
-        "i2c" # control connected devices
-        "networkmanager"
-      ];
-      hashedPasswordFile = config.sops.secrets.skarmux-password.path;
-    };
+  users.users.skarmux = {
+    isNormalUser = true;
+    # shell = pkgs.nushell;
+    extraGroups = [
+      "wheel"
+      "video"
+      "audio"
+      "i2c" # control connected devices
+      "networkmanager"
+    ];
+    hashedPasswordFile = config.sops.secrets.skarmux-password.path;
   };
 
   home-manager.users.skarmux = {

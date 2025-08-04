@@ -4,6 +4,9 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     # Login via SSH using yubikey (imported from .common)
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEfSahJoIaxQ31rSXlDgm4OzdShZGFkTaGsgXsP+D1v/ pewku-deployment"
+    ];
   };
 
   home-manager.users.skarmux = {
