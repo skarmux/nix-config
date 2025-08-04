@@ -28,7 +28,7 @@
     permittedInsecurePackages = [
       "dotnet-runtime-7.0.20" # VintageStory
     ];
-    allowUnfree = true;
+    allowUnfree = lib.mkForce false;
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       "nvidia-settings"
       "nvidia-x11"
@@ -38,7 +38,6 @@
       "dotnet-runtime-7.0.20" # VintageStory
       "steam"
       "steam-unwrapped"
-      "vscode"
     ];
   };
 }

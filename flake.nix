@@ -32,6 +32,14 @@
           $ sops updatekeys config/hardware/yubikey/secrets.yaml
           $ sudo nixos-install --flake .#<sys> --no-root-password
           EOF
+
+          rbtohex() {
+              ( od -An -vtx1 | tr -d ' \n' )
+          }
+
+          hextorb() {
+              ( tr '[:lower:]' '[:upper:]' | sed -e 's/\([0-9A-F]\{2\}\)/\\\\\\x\1/gI'| xargs printf )
+          }          
           '';
           packages = with pkgs;[
             nil # nix language server
@@ -47,6 +55,10 @@
             # gnupg
             # pinentry-curses
             age
+            # Yubikey FDE
+            yubikey-personalization
+            openssl
+            gcc
           ];
         };
       };

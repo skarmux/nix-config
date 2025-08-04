@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
     imports = [
         ./modules/stylix.nix
@@ -7,42 +7,53 @@
         ./programs/dunst.nix
         ./programs/wofi.nix
         ./services/hyprpaper.nix
+        ./services/syncthing.nix
     ];
 
+    nixpkgs.config = {
+      allowUnfree = lib.mkForce false;
+      allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+        "discord-ptb"
+        "vscode"
+        "plexamp"
+        "obsidian"
+      ];
+    };
+
     home = {
-        packages = with pkgs; [
-            insomnia # api checking
-            # vscode # graphical editor
-            
-            # browser
-            firefox
-            brave
+      packages = with pkgs; [
+        insomnia # api checking
+        vscode # graphical editor
+        
+        # browser
+        firefox
+        brave
 
-            # messenger
-            # discord-ptb
-            element-desktop
-            signal-desktop
-            telegram-desktop
+        # messenger
+        discord-ptb
+        element-desktop
+        signal-desktop
+        telegram-desktop
 
-            # multimedia
-            evince # pdf viewer
-            imv # tiled image viewer
-            libjxl # jpeg xl
-            celluloid # video player
-            # plexamp # music streaming
-            gimp # raster graphics
-            inkscape # vector graphics
+        # multimedia
+        evince # pdf viewer
+        imv # tiled image viewer
+        libjxl # jpeg xl
+        celluloid # video player
+        plexamp # music streaming
+        gimp # raster graphics
+        inkscape # vector graphics
 
-            keepassxc # password management
-            # obsidian # notetaking
-            libreoffice # office
+        keepassxc # password management
+        obsidian # notetaking
+        libreoffice # office
 
-            # hyprland
-            grim
-            slurp
-            swappy
-            nautilus
-        ];
+        # hyprland
+        grim
+        slurp
+        swappy
+        nautilus
+      ];
     };
 
     # Dark Mode for GNOME and GNOME apps

@@ -5,15 +5,21 @@
   ];
 
   boot = {
-    initrd.availableKernelModules = [
-      "xhci_pci"
-      "ahci"
-      "usbhid"
-      "usb_storage"
-      "sd_mod"
-      "sr_mod"
-      "rtsx_pci_sdmmc"
-    ];
+    initrd = {
+      # Minimal list of modules to use the EFI system partition and the YubiKey
+      kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
+      # Enable support for the YubiKey PBA
+      luks.yubikeySupport = true;
+      availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+        "sr_mod"
+        "rtsx_pci_sdmmc"
+      ];
+    };
     kernelModules = [ "kvm-intel" ];
     kernelParams = [
       # Enable builtin keyboard on initramfs screen to unlock luks encrypted drive
