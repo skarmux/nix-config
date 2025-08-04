@@ -155,6 +155,7 @@
               ./global
             ];
            
+            # Allow use of yubikeys
             services = {
               yubikey-agent.enable = true; # SSH Agent
               pcscd.enable = true; # Smartcard functionality

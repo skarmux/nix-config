@@ -16,6 +16,7 @@ creation_rules:
       - *skarmux
       - *ignika
       - *teridax
+      - *pewku
   - path_regex: config/nixos/ignika/secrets.ya?ml$
     key_groups:
     - age:

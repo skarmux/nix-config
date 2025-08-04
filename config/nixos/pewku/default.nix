@@ -23,12 +23,11 @@
     yubikey-touch-detector.enable = false;
   };
 
-
   environment = {
     systemPackages = with pkgs; [
       helix
       rsync
-      htop
+      btop
       dust
       lazysql
     ];
@@ -44,11 +43,6 @@
         "/var/lib/systemd/coredump"
         # Event store database
         "/var/lib/feaston"
-      ];
-      files = [
-        # FIXME bind-mount fails on startup
-        # https://discourse.nixos.org/t/impermanence-a-file-already-exists-at-etc-machine-id/20267
-        # "/etc/machine-id"
       ];
     };
   };

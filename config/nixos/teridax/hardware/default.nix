@@ -28,10 +28,10 @@
   powerManagement.cpuFreqGovernor = "ondemand";
 
   monitors = {
-    "" = {
-      primary = true;
-      port = "eDP-1";
-    };
+    # "<builtin>" = {
+    #   primary = true;
+    #   port = "eDP-1";
+    # };
     # "BNQ BenQ RD280UA HAR0021601Q" = {
     #   port = "DP-1";
     # };
@@ -41,9 +41,10 @@
   };
 
   networking = {
-    useDHCP = true;
-    interfaces.enp0s25.useDHCP = true;
-    interfaces.wlp2s0.useDHCP = true;
+    # NOTE: conflicting with networkmanager
+    # useDHCP = true;
+    # interfaces.enp0s25.useDHCP = true;
+    # interfaces.wlp2s0.useDHCP = true;
   };
 
   hardware = {
