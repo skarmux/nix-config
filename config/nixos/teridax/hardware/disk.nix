@@ -1,10 +1,10 @@
-{ config, ... }:
 # (1) Yubikey based Full Disk Encryption (FDE) on NixOS
 # https://nixos.wiki/wiki/Yubikey_based_Full_Disk_Encryption_(FDE)_on_NixOS
 # (2) Disko example: Btrfs + Luks
 # https://github.com/nix-community/disko/blob/master/example/luks-btrfs-subvolumes.nix
 # (3) Disko Luks definition:
 # https://github.com/nix-community/disko/blob/545aba02960caa78a31bd9a8709a0ad4b6320a5c/lib/types/luks.nix#L11
+# TODO: Two-factor password entry is not working...
 {
   boot.initrd = {
     # Minimal list of modules to use the EFI system partition and the YubiKey
@@ -13,7 +13,7 @@
     luks = {
       yubikeySupport = true;
       devices."crypted" = {
-        # device = "/dev/sda2"; # ERROR: conflicting definition values /dev/disk-by-partlabel/disk-main-luks
+        device = "/dev/disk/by-partlabel/disk-main-luks";
         preLVM = true; # You may want to set this to false if you need to start a network service first
         # NOTE: This could not be placed within [...].luks.content.settings since all those entries
         #       are coerced as strings and attribute sets are not convertible to string.
@@ -25,7 +25,7 @@
             fsType = "vfat"; # same as ESP
             # An unencrypted device that will temporarily be mounted in stage-1.
             # Must contain the current salt to create the challenge for this LUKS device.
-            device = "/dev/sda1"; # Should be /dev/sda1
+            device = "/dev/disk/by-partlabel/disk-main-ESP";
           };
         };
       };
