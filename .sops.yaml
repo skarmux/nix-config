@@ -3,7 +3,7 @@ keys:
     - &skarmux age1p6rz0367carqljqz3493y2z2wgmsw2xh0yduxz8sd0jn45n0k49ske3k4t
   - &hosts:
     - &teridax age1ucm0frs5cchkrv2mzfuaqv6h0d4eu94y6ugddag2xzphxvp4ud7sej3mz7
-    - &ignika age1pyj03ga9w6mqar9s99w4q27dwvgmjcm94a72a00x2n2uucw23q4sz3ww0z
+    - &ignika age1leq8tpms0zj9kyqmygzl8j8etwfsf0lyr5fw6dv72l4v38h62cusqceng9
     - &pewku age1ep58ggw4xvqwcecac6vngmy7pw7chpsjm5ftlg53ax5kwkjr63nss5hdv4
 creation_rules:
   - path_regex: home/skarmux/secrets.ya?ml$
