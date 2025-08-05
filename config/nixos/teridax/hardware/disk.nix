@@ -1,3 +1,4 @@
+{ config, ... }:
 # (1) Yubikey based Full Disk Encryption (FDE) on NixOS
 # https://nixos.wiki/wiki/Yubikey_based_Full_Disk_Encryption_(FDE)_on_NixOS
 # (2) Disko example: Btrfs + Luks
@@ -17,6 +18,9 @@ in
 
   disko.devices.disk."main" = {
     type = "disk";
+    # Pass device name to config from disko command
+    # disko --arg name value
+    # disko --argstr name value
     device = "/dev/sda";
     content = {
       type = "gpt";
@@ -31,13 +35,19 @@ in
         # $ echo -ne "$salt\n$ITERATIONS" > $EFI_MNT$STORAGE
         
         ESP = {
-          type = "EF00";
           size = "512M";
+          type = "EF00";
           content = {
             type = "filesystem";
-            format = "vfat";
-            mountpoint = "/boot";
+            # if ! (blkid "${config.device}" | grep -q 'TYPE='); then
+            #   mkfs.${config.format} \
+            #     ${lib.escapeShellArgs config.extraArgs} \
+            #     "${config.device}"
+            # fi
+            # extraArgs = ;
             mountOptions = [ "umask=0077" ];
+            mountpoint = "/boot";
+            format = "vfat";
           };
         };
         # luks device
@@ -46,9 +56,7 @@ in
           content = {
             type = "luks";
             name = "${luks_root}";
-            # disable settings.keyFile if you want to use interactive password entry
-            # TODO: "interactive" during boot or disko install?
-            
+            # NOTE: Disable settings.keyFile if you want to use interactive password entry
             # Path to the file which contains the password for initial encryption
             # passwordFile = "/tmp/secret.key"; # Interactive
 
@@ -62,8 +70,11 @@ in
             # LUKS settings (as defined in configuration.nix in boot.initrd.luks.devices.<name>)
             settings = {
               allowDiscards = true;
-              keyFile = "-"; # `--key-file ${keyFile}`
+              # TODO: keyfile should contain the raw binary of the $k_luks (1)
+              # keyfile is only used for initial encryption
+              keyFile = "/tmp/luks.key"; # `--key-file ${keyFile}`
               preLVM = true; # You may want to set this to false if you need to start a network service first
+
               # Setup the Yubikey (1)
               #
               # $ nix-shell https://github.com/sgillespie/nixos-yubikey-luks/archive/master.tar.gz
@@ -80,11 +91,18 @@ in
               # $ k_luks="$(echo -n $k_user | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
               # (no password)
               # $ k_luks="$(echo | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
+              #
               yubikey = {
                 slot = 1;
                 twoFactor = true; # Set to false if you did not set up a user password.
-                storage = {
-                  device = "/dev/sda1"; # TODO: Pull from disko config
+                storage = let
+                  efi_part = config.disko.devices.disk."main".content.partitions.ESP;
+                in {
+                  path = "/crypt-storage/default";
+                  fsType = efi_part.content.format; # same as ESP
+                  # An unencrypted device that will temporarily be mounted in stage-1.
+                  # Must contain the current salt to create the challenge for this LUKS device.
+                  device = efi_part.device; # Should be /dev/sda1
                 };
               };
             };
@@ -106,6 +124,10 @@ in
 
             # [Disko]
             # Uses `-q` flag on cryptsetup
+            # -q, --batch-mode :: Do not ask for confirmation
+            #
+            # [manpage]
+            # cryptsetup <opt> luksFormat <device> [<new key file>] - formats a LUKS device
             #
             # cryptsetup -q luksFormat "${config.device}" \
             # ${toString config.extraFormatArgs} ${keyFileArgs}
