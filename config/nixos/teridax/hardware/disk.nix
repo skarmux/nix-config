@@ -6,55 +6,13 @@
 # https://github.com/nix-community/disko/blob/545aba02960caa78a31bd9a8709a0ad4b6320a5c/lib/types/luks.nix#L11
 let
   luks_root = "crypted"; # just a name
-  efi_part = "/dev/sda1";
-  luks_part = "/dev/sda2";
 in
 {
   boot.initrd = {
     # Minimal list of modules to use the EFI system partition and the YubiKey
     kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
-
     # Enable support for the YubiKey PBA
     luks.yubikeySupport = true;
-
-    # Configuration to use your Luks device
-    # TODO: Disko probably configures these luks devices as well. I need to check for
-    #       overlapping configuration:
-    #
-    #       boot.inidrd.luks.devices.${config.name} = {
-    #         inherit (config) device;
-    #       } // config.settings;
-    luks.devices = {
-      "${luks_root}" = {
-        device = "${luks_part}";
-        preLVM = true; # You may want to set this to false if you need to start a network service first
-
-        # Setup the Yubikey (1)
-        #
-        # $ nix-shell https://github.com/sgillespie/nixos-yubikey-luks/archive/master.tar.gz
-        # $ SLOT=1
-        # $ ykpersonalize -"$SLOT" -ochal-resp -ochal-hmac
-        # $ SALT_LENGTH=16
-        # $ salt="$(dd if=/dev/random bs=1 count=$SALT_LENGTH 2>/dev/null | rbtohex)"
-        # $ read -s k_user
-        # $ challenge="$(echo -n $salt | openssl dgst -binary -sha512 | rbtohex)"
-        # $ response="$(ykchalresp -2 -x $challenge 2>/dev/null)"
-        # $ KEY_LENGTH=512
-        # $ ITERATIONS=1000000
-        # (password)
-        # $ k_luks="$(echo -n $k_user | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
-        # (no password)
-        # $ k_luks="$(echo | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
-
-        yubikey = {
-          slot = 1;
-          twoFactor = true; # Set to false if you did not set up a user password.
-          storage = {
-            device = "${efi_part}";
-          };
-        };
-      }; 
-    };
   };
 
   disko.devices.disk."main" = {
@@ -104,8 +62,31 @@ in
             # LUKS settings (as defined in configuration.nix in boot.initrd.luks.devices.<name>)
             settings = {
               allowDiscards = true;
-              # `--key-file ${keyFile}`
-              keyFile = "-";
+              keyFile = "-"; # `--key-file ${keyFile}`
+              preLVM = true; # You may want to set this to false if you need to start a network service first
+              # Setup the Yubikey (1)
+              #
+              # $ nix-shell https://github.com/sgillespie/nixos-yubikey-luks/archive/master.tar.gz
+              # $ SLOT=1
+              # $ ykpersonalize -"$SLOT" -ochal-resp -ochal-hmac
+              # $ SALT_LENGTH=16
+              # $ salt="$(dd if=/dev/random bs=1 count=$SALT_LENGTH 2>/dev/null | rbtohex)"
+              # $ read -s k_user
+              # $ challenge="$(echo -n $salt | openssl dgst -binary -sha512 | rbtohex)"
+              # $ response="$(ykchalresp -2 -x $challenge 2>/dev/null)"
+              # $ KEY_LENGTH=512
+              # $ ITERATIONS=1000000
+              # (password)
+              # $ k_luks="$(echo -n $k_user | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
+              # (no password)
+              # $ k_luks="$(echo | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
+              yubikey = {
+                slot = 1;
+                twoFactor = true; # Set to false if you did not set up a user password.
+                storage = {
+                  device = "/dev/sda1"; # TODO: Pull from disko config
+                };
+              };
             };
 
             # Path to additional key files for encryption
