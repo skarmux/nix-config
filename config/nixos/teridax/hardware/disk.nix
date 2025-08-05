@@ -5,9 +5,6 @@
 # https://github.com/nix-community/disko/blob/master/example/luks-btrfs-subvolumes.nix
 # (3) Disko Luks definition:
 # https://github.com/nix-community/disko/blob/545aba02960caa78a31bd9a8709a0ad4b6320a5c/lib/types/luks.nix#L11
-let
-  luks_root = "crypted"; # just a name
-in
 {
   boot.initrd = {
     # Minimal list of modules to use the EFI system partition and the YubiKey
@@ -55,7 +52,7 @@ in
           size = "100%";
           content = {
             type = "luks";
-            name = "${luks_root}";
+            name = "crypted";
             # NOTE: Disable settings.keyFile if you want to use interactive password entry
             # Path to the file which contains the password for initial encryption
             # passwordFile = "/tmp/secret.key"; # Interactive
@@ -95,14 +92,12 @@ in
               yubikey = {
                 slot = 1;
                 twoFactor = true; # Set to false if you did not set up a user password.
-                storage = let
-                  efi_part = config.disko.devices.disk."main".content.partitions.ESP;
-                in {
+                storage = {
                   path = "/crypt-storage/default";
-                  fsType = efi_part.content.format; # same as ESP
+                  fsType = "vfat"; # same as ESP
                   # An unencrypted device that will temporarily be mounted in stage-1.
                   # Must contain the current salt to create the challenge for this LUKS device.
-                  device = efi_part.device; # Should be /dev/sda1
+                  device = "/dev/sda1"; # Should be /dev/sda1
                 };
               };
             };

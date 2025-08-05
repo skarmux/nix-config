@@ -149,14 +149,29 @@
         modules = builtins.attrValues self.nixosModules ++ [
           ({ pkgs, modulesPath, ... }: {
             imports = [
-              (modulesPath + "/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix")
+              (modulesPath + "/installer/cd-dvd/installation-cd-graphical-base.nix")
               inputs.home-manager.nixosModules.home-manager # needed by yubikey module
               inputs.sops-nix.nixosModules.sops
               ./global
             ];
+
+            # Template:
+            # https://github.com/NixOS/nixpkgs/blob/be57485ffffe9398e2e58ae3f4d7608f55a8796d/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix
+
+            isoImage.edition = "plasma6";
            
-            # Allow use of yubikeys
             services = {
+              desktopManager.plasma6.enable = true;
+
+              displayManager = {
+                sddm.enable = true;
+                autoLogin = {
+                  enable = true;
+                  user = "nixos";
+                };
+              };
+
+              # Allow use of yubikeys
               yubikey-agent.enable = true; # SSH Agent
               pcscd.enable = true; # Smartcard functionality
               udev = {
@@ -167,12 +182,45 @@
             };
 
             environment.systemPackages = with pkgs; [
+              maliit-framework
+              maliit-keyboard
               yubikey-manager
               disko
               sops
               helix
               age
             ];
+
+            environment.plasma6.excludePackages = with pkgs.kdePackages; [
+              # Optional wallpapers that add 126 MiB to the graphical installer
+              # closure. They will still need to be downloaded when installing a
+              # Plasma system, though.
+              plasma-workspace-wallpapers
+            ];
+
+            # Avoid bundling an entire MariaDB installation on the ISO.
+            programs.kde-pim.enable = false;
+
+            system.activationScripts.installerDesktop =
+              let
+
+                # Comes from documentation.nix when xserver and nixos.enable are true.
+                manualDesktopFile = "/run/current-system/sw/share/applications/nixos-manual.desktop";
+
+                homeDir = "/home/nixos/";
+                desktopDir = homeDir + "Desktop/";
+
+              in
+              ''
+                mkdir -p ${desktopDir}
+                chown nixos ${homeDir} ${desktopDir}
+
+                ln -sfT ${manualDesktopFile} ${desktopDir + "nixos-manual.desktop"}
+                ln -sfT ${pkgs.gparted}/share/applications/gparted.desktop ${desktopDir + "gparted.desktop"}
+                ln -sfT ${pkgs.calamares-nixos}/share/applications/io.calamares.calamares.desktop ${
+                  desktopDir + "io.calamares.calamares.desktop"
+                }
+              '';
           })
         ];
       };
