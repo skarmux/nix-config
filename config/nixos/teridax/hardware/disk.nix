@@ -13,7 +13,7 @@
     luks = {
       yubikeySupport = true;
       devices."crypted" = {
-        device = "/dev/sda2";
+        # device = "/dev/sda2"; # ERROR: conflicting definition values /dev/disk-by-partlabel/disk-main-luks
         preLVM = true; # You may want to set this to false if you need to start a network service first
         # NOTE: This could not be placed within [...].luks.content.settings since all those entries
         #       are coerced as strings and attribute sets are not convertible to string.
