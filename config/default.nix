@@ -155,6 +155,8 @@
               ./global
             ];
 
+            boot.kernelPackages = pkgs.linuxPackages_zen;
+
             # Template:
             # https://github.com/NixOS/nixpkgs/blob/be57485ffffe9398e2e58ae3f4d7608f55a8796d/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix
 
