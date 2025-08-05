@@ -29,6 +29,7 @@
           };
         };
       };
+    };
   };
 
   disko.devices.disk."main" = {
