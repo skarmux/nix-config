@@ -10,7 +10,25 @@
     # Minimal list of modules to use the EFI system partition and the YubiKey
     kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
     # Enable support for the YubiKey PBA
-    luks.yubikeySupport = true;
+    luks = {
+      yubikeySupport = true;
+      devices."crypted" = {
+        device = "/dev/sda2";
+        preLVM = true; # You may want to set this to false if you need to start a network service first
+        # NOTE: This could not be placed within [...].luks.content.settings since all those entries
+        #       are coerced as strings and attribute sets are not convertible to string.
+        yubikey = {
+          slot = 1;
+          twoFactor = true; # Set to false if you did not set up a user password.
+          storage = {
+            path = "/crypt-storage/default";
+            fsType = "vfat"; # same as ESP
+            # An unencrypted device that will temporarily be mounted in stage-1.
+            # Must contain the current salt to create the challenge for this LUKS device.
+            device = "/dev/sda1"; # Should be /dev/sda1
+          };
+        };
+      };
   };
 
   disko.devices.disk."main" = {
@@ -70,36 +88,6 @@
               # TODO: keyfile should contain the raw binary of the $k_luks (1)
               # keyfile is only used for initial encryption
               keyFile = "/tmp/luks.key"; # `--key-file ${keyFile}`
-              preLVM = true; # You may want to set this to false if you need to start a network service first
-
-              # Setup the Yubikey (1)
-              #
-              # $ nix-shell https://github.com/sgillespie/nixos-yubikey-luks/archive/master.tar.gz
-              # $ SLOT=1
-              # $ ykpersonalize -"$SLOT" -ochal-resp -ochal-hmac
-              # $ SALT_LENGTH=16
-              # $ salt="$(dd if=/dev/random bs=1 count=$SALT_LENGTH 2>/dev/null | rbtohex)"
-              # $ read -s k_user
-              # $ challenge="$(echo -n $salt | openssl dgst -binary -sha512 | rbtohex)"
-              # $ response="$(ykchalresp -2 -x $challenge 2>/dev/null)"
-              # $ KEY_LENGTH=512
-              # $ ITERATIONS=1000000
-              # (password)
-              # $ k_luks="$(echo -n $k_user | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
-              # (no password)
-              # $ k_luks="$(echo | pbkdf2-sha512 $(($KEY_LENGTH / 8)) $ITERATIONS $response | rbtohex)"
-              #
-              yubikey = {
-                slot = 1;
-                twoFactor = true; # Set to false if you did not set up a user password.
-                storage = {
-                  path = "/crypt-storage/default";
-                  fsType = "vfat"; # same as ESP
-                  # An unencrypted device that will temporarily be mounted in stage-1.
-                  # Must contain the current salt to create the challenge for this LUKS device.
-                  device = "/dev/sda1"; # Should be /dev/sda1
-                };
-              };
             };
 
             # Path to additional key files for encryption
