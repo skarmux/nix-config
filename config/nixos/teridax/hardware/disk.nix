@@ -4,25 +4,56 @@
 # https://github.com/nix-community/disko/blob/master/example/luks-btrfs-subvolumes.nix
 # (3) Disko Luks definition:
 # https://github.com/nix-community/disko/blob/545aba02960caa78a31bd9a8709a0ad4b6320a5c/lib/types/luks.nix#L11
-# TODO: Two-factor password entry is not working...
+# (4) Nixpkgs Luks definition:
+# https://github.com/NixOS/nixpkgs/blob/ce01daebf8489ba97bd1609d185ea276efdeb121/nixos/modules/system/boot/luksroot.nix#L293
+#
+# Preparation
+#
+# Salt & Iterations:
+# /mnt/boot/crypt-storage/default
+#
+# Luks key (as raw bytes) for initial drive formatting:
+# /tmp/luks.key
+let
+  key_length = 512; # bit
+  salt_length = 16; # byte
+in
 {
   boot.initrd = {
+
     # Minimal list of modules to use the EFI system partition and the YubiKey
     kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
+
     # Enable support for the YubiKey PBA
     luks = {
+      reusePassphrases = false; # Only useful when opening multiple luks devices with the same passphrase
       yubikeySupport = true;
       devices."crypted" = {
         device = "/dev/disk/by-partlabel/disk-main-luks";
         preLVM = true; # You may want to set this to false if you need to start a network service first
         # NOTE: This could not be placed within [...].luks.content.settings since all those entries
         #       are coerced as strings and attribute sets are not convertible to string.
+        #
+        # Pulled from file with contents: `$SALT\n$ITERATIONS`
+        # salt="$(cat /crypt-storage${dev.yubikey.storage.path} | sed -n 1p | tr -d '\n')"
+        # iterations="$(cat /crypt-storage${dev.yubikey.storage.path} | sed -n 2p | tr -d '\n')"
+        #
+        # (1) challenge="$(echo -n $salt | openssl      dgst -binary -sha512 | rbtohex)"
+        # (4) challenge="$(echo -n $salt | openssl-wrap dgst -binary -sha512 | rbtohex)"
+        #
+        # (1) response="$(ykchalresp -"$SLOT" -x $challenge 2>/dev/null)"
+        # (4) response="$(ykchalresp -${toString dev.yubikey.slot} -x $challenge 2>/dev/null)"
+        #
+        # TODO: Is /dev/disk/by-partlabel/disk-main-ESP mounted to /crypt-storage ?
         yubikey = {
           slot = 1;
           twoFactor = true; # Set to false if you did not set up a user password.
+          gracePeriod = 30; # Time in seconds to wait for Yubikey to be inserted
+          keyLength = builtins.div key_length 8; # convert bits to bytes
+          saltLength = salt_length;
           storage = {
             path = "/crypt-storage/default";
-            fsType = "vfat"; # same as ESP
+            fsType = "vfat"; # same as ESP partition in disko config
             # An unencrypted device that will temporarily be mounted in stage-1.
             # Must contain the current salt to create the challenge for this LUKS device.
             device = "/dev/disk/by-partlabel/disk-main-ESP";
@@ -34,39 +65,22 @@
 
   disko.devices.disk."main" = {
     type = "disk";
-    # Pass device name to config from disko command
-    # disko --arg name value
-    # disko --argstr name value
     device = "/dev/sda";
     content = {
       type = "gpt";
       partitions = {
-        # efi system partition
-        # - stores current salt for PBA (Pre-Boot Authentication)
-        # TODO: How do I store salt and iterations count on the efi partition
 
-        # $ EFI_MNT=/boot
-        # $ STORAGE=/crypt-storage/default
-        # $ mkdir -p "$(dirname $EFI_MNT$STORAGE)"
-        # $ echo -ne "$salt\n$ITERATIONS" > $EFI_MNT$STORAGE
-        
         ESP = {
           size = "512M";
           type = "EF00";
           content = {
             type = "filesystem";
-            # if ! (blkid "${config.device}" | grep -q 'TYPE='); then
-            #   mkfs.${config.format} \
-            #     ${lib.escapeShellArgs config.extraArgs} \
-            #     "${config.device}"
-            # fi
-            # extraArgs = ;
             mountOptions = [ "umask=0077" ];
             mountpoint = "/boot";
             format = "vfat";
           };
         };
-        # luks device
+        
         luks = {
           size = "100%";
           content = {
@@ -106,10 +120,6 @@
             # echo -n "$k_luks" | hextorb | cryptsetup luksFormat --cipher="$CIPHER" \ 
             #   --key-size="$KEY_LENGTH" --hash="$HASH" --key-file=- "$LUKS_PART"
 
-            # [Disko]
-            # Uses `-q` flag on cryptsetup
-            # -q, --batch-mode :: Do not ask for confirmation
-            #
             # [manpage]
             # cryptsetup <opt> luksFormat <device> [<new key file>] - formats a LUKS device
             #
@@ -117,16 +127,14 @@
             # ${toString config.extraFormatArgs} ${keyFileArgs}
 
             # Extra arguments to pass to `cryptsetup luksFormat` when formatting
-            # TODO: Can I pass secret values with the `disko` command?
             extraFormatArgs = [
               "--cipher aes-xts-plain64"
-              "--key-size 512" # KEY_LENGTH
+              "--key-size ${key_length}"
               "--hash sha512"
-              # "--key-file=-" # Make this replace ${keyFileArgs} NOTE: I used `settings.keyFile = "-";`
             ];
 
             # Extra arguments to pass to `cryptsetup luksOpen` when opening
-            extraOpenArgs = [ ];
+            # extraOpenArgs = [ ];
 
             content = {
               type = "btrfs";
