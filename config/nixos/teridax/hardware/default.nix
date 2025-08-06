@@ -46,8 +46,8 @@
   networking = {
     # NOTE: conflicting with networkmanager
     # useDHCP = true;
-    # interfaces.enp0s25.useDHCP = true;
-    # interfaces.wlp2s0.useDHCP = true;
+    interfaces.enp0s25.useDHCP = true;
+    interfaces.wlp2s0.useDHCP = true;
   };
 
   hardware = {

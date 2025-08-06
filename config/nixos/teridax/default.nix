@@ -119,9 +119,6 @@
           disable_while_typing = true;
         };
 
-        master = { no_gaps_when_only = true; };
-        dwindle = { no_gaps_when_only = true; };
-
         general = {
           gaps_in = 0;
           gaps_out = 0;
