@@ -10,7 +10,7 @@
       "i2c" # control connected devices
       "networkmanager"
     ];
-    hashedPasswordFile = config.sops.secrets.skarmux-password.path;
+    hashedPasswordFile = config.sops.secrets."users/skarmux".path;
   };
 
   home-manager.users.skarmux = {
@@ -24,5 +24,5 @@
     };
   };
 
-  sops.secrets."skarmux-password".neededForUsers = true;
+  sops.secrets."users/skarmux".neededForUsers = true;
 }
