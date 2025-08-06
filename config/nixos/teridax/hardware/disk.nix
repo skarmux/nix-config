@@ -129,7 +129,7 @@ in
             # Extra arguments to pass to `cryptsetup luksFormat` when formatting
             extraFormatArgs = [
               "--cipher aes-xts-plain64"
-              "--key-size ${key_length}"
+              "--key-size ${toString key_length}"
               "--hash sha512"
             ];
 
