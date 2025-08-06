@@ -34,16 +34,13 @@
   powerManagement.cpuFreqGovernor = "ondemand";
 
   monitors = {
-    # "<builtin>" = {
-    #   primary = true;
-    #   port = "eDP-1";
-    # };
-    # "BNQ BenQ RD280UA HAR0021601Q" = {
-    #   port = "DP-1";
-    # };
-    # "LG Electronics LG TV SSCR2 0x01010101" = {
-    #   port = "HDMI-A-1";
-    # };
+    "Embedded" = {
+      primary = true;
+      port = "eDP-1";
+      width = 1600;
+      height = 900;
+      refresh = 59.985;
+    };
   };
 
   networking = {
