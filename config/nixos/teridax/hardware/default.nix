@@ -41,13 +41,19 @@
       height = 900;
       refresh = 59.985;
     };
+    "LG Electronics 22MB65 501NDEZA2964" = {
+      port = "DP-2";
+      width = 1680;
+      height = 1050;
+      refresh = 59.883;
+    };
   };
 
   networking = {
-    # NOTE: conflicting with networkmanager
-    # useDHCP = true;
-    interfaces.enp0s25.useDHCP = true;
-    interfaces.wlp2s0.useDHCP = true;
+    interfaces = {
+      enp0s25.useDHCP = true;
+      wlp2s0.useDHCP = true;
+    };
   };
 
   hardware = {
