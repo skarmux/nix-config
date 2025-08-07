@@ -1,3 +1,7 @@
+# Connect to wifi
+# nmcli device wifi
+# nmcli device wifi connect <SSID> --ask
+
 # cp luks.key /tmp/luks.key
 
 disko --mode disko --flake $1

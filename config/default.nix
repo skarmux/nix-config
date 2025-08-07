@@ -96,6 +96,7 @@
           ./global
           ./hardware/voyager.nix
           ./hardware/yubikey
+          ./hardware/logitech_laser_mouse.nix
           ./nixos/teridax
           {
             home-manager.users.skarmux = {

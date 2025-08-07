@@ -1,4 +1,5 @@
 { pkgs, ... }:
+# TODO: Lock screen and suspend on lid close
 {
   imports = [
     ./hardware
@@ -17,6 +18,7 @@
       enable = true;
       # interfaces = {
       #   "eth0" = {};
+      #   "wlp2s0" = {};
       # };
     };
     networkmanager.enable = true;
@@ -58,6 +60,8 @@
     };
     displayManager = {
       autoLogin = {
+        # After unlocking the luks drive with 2FA,
+        # might as well do auto login. :)
         enable = true;
         user = "skarmux";
       };
@@ -70,7 +74,7 @@
   };
 
   programs = {
-    openvpn3.enable = true;
+    openvpn3.enable = true; # Only needed for home/hackthebox.nix
     kdeconnect.enable = true;
   };
 
@@ -144,7 +148,7 @@
     };
 
     programs.waybar.settings.primary = {
-      battery.bat = "CMB1";
+      battery.bat = "CMB1"; # TODO: CMB01?
     };
  
   };

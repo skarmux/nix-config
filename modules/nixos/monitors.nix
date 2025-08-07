@@ -4,6 +4,7 @@ let
 in
 {
   # TODO: List modelines directly? Refresh and Resolution are not fixed!
+  # TODO: I want to be able to access the primary monitor with config.monitors.primary
   options.monitors = mkOption {
     type = with types; attrsOf (submodule {
       options = {

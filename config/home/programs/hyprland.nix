@@ -22,7 +22,7 @@
       "$browser" = "brave";
       "$screenshot" = "grim -g \"$(slurp)\" - | wl-copy";
       "$screenshot_edit" = "wl-paste | swappy -f -";
-      "$dashboard" = "eww open --config ~/.config/eww/dashboard --toggle dashboard";
+      # "$dashboard" = "eww open --config ~/.config/eww/dashboard --toggle dashboard";
 
       #################
       ### AUTOSTART ###
@@ -295,7 +295,7 @@
 
       bindr = [
         # Toggle dashboard
-        "SUPER, Super_L, exec, $dashboard"
+        # "SUPER, Super_L, exec, $dashboard"
       ];
 
       bindm = [
@@ -310,6 +310,7 @@
       # See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
       # See https://wiki.hyprland.org/Configuring/Workspace-Rules/ for workspace rules
 
+      # FIXME: Use monitors module
       workspace = [
         # "Smart gaps" / "No gaps when only"
         # uncomment all if you wish to use that.
