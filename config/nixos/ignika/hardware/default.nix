@@ -23,13 +23,11 @@
   powerManagement.cpuFreqGovernor = "performance";
 
   monitors = {
-    "BNQ BenQ RD280UA HAR0021601Q" = {
-      primary = true;
+    benq = {
       port = "DP-1";
+      primary = true;
     };
-    "LG Electronics LG TV SSCR2 0x01010101" = {
-      port = "HDMI-A-1";
-    };
+    lgcx.port = "HDMI-A-1";
   };
 
   hardware = {

@@ -21,7 +21,8 @@ in
   };
   */
 
-  monitors."LG Electronics LG TV SSCR2 0x01010101" = {
+  monitors.lgcx = {
+    desc = "LG Electronics LG TV SSCR2 0x01010101";
     width = 3840;
     height = 2160;
     refresh = 119.98;
@@ -93,7 +94,7 @@ in
     # [D]: digital output forced to on (e.g. DVI-I connector)
     # [d]: output forced to off
     outputs = {
-      "${config.monitors."LG Electronics LG TV SSCR2 0x01010101".port}" = {
+      "${config.monitors.lgcx.port}" = {
         edid = edid_bin;
         mode = "3840x2160@120";
       };

@@ -1,6 +1,7 @@
-{ lib, ... }:
+{ config, lib, ... }:
 let
   inherit (lib) mkOption types;
+  cfg = config.monitors;
 in
 {
   # TODO: List modelines directly? Refresh and Resolution are not fixed!
@@ -11,6 +12,26 @@ in
         primary = mkOption {
           type = types.bool;
           default = false;
+          description = ''
+            The main or "center" monitor. Make sure it's one that is permanently plugged in.
+          '';
+        };
+        desc = mkOption {
+          type = types.str;
+          default = "";
+          example = "LG Electronics LG TV SSCR2 0x01010101";
+          description = ''
+            The `desc:` attribute from `hyprctl monitors`. Commonly a
+            combination of `make:`, `model:` and `serial:`.
+          '';
+        };
+        port = mkOption {
+          type = types.str;
+          example = "DP-1";
+          description = ''
+            Physical port reported by GDM (graphics driver) where the
+            monitor is plugged in.
+          '';
         };
         width = mkOption {
           type = types.int;
@@ -22,19 +43,22 @@ in
         };
         refresh = mkOption {
           type = types.float;
-          default = 60.0;
+          example = 59.998;
         };
         vrr = mkOption {
           type = types.bool;
           default = false;
+          description = ''
+            Capable of variable refresh rate or adaptive sync.
+            Also part of the HDMI 2.1 specification.
+          '';
         };
         hdr = mkOption {
           type = types.bool;
           default = false;
-        };
-        port = mkOption {
-          type = types.str;
-          example = "DP-1";
+          description = ''
+            HDR capable display with 10bit color support.
+          '';
         };
         /* TODO: wip
         modes = mkOption {
@@ -49,17 +73,35 @@ in
       };
     });
     default = { };
+    description = "Monitor configuration.";
   };
 
-  config = {
-    /* TODO: Rewrite from listOf type to attrsOf type
+  config = let
+    monitorNames = builtins.attrNames cfg;
+  in {
     assertions = [
       {
-        assertion = ((lib.length config.monitors) != 0)
-        -> ((lib.length (lib.filter (m: m.primary) config.monitors)) == 1);
+        assertion =
+          ((lib.length monitorNames) != 0)
+          ->
+          ((lib.length (lib.filter (name: config.monitors.${name}.primary) monitorNames)) == 1);
         message = "Exactly one monitor must be set to primary.";
       }
     ];
-    */
+
+    # hardware.display.edid = {
+    #   packages
+    #   modelines
+    #   linuxhw
+    #   enable
+    # };
+
+    # hardware.display.outputs = {
+    #   config.monitors.<name>.port = {
+    #     mode = ;
+    #     edid = ;
+    #   };
+    # };
+
   };
 }

@@ -28,7 +28,8 @@ in
     })
   ];
 
-  monitors."BNQ BenQ RD280UA HAR0021601Q" = {
+  monitors.benq = {
+    desc = "BNQ BenQ RD280UA HAR0021601Q";
     width = 3840;
     height = 2560;
     refresh = 59.98;

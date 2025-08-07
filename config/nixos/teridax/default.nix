@@ -102,6 +102,8 @@
         "/var/lib/nixos"
         # System crash dumps for analysis
         "/var/lib/systemd/coredump"
+        # SSH
+        "/etc/ssh"
       ];
     };
   };

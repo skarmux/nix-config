@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   users.users.skarmux = {
     isNormalUser = true;
@@ -25,6 +25,27 @@
       file.".ssh/id_ed25519.pub" = {
         text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEfSahJoIaxQ31rSXlDgm4OzdShZGFkTaGsgXsP+D1v/ pewku-deployment";
       };
+    };
+    wayland.windowManager.hyprland.settings = {
+      workspace = [
+        # TODO: I want the TV to be "enabled" as soon as Steam gets started
+        #       in big picture (-tenfoot) mode and only be used for that or
+        #       fullscreen video content (detect with `movies/games` wayland
+        #       tags?)
+        "name:tv, monitor:${config.monitors.lgcx.port}"
+        # Make TV screen only show fullscreen content (smart gaps)
+        # NOTE: This is to reduce static content like borders to burning into OLED
+        (lib.concatStringsSep ", " [
+          "m[${config.monitors.lgcx.port}]"
+          "default:true"
+          "gapsout:0"
+          "gapsin:0"
+          "floating:0"
+          "border:false"
+          "rounding:false"
+          "persistent:true"
+        ])
+      ];
     };
   };
 

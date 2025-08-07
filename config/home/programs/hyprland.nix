@@ -199,7 +199,8 @@
       };
 
       # See https://wiki.hyprland.org/Configuring/Keywords/#per-device-input-configs for more
-      device = [ ];
+      # NOTE: Should be configured per host
+      # device = [ ];
 
       # https://wiki.hyprland.org/Configuring/Variables/#gestures
       gestures = {
@@ -321,9 +322,8 @@
         # Make TV screen only show fullscreen content (smart gaps)
         # NOTE: This is to reduce static content like borders to burn-in
         #       my OLED TV.
-        "name:tv, monitor:HDMI-A-1"
         # "m[${lgcx.port}], default:true, gapsout:0, gapsin:0, floating:0, border:false, rounding:false, persistent:true, ])"
-      ] ++ builtins.map(x: (toString x) + ", monitor:DP-1") [1 2 3 4 5];
+      ];
 
       # NOTE: Uses Google's RE2 RexEx engine!
       # https://github.com/google/re2/wiki/Syntax
