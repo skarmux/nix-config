@@ -7,7 +7,7 @@
     ./users
     ../../optional/hyprland.nix
     ../../optional/nautilus.nix
-    # ./vm
+    ./vm/kvm.nix
   ];
 
   system.stateVersion = "25.05";
@@ -41,6 +41,7 @@
 
   boot = {
     loader = {
+      timeout = 30; # seconds to wait for nixos generation selection
       efi.canTouchEfiVariables = true;
       systemd-boot = {
         enable = true;

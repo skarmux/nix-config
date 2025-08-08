@@ -1,7 +1,7 @@
+{ config, pkgs, ... }:
 # https://nixos.wiki/wiki/Nvidia
 # https://discourse.nixos.org/t/electron-apps-dont-open-on-nvidia-desktops/32505/4
 # https://wiki.hyprland.org/Nvidia/#how-to-get-hyprland-to-possibly-work-on-nvidia
-{ config, pkgs, lib, ... }:
 let
   # https://github.com/NixOS/nixpkgs/issues/412299#issuecomment-2955980698
   gpl_symbols_linux_615_patch = pkgs.fetchpatch {
@@ -16,30 +16,13 @@ in
   # 10de:2204 Graphics
   # 10de:1aef Audio
 
-  # IOMMU Group 17
-  # 02:08.0 PCI Bridge (DO NOT USE FOR VM!)
-  # 06:00.0 Non Essential
-  # 06:00.1 USB Controller [1022:149c]
-  # 06:00.3 USB Controller [1022:149c]
-  # IOMMU Group 21
-  # 04:00.0 Intel WiFi
-  # IOMMU Group 23
-  # 09:00.0 VGA [0300] [10de:2204] <--
-  # 09:00.1 AUDIO [0403] [10de:1aef] <--
-  # IOMMU Group 27
-  # 0b:00.3 USB Controller [1022:149c]
-  # IOMMU Group 28
-  # 0b:00.4 HD Audio [1022:1487]
-  #
-  # AMD CPU : IOMMU, NX MODE, SVM MODE
-
   # Load nvidia driver into initial ramdisk
   # NOTE: Might be nice when playing with custom boot animations
   # boot.initrd.kernelModules = [
   #   "nvidia"
   #   "nvidia_modeset"
+  #   "nvidia_drm"
   #   "nvidia_uvm"
-  #   "nvidia-drm"
   # ];
   
   hardware.nvidia = {
