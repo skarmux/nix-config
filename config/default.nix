@@ -59,13 +59,6 @@
           inputs.sops-nix.nixosModules.sops
           inputs.home-manager.nixosModules.home-manager
           ./global
-          ./hardware/voyager.nix
-          ./hardware/benq_rd280ua.nix
-          ./hardware/lg_tv_sscr2
-          ./hardware/sony_wh-xm4-1000.nix
-          ./hardware/yubikey
-          ./hardware/logitech_g502.nix
-          ./hardware/sony_dualsense.nix
           ./nixos/ignika
           {
             home-manager.users.skarmux = {

@@ -9,6 +9,13 @@ in
   options.monitors = mkOption {
     type = with types; attrsOf (submodule {
       options = {
+        enabled = mkOption {
+          type = types.bool;
+          default = true;
+          description = ''
+            Whether the monitor is used by default.
+          '';
+        };
         primary = mkOption {
           type = types.bool;
           default = false;

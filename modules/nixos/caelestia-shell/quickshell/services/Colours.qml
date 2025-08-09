@@ -20,6 +20,7 @@ Singleton {
     readonly property M3Palette preview: M3Palette {}
     readonly property Transparency transparency: Transparency {}
 
+    // apply alpha value based on whether color is on layer or base
     function alpha(c: color, layer: bool): color {
         if (!transparency.enabled)
             return c;

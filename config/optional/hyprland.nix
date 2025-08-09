@@ -8,6 +8,14 @@
     portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
   };
 
+  ###############
+  ### TASKBAR ###
+  ###############
+  
+  caelestia-shell = {
+    enable = true;
+  };
+
   environment.sessionVariables = {
     XDG_BACKEND = "wayland";
     XDG_CURRENT_DESKTOP = "Hyprland";
@@ -62,9 +70,12 @@
       monitor = let
         scale = "1"; # NOTE: I think this is a multiplier to the intrinsic scale provided by EDID
       in builtins.attrValues (builtins.mapAttrs (name: m: 
-        "${m.port}, ${toString m.width}x${toString m.height}@${toString m.refresh}, ${
-        if m.primary then "0x0" else "auto-right"}, ${scale}${
-        if m.vrr then ", vrr, 3" else ""} # ${name}"
+        if m.enabled then
+          "${m.port}, ${toString m.width}x${toString m.height}@${toString m.refresh}, ${
+          if m.primary then "0x0" else "auto-right"}, ${scale}
+          ${if m.vrr then ", vrr, 3" else ""} # ${name}"
+        else
+          "${m.port}, disable # ${name}"
       ) config.monitors);
 
       workspace = builtins.map(workspace:

@@ -81,7 +81,7 @@ let
           ;;
       esac
 
-      declare -a vfio_modules=(${lib.concatStringsSep ", " (builtins.map (mod: "\"${mod}\"") vfio_modules)})
+      declare -a vfio_modules=(${lib.concatStringsSep " " (builtins.map (mod: "\"${mod}\"") vfio_modules)})
 
       case "$action" in
         "prepare")
@@ -109,14 +109,13 @@ let
           echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/unbind
           
           # Unload NVIDIA kernel modules
-          declare -a nvidia_modules=(${lib.concatStringsSep ", " (builtins.map (mod: "\"${mod}\"") nvidia_modules)})
+          declare -a nvidia_modules=(${lib.concatStringsSep " " (builtins.map (mod: "\"${mod}\"") nvidia_modules)})
           rm /tmp/single_gpu_pt_unloaded_nvidia_modules
           for module in "''${nvidia_modules[@]}"; do
-            modprobe --verbose --remove "$module"
-            # NOTE: `nvidia_uvm` might or might not be in use, depending on driver configuration on
-            #       the host. Therefore I used this solution to keep track of modules that are in
-            #       use by the host.
-            if [ $? -eq 0 ]; then
+            if modprobe --verbose --remove "$module"; then
+              # NOTE: `nvidia_uvm` might or might not be in use, depending on driver configuration on
+              #       the host. Therefore I used this solution to keep track of modules that are in
+              #       use by the host.
               echo "$module" >> /tmp/single_gpu_pt_unloaded_nvidia_modules
             fi
           done
@@ -143,7 +142,7 @@ let
           virsh nodedev-reattach ${iommu_nvidia_audio}
           
           # Load NVIDIA kernel modules (in reverse order as they have been unloaded)
-          while read module; do
+          while read -r module; do
             modprobe --verbose "$module"
           done < /tmp/single_gpu_pt_unloaded_nvidia_modules
           rm /tmp/single_gpu_pt_unloaded_nvidia_modules

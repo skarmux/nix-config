@@ -1,9 +1,28 @@
-# All credit goes to: https://github.com/caelestia-dots/shell
+{ pkgs, lib, config, inputs, ... }:
+#
+# Credit goes to:
+# https://quickshell.org/
+# https://github.com/caelestia-dots/shell
+#
+# Caelestia-Shell manages:
+# - Wallpaper
+# - Taskbar
+# - Wifi & Bluetooth
+# - Custom Dashboard
+# - Multimedia Controls
+# - File Picker
+# - Application Launcher
+#
 # TODO:
 # - Make sure it's only used with Wayland, specifically Hyprland
-{ pkgs, lib, config, inputs, ... }:
 let
   cfg = config.caelestia-shell;
+  # package = pkgs.fetchFromGitHub {
+  #   owner = "caelestia-dots";
+  #   repo = "shell";
+  #   rev = "master";
+  #   hash = "";
+  # };
 in
 {
   options.caelestia-shell = {
@@ -55,14 +74,15 @@ in
   config = lib.mkIf cfg.enable {
 
     home-manager.users.skarmux = {
-      home.file = {
-        ".config/quickshell".source = ./quickshell;
-      };
+      # home.file = {
+      #   ".config/quickshell".source = ./quickshell;
+      # };
       wayland.windowManager.hyprland = {
         settings = {
           # Launch quickshell asap
           exec-once = lib.mkBefore [
-            "quickshell --path \"${./quickshell}\""
+            # "quickshell --path \"${./quickshell}\""
+            "quickshell"
           ];
         };
       };

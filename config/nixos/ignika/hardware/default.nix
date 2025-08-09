@@ -1,5 +1,12 @@
 {
   imports = [
+    ../../../hardware/voyager.nix
+    ../../../hardware/benq_rd280ua.nix
+    ../../../hardware/lg_tv_sscr2
+    ../../../hardware/sony_wh-xm4-1000.nix
+    ../../../hardware/yubikey
+    ../../../hardware/logitech_g502.nix
+    ../../../hardware/sony_dualsense.nix
     ./nvidia
     # ./openrgb.nix
     ./disk.nix
@@ -27,7 +34,10 @@
       port = "DP-1";
       primary = true;
     };
-    lgcx.port = "HDMI-A-1";
+    lgcx = {
+      port = "HDMI-A-1";
+      enabled = false;
+    };
   };
 
   hardware = {
