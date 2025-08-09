@@ -319,10 +319,8 @@
         # "w[tv1], gapsout:0, gapsin:0"
         # "f[1], gapsout:0, gapsin:0"
 
-        # Make TV screen only show fullscreen content (smart gaps)
-        # NOTE: This is to reduce static content like borders to burn-in
-        #       my OLED TV.
-        # "m[${lgcx.port}], default:true, gapsout:0, gapsin:0, floating:0, border:false, rounding:false, persistent:true, ])"
+        # Don't show borders as long as there is just a single (v)isible window
+        "w[v1], border:0"
       ];
 
       # NOTE: Uses Google's RE2 RexEx engine!
