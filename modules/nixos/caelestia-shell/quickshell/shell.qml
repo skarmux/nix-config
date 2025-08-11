@@ -9,10 +9,16 @@ import "modules/lock"
 import Quickshell
 
 ShellRoot {
-    Background {}
-    Drawers {}
-    AreaPicker {}
-    Lock {}
+    //Background {}
 
-    Shortcuts {}
+    // Wraparound Taskbar
+    Drawers {}
+
+    // Workspace selector?
+    // AreaPicker {}
+
+    // Screen locking
+    //Lock {}
+
+    //Shortcuts {}
 }

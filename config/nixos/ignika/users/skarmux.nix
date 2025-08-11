@@ -19,6 +19,7 @@
       ../../../home/base.nix
       ../../../home/desktop.nix
       ../../../home/work.nix
+      ../../../home/streaming.nix
     ];
     home = {
       username = "skarmux";

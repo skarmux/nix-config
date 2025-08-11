@@ -33,6 +33,7 @@ Item {
 
         animate: true
         text: Hyprland.activeWsId === root.ws ? activeLabel : root.isOccupied ? occupiedLabel : label
+        // text: Hyprland.activeWsId === root.ws ? label : root.isOccupied ? null : label
         color: Config.bar.workspaces.occupiedBg || root.isOccupied || Hyprland.activeWsId === root.ws ? Colours.palette.m3onSurface : Colours.palette.m3outlineVariant
         horizontalAlignment: StyledText.AlignHCenter
         verticalAlignment: StyledText.AlignVCenter

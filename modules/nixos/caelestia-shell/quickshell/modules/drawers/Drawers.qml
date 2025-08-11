@@ -89,7 +89,7 @@ Variants {
                 anchors.fill: parent
                 layer.enabled: true
                 layer.effect: MultiEffect {
-                    shadowEnabled: true
+                    shadowEnabled: false
                     blurMax: 15
                     shadowColor: Qt.alpha(Colours.palette.m3shadow, 0.7)
                 }

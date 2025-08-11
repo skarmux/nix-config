@@ -233,7 +233,7 @@
 
       # https://wiki.hyprland.org/Configuring/Variables/#misc
       misc = {
-        force_default_wallpaper = -1; # Set to 0 or 1 to disable the anime mascot wallpapers
+        force_default_wallpaper = 2; # Set to 0 or 1 to disable the anime mascot wallpapers
         disable_hyprland_logo = false; # If true disables the random hyprland logo / anime girl background. :(
       };
 
@@ -320,7 +320,9 @@
         # "f[1], gapsout:0, gapsin:0"
 
         # Don't show borders as long as there is just a single (v)isible window
-        "w[v1], border:0"
+        # Do not count floating windows. TODO: Floating windows do need a border though
+        # to signify that they are focused...
+        "w[tv1], border:0"
       ];
 
       # NOTE: Uses Google's RE2 RexEx engine!
@@ -343,17 +345,6 @@
         # "rounding 0, floating:0, class:^(steam_app_).*$"
         # "dimaround 1, floating:0, class:^(steam_app_).*$"
         # "monitor ${lgcx.port}, floating:0, class:^(steam_app_).*$"
-
-        # Privacy
-        "noscreenshare 1, class:^${pkgs.lib.concatStringsSep "|" [
-          "(org.keepassxc.KeePassXC)"
-          "(brave-browser)"
-          "(discord)"
-          "(Signal)"
-          "(org.telegram.desktop)"
-          "(Element)"
-          "(org.gnome.Nautilus)"
-        ]}$"
 
         # Open application windows on fixed workspaces
         "workspace 2 silent, class:brave-browser"
@@ -388,6 +379,19 @@
         # "blur, eww-dashboard"
         # "ignorezero, eww-dashboard"
         # "dimaround, eww-dashboard"
+        "blur, caelestia-drawers"
+
+        # NOTE: Without ignorezero, the entire screen will be blurred since caelestia
+        # is on the (top) layer. lol
+        "ignorezero, caelestia-drawers"
+
+        # TODO: I don't like how the blur does not play well with the dropshadow from
+        #       the caelestia shell drawers.
+
+        # TODO: The caelestia-shell power menu dims the entire screen and causes blur...
+
+        # "blur, caelestia-border-exclusion"
+        # "ignorezero, caelestia-border-exclusion"
       ];
 
       experimental = {

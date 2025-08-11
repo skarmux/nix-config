@@ -173,6 +173,7 @@ Singleton {
     Process {
         id: sensors
 
+        // Requires package `lm_sensors` to be installed
         command: ["sensors"]
         environment: ({
                 LANG: "C",

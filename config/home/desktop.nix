@@ -4,7 +4,7 @@
         ./modules/stylix.nix
         ./programs/alacritty.nix
         ./programs/hyprland.nix
-        ./programs/dunst.nix
+        # ./programs/dunst.nix # NOTE: Notifications handled by caelestia-shell
         ./programs/wofi.nix
         ./services/hyprpaper.nix
         ./services/syncthing.nix

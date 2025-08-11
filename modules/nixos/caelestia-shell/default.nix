@@ -1,8 +1,9 @@
 { pkgs, lib, config, inputs, ... }:
 #
 # Credit goes to:
-# https://quickshell.org/
-# https://github.com/caelestia-dots/shell
+# [Framework] https://quickshell.org/
+# [Shell] https://github.com/caelestia-dots/shell
+# [Dots] https://github.com/caelestia-dots/caelestia
 #
 # Caelestia-Shell manages:
 # - Wallpaper
@@ -74,6 +75,8 @@ in
   config = lib.mkIf cfg.enable {
 
     home-manager.users.skarmux = {
+      # NOTE: For now, I have copied the quickshell files to that location
+      #       to benefit from live reloading.
       # home.file = {
       #   ".config/quickshell".source = ./quickshell;
       # };
@@ -89,6 +92,7 @@ in
 
     };
 
+    # FIXME: `qmlls` no longer included under this option!
     qt.enable = true; # for languages server qmlls (Quickshell syntax)
 
     fonts.packages = with pkgs; [
@@ -113,6 +117,9 @@ in
       grim # Screenshot utility for wayland
       swappy # Edit screenshots from clipboard
       libqalculate # Advanced calculator library
+
+      # To read temperature values from CPU, ...
+      lm_sensors
     ] ++ [
       inputs.quickshell.packages.${pkgs.system}.default
       # cfg.package

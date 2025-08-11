@@ -1,4 +1,3 @@
-{ ... }:
 {
   programs.helix.languages = {
     language-server.qmlls = {

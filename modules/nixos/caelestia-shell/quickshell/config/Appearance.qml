@@ -12,6 +12,7 @@ Singleton {
     readonly property FontStuff font: FontStuff {}
     readonly property Anim anim: Anim {}
 
+    // TODO: Mirror Hyprland
     component Rounding: QtObject {
         readonly property int small: 12
         readonly property int normal: 17

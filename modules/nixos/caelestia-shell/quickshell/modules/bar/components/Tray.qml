@@ -16,7 +16,7 @@ Item {
     Column {
         id: layout
 
-        spacing: Appearance.spacing.small
+        spacing: Appearance.spacing.large
 
         add: Transition {
             NumberAnimation {

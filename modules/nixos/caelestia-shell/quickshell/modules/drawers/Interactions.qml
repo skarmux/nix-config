@@ -68,6 +68,7 @@ MouseArea {
         }
     }
 
+    // Mouse movement event
     onPositionChanged: event => {
         if (popouts.isDetached)
             return;
@@ -76,19 +77,19 @@ MouseArea {
         const y = event.y;
 
         // Show bar in non-exclusive mode on hover
-        if (!visibilities.bar && Config.bar.showOnHover && x < bar.implicitWidth)
-            bar.isHovered = true;
+        // if (!visibilities.bar && Config.bar.showOnHover && x < bar.implicitWidth)
+        //     bar.isHovered = true;
 
         // Show/hide bar on drag
-        if (pressed && dragStart.x < bar.implicitWidth) {
-            const dragX = x - dragStart.x;
-            if (dragX > Config.bar.dragThreshold)
-                visibilities.bar = true;
-            else if (dragX < -Config.bar.dragThreshold)
-                visibilities.bar = false;
-        }
+        // if (pressed && dragStart.x < bar.implicitWidth) {
+        //     const dragX = x - dragStart.x;
+        //     if (dragX > Config.bar.dragThreshold)
+        //         visibilities.bar = true;
+        //     else if (dragX < -Config.bar.dragThreshold)
+        //         visibilities.bar = false;
+        // }
 
-        // Show osd on hover
+        // Show osd on hover (Volume control)
         const showOsd = inRightPanel(panels.osd, x, y);
 
         // Always update visibility based on hover if not in shortcut mode
@@ -102,22 +103,22 @@ MouseArea {
         }
 
         // Show/hide session on drag
-        if (pressed && inRightPanel(panels.session, dragStart.x, dragStart.y) && withinPanelHeight(panels.session, x, y)) {
-            const dragX = x - dragStart.x;
-            if (dragX < -Config.session.dragThreshold)
-                visibilities.session = true;
-            else if (dragX > Config.session.dragThreshold)
-                visibilities.session = false;
-        }
+        // if (pressed && inRightPanel(panels.session, dragStart.x, dragStart.y) && withinPanelHeight(panels.session, x, y)) {
+        //     const dragX = x - dragStart.x;
+        //     if (dragX < -Config.session.dragThreshold)
+        //         visibilities.session = true;
+        //     else if (dragX > Config.session.dragThreshold)
+        //         visibilities.session = false;
+        // }
 
         // Show/hide launcher on drag
-        if (pressed && inBottomPanel(panels.launcher, dragStart.x, dragStart.y) && withinPanelWidth(panels.launcher, x, y)) {
-            const dragY = y - dragStart.y;
-            if (dragY < -Config.launcher.dragThreshold)
-                visibilities.launcher = true;
-            else if (dragY > Config.launcher.dragThreshold)
-                visibilities.launcher = false;
-        }
+        // if (pressed && inBottomPanel(panels.launcher, dragStart.x, dragStart.y) && withinPanelWidth(panels.launcher, x, y)) {
+        //     const dragY = y - dragStart.y;
+        //     if (dragY < -Config.launcher.dragThreshold)
+        //         visibilities.launcher = true;
+        //     else if (dragY > Config.launcher.dragThreshold)
+        //         visibilities.launcher = false;
+        // }
 
         // Show dashboard on hover
         const showDashboard = inTopPanel(panels.dashboard, x, y);
@@ -131,13 +132,13 @@ MouseArea {
         }
 
         // Show/hide dashboard on drag (for touchscreen devices)
-        if (pressed && inTopPanel(panels.dashboard, dragStart.x, dragStart.y) && withinPanelWidth(panels.dashboard, x, y)) {
-            const dragY = y - dragStart.y;
-            if (dragY > Config.dashboard.dragThreshold)
-                visibilities.dashboard = true;
-            else if (dragY < -Config.dashboard.dragThreshold)
-                visibilities.dashboard = false;
-        }
+        // if (pressed && inTopPanel(panels.dashboard, dragStart.x, dragStart.y) && withinPanelWidth(panels.dashboard, x, y)) {
+        //     const dragY = y - dragStart.y;
+        //     if (dragY > Config.dashboard.dragThreshold)
+        //         visibilities.dashboard = true;
+        //     else if (dragY < -Config.dashboard.dragThreshold)
+        //         visibilities.dashboard = false;
+        // }
 
         // Show utilities on hover
         const showUtilities = inBottomPanel(panels.utilities, x, y);
