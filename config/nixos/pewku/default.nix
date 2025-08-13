@@ -43,6 +43,8 @@
         "/var/lib/systemd/coredump"
         # Event store database
         "/var/lib/feaston"
+        # SSH
+        "/etc/ssh"
       ];
     };
   };

@@ -16,7 +16,6 @@
     hostName = "teridax";
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 ];
       # interfaces = {
       #   "eth0" = {};
       #   "wlp2s0" = {};

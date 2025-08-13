@@ -23,6 +23,10 @@ mount --bind /mnt/persist/var/lib/systemd/coredump /mnt/var/lib/systemd/coredump
 mount --bind /mnt/persist/home /mnt/home
 
 # ssh-keygen -A -f /mnt/persist
+
+# read/write for the owner (root)
+# chmod 600 /mnt/persist/etc/ssh/ssh_host*
+
 # cp -r crypt-storage /mnt/boot/
 
 nixos-install --no-root-password --flake $1
