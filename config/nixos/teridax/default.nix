@@ -6,8 +6,7 @@
     # ./programs
     # ./services
     ./users
-    ../../optional/hyprland.nix
-    ../../optional/nautilus.nix
+    ./vm
   ];
 
   system.stateVersion = "25.05";

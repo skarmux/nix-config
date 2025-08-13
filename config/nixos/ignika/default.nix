@@ -5,9 +5,7 @@
     ./programs
     ./services
     ./users
-    ../../optional/hyprland.nix
-    ../../optional/nautilus.nix
-    ./vm/kvm.nix
+    ./vm
   ];
 
   system.stateVersion = "25.05";

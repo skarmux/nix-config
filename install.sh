@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+
+# This is not meant to be executed but rather to
+# have the steps necessary for an installation
+# documented an a straight-forward way.
+
 # Connect to wifi
 # nmcli device wifi
 # nmcli device wifi connect <SSID> --ask
@@ -26,6 +32,7 @@ mount --bind /mnt/persist/home /mnt/home
 
 # read/write for the owner (root)
 # chmod 600 /mnt/persist/etc/ssh/ssh_host*
+# chmod 644 /mnt/persist/etc/ssh/ssh_host*.pub
 
 # cp -r crypt-storage /mnt/boot/
 

@@ -237,22 +237,11 @@ in
     onBoot = "ignore";
     onShutdown = "shutdown";
 
-    # spiceUSBRedirection.enable = true;
-
     qemu.ovmf.enable = true;
     qemu.runAsRoot = true;
 
     hooks.qemu = {
       inherit single_gpu_passthrough;
-    };
-  };
-
-  home-manager.users.skarmux = {
-    dconf.settings = {
-      "org/virt-manager/virt-manager/connections" = {
-        autoconnect = ["qemu:///system"];
-        uris = ["qemu:///system"];
-      };
     };
   };
 
