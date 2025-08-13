@@ -56,6 +56,7 @@
   ### MONITORS ###
   ################
 
+  # TODO: Store primary monitor in `$mon_primary` variable maybe?
   home-manager.users.skarmux = {
     wayland.windowManager.hyprland.settings = let
       primaryMonitor = config.monitors.${
@@ -75,6 +76,11 @@
           if m.primary then "0x0" else "auto-right"}, ${scale}
           ${if m.vrr then ", vrr, 3" else ""} # ${name}"
         else
+          # TODO: Monitors can be enabled after the fact with hyprland.conf adjustments,
+          #       for example: `hyprctl keyword monitor HDMI-A-1,3840x2160@120,auto-right,1`
+          #       It is to cumbersome to type the entire monitor modeline, so store that in
+          #       a variable in hyprland.conf or make executable scripts (that might be placed)
+          #       in a dashboard.
           "${m.port}, disable # ${name}"
       ) config.monitors);
 

@@ -29,6 +29,11 @@
       };
     };
     wayland.windowManager.hyprland.settings = {
+      exec-once = [
+        "brave"
+        "firefox"
+        "discordptb"
+      ];
       workspace = [
         # TODO: I want the TV to be "enabled" as soon as Steam gets started
         #       in big picture (-tenfoot) mode and only be used for that or

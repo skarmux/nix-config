@@ -11,6 +11,10 @@
       "networkmanager"
     ];
     hashedPasswordFile = config.sops.secrets."users/skarmux".path;
+    openssh.authorizedKeys.keys = [
+      (builtins.readFile config.yubico.keys."25390376".ssh.public)
+      (builtins.readFile config.yubico.keys."32885183".ssh.public)
+    ];
   };
 
   home-manager.users.skarmux = {

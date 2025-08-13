@@ -80,6 +80,7 @@ in
       # home.file = {
       #   ".config/quickshell".source = ./quickshell;
       # };
+      # TODO: Only show quickshell on the primary monitor!
       wayland.windowManager.hyprland = {
         settings = {
           # Launch quickshell asap

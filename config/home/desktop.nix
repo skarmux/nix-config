@@ -53,6 +53,8 @@
         slurp
         swappy
         nautilus
+
+        pavucontrol
       ];
     };
 

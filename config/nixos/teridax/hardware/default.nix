@@ -70,6 +70,38 @@
     enableRedistributableFirmware = true;
   };
 
+  home-manager.users.skarmux = {
+    wayland.windowManager.hyprland = {
+      settings = {
+        gestures.workspace_swipe = "on";
+
+        input.touchpad = {
+          natural_scroll = "yes";
+          disable_while_typing = true;
+        };
+      };
+
+      # Builtin keyboard is either/both of those devices
+      extraConfig = ''
+        device {
+          name = fujitsu-fuj02e3
+          kb_layout=de
+          numlock_by_default=false
+        }
+        device {
+          name = at-translated-set-2-keyboard
+          kb_layout=de
+          numlock_by_default=false
+        }
+      '';
+    };
+
+    programs.waybar.settings.primary = {
+      battery.bat = "CMB1"; # TODO: CMB01?
+    };
+ 
+  };
+
   #############
   ### AUDIO ###
   #############

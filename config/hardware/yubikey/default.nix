@@ -14,7 +14,7 @@
       ### YubiKey 5 NFC (5.4.3) [OTP+FIDO+CCID] ###
       #############################################
 
-      # SLOT 1: Free
+      # SLOT 1: Challenge-response (LUKS)
       # SLOT 2: Challenge-response (KeepassXC)
       
       "25390376" = {

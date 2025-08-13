@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ lib, ... }:
 {
   wayland.windowManager.hyprland = {
 
@@ -30,10 +30,6 @@
 
       exec-once = [
         # "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
-        "discordptb"
-        "alacritty"
-        "brave"
-        "firefox"
         # (pkgs.writeShellScript "keymapp-silent" ''
         #   #!/usr/bin/env bash
         #   # bind = $mod, S, togglespecialworkspace, magic
