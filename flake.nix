@@ -70,28 +70,41 @@
   };
 
   inputs = {
-    catppuccin.url = "github:catppuccin/nix";
     deploy-rs.url = "github:serokell/deploy-rs";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
-    disko.url = "github:nix-community/disko/v1.11.0";
+    disko = {
+      url = "github:nix-community/disko/v1.11.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     hardware.url = "github:nixos/nixos-hardware";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     impermanence.url = "github:nix-community/impermanence";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    sops-nix.url = "github:mic92/sops-nix";
-    stylix.inputs.home-manager.follows = "home-manager";
-    stylix.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.url = "github:nix-community/stylix/release-25.05";
-    quickshell.url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
-    quickshell.inputs.nixpkgs.follows = "nixpkgs";
-    feaston.inputs.nixpkgs.follows = "nixpkgs";
-    feaston.url = "git+ssh://git@github.com/skarmux/feaston.git";
-    homepage.inputs.nixpkgs.follows = "nixpkgs";
-    homepage.url = "git+ssh://git@github.com/skarmux/skarmux.git";
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    stylix = {
+      url = "github:nix-community/stylix/release-25.05";
+      inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    feaston = {
+      url = "git+ssh://git@github.com/skarmux/feaston.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    homepage = {
+      url = "git+ssh://git@github.com/skarmux/skarmux.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }
