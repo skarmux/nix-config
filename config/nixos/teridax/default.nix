@@ -83,6 +83,7 @@
       helix
       git
       nixd # nix language server
+      pavucontrol
       overskride # manage bluetooth connections
     ];
     sessionVariables = {

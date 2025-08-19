@@ -8,7 +8,6 @@
 
     enableNushellIntegration = true;
     enableBashIntegration = true;
-    enableFishIntegration = true;
   };
 
   programs.git.ignores = lib.mkIf config.programs.direnv.enable [ ".direnv/**" ];

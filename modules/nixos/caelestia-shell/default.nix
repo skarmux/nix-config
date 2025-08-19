@@ -86,7 +86,7 @@ in
           # Launch quickshell asap
           exec-once = lib.mkBefore [
             # "quickshell --path \"${./quickshell}\""
-            "quickshell"
+            "qs" # I have symlinked the quickshell dir to .config/quickshell for development
           ];
         };
       };
@@ -108,7 +108,6 @@ in
       # app2unit
       cava # Console-based audio visualizer for Alsa TODO: Pipewire?
       networkmanager
-      # lm-sensors
       fish # Command-line shell
       aubio # Extraction of annotations from audio signals like pitch detection
       # libpipewire
@@ -123,7 +122,6 @@ in
       lm_sensors
     ] ++ [
       inputs.quickshell.packages.${pkgs.system}.default
-      # cfg.package
     ];
 
   };

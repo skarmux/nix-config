@@ -17,6 +17,9 @@
         "vscode"
         "plexamp"
         "obsidian"
+        "grayjay"
+        "steam" # dependency of lutris
+        "steam-unwrapped"
       ];
     };
 
@@ -43,6 +46,7 @@
         plexamp # music streaming
         gimp # raster graphics
         inkscape # vector graphics
+        grayjay
 
         keepassxc # password management
         obsidian # notetaking
@@ -54,7 +58,19 @@
         swappy
         nautilus
 
-        pavucontrol
+        deluge
+
+        # warcraft 3
+        # WINEPREFIX=~/.wine winetricks corefonts vcrun6 ffdshow xvid wsh57 wmp9 l3codecx lavfilters binkw32
+        # WINEPREFIX=~/.wine Warcraft\ III.exe -opengl or (with version 1.29+) WINEPREFIX=~/.wine Warcraft\ III.exe -graphicsapi OpenGL2
+        wineWowPackages.stable
+        winetricks
+        # gst_all_1.gstreamer
+        (lutris.override {
+          extraLibraries = pkgs: [];
+          extraPkgs = pkgs: [];
+        })
+        
       ];
     };
 

@@ -3,16 +3,16 @@
     enable = true;
     settings = {
       general = {
-        live_config_reload = false; # are we even nix, bro?
+        live_config_reload = false;
       };
       window = {
         dynamic_padding = true;
-        padding = { x = 15; };
+        padding = { x = 15; y = 15; };
         blur = false; # Done by hyprland
       };
       cursor = {
         style = "Beam"; # Block | Underline | Beam
-        # unfocused_hollow = true;
+        unfocused_hollow = true;
       };
       selection = {
         save_to_clipboard = true;

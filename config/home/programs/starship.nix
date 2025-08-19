@@ -4,13 +4,17 @@
     enable = true;
 
     enableNushellIntegration = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+
+    enableTransience = true;
 
     settings = {
 
       format = ''
-        $directory ($git_branch $git_status
+        ($hostname )$directory ($git_branch $git_status
         )(($java )($nodejs )($go )($zig )($php )($python )($rust )
-        )$nix_shell$jobs$character
+        )$nix_shell$jobs$shell$character
       '';
 
       add_newline = false;
@@ -27,8 +31,9 @@
       };
 
       hostname = {
-        format = "[$hostname](bold fg:blue)";
-        ssh_only = false;
+        format = "[$ssh_symbol$hostname]($style)";
+        style = "bold fg:blue";
+        ssh_only = true;
       };
 
       directory = {
@@ -43,6 +48,15 @@
         #   Music = "󰝚 ";
         #   Pictures = " ";
         # };
+      };
+
+      shell = {
+        bash_indicator = "$_ ";
+        fish_indicator = "󰈺 ";
+        powershell_indicator = "_";
+        unknown_indicator = "mystery shell";
+        style = "cyan bold";
+        disabled = false;
       };
 
       nix_shell = {

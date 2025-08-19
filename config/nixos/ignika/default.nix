@@ -81,17 +81,13 @@
     };
   };
 
-  programs = {
-    openvpn3.enable = true; # hackthebox
-    kdeconnect.enable = true;
-  };
-
   environment = {
     systemPackages = with pkgs; [
       protonvpn-gui # NOTE: Needs to be system level, I think.
       helix
       git
       nixd # nix language server
+      pavucontrol
       overskride # manage bluetooth connections
     ];
     sessionVariables = {

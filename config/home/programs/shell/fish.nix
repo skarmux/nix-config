@@ -2,6 +2,7 @@
 {
   programs.fish = {
     plugins = [{
+      # Auto-color output
       name = "grc";
       src = pkgs.fishPlugins.grc.src;
     }];

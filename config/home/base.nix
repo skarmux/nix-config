@@ -8,10 +8,9 @@
   ];
 
   home.packages = with pkgs; [
-    # timewarrior
-    # taskwarrior3
-    # taskwarrior-tui
     btop
+    unixtools.column
+    unixtools.xxd
   ];
 
   home = {
@@ -24,6 +23,7 @@
       defaultEditor = true;
       file-picker = "tmux";
     };
+    fish.enable = true;
   };
 
   systemd.user.startServices = "sd-switch";

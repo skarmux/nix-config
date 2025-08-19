@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let
   inherit (lib) mkIf mkOption mkMerge types;
   cfg = config.programs.helix;

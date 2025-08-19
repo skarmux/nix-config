@@ -1,8 +1,8 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 {
   users.users.skarmux = {
     isNormalUser = true;
-    # shell = pkgs.nushell;
+    shell = pkgs.fish;
     extraGroups = [
       "wheel"
       "video"

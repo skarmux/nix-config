@@ -359,6 +359,7 @@
         "float, class:org.pulseaudio.pavucontrol"
         "float, class:org.keepassxc.KeePassXC"
         "float, class:xdg-desktop-portal-gtk"
+        "float, class:^(brave)$"
         # FIXME: The lookahead regex `?!` does not apply in hyprland
         "float, class:steam, title:^(?!Steam$).*"
       
