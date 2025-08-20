@@ -12,7 +12,7 @@
 
     settings = {
       mgr = {
-        ratio = [ 0 1 0 ];
+        ratio = [ 0 2 1 ];
         sort_by = "alphabetical";
         sort_sensitive = false;
         sort_dir_first = true;
@@ -80,6 +80,12 @@
           { name = "*"; use = [ "open" "reveal" ]; }
         ];
         append_rules = [ ];
+      };
+      plugin = {
+        prepend_previewers = [
+          # NOTE: Disable image previews. Broken on Ghostty with transparency & non-functional in Alacritty.
+          { mime = "image/*"; run = "noop"; }
+        ];
       };
     };
   };

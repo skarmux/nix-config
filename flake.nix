@@ -91,7 +91,6 @@
     };
     stylix = {
       url = "github:nix-community/stylix/release-25.05";
-      inputs.home-manager.follows = "home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     quickshell = {

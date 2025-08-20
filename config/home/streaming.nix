@@ -3,6 +3,8 @@
     home.packages = with pkgs; [
         obs-studio
         twitch-tui
+        ffmpeg-full
+        handbrake
     ];
 
     wayland.windowManager.hyprland.settings = {

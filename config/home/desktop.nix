@@ -6,6 +6,7 @@
         ./programs/hyprland.nix
         # ./programs/dunst.nix # NOTE: Notifications handled by caelestia-shell
         ./programs/wofi.nix
+        ./programs/dolphin.nix
         ./services/hyprpaper.nix
         ./services/syncthing.nix
     ];
@@ -47,16 +48,11 @@
         gimp # raster graphics
         inkscape # vector graphics
         grayjay
+        vlc
 
         keepassxc # password management
         obsidian # notetaking
         libreoffice # office
-
-        # hyprland
-        grim
-        slurp
-        swappy
-        nautilus
 
         deluge
 

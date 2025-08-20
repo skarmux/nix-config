@@ -60,7 +60,6 @@
           inputs.home-manager.nixosModules.home-manager
           ./global
           ./optional/hyprland.nix
-          ./optional/nautilus.nix
           ./nixos/ignika
           {
             home-manager.users.skarmux = {
@@ -90,7 +89,6 @@
           inputs.home-manager.nixosModules.home-manager
           ./global
           ./optional/hyprland.nix
-          ./optional/nautilus.nix
           ./hardware/voyager.nix
           ./hardware/yubikey
           ./hardware/logitech_laser_mouse.nix

@@ -1,11 +1,11 @@
-{ pkgs, ... }:
+# { pkgs, ... }:
 {
+  # home.packages = with pkgs; [ grc ];
+
   programs.fish = {
-    plugins = [{
-      # Auto-color output
-      name = "grc";
-      src = pkgs.fishPlugins.grc.src;
-    }];
+    plugins = [
+      # { name = "grc"; src = pkgs.fishPlugins.grc.src; } # Auto-color output
+    ];
     functions.fish_greeting = ""; # No greeting message
   };
 }

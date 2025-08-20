@@ -17,7 +17,7 @@
       #        both ghostty and preview)
       # "$terminal" = "ghostty --gtk-single-instance=true";
       "$terminal" = "alacritty";
-      "$fileManager" = "nautilus";
+      "$fileManager" = "";
       "$launcher" = "pkill wofi || wofi --show drun";
       "$browser" = "brave";
       "$screenshot" = "grim -g \"$(slurp)\" - | wl-copy";

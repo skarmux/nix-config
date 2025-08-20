@@ -7,24 +7,22 @@
     enableBashIntegration = true;
     enableFishIntegration = true;
 
+    # Only working within the fish shell (for now)
     enableTransience = true;
 
     settings = {
 
       format = ''
-        ($hostname )$directory ($git_branch $git_status
-        )(($java )($nodejs )($go )($zig )($php )($python )($rust )
-        )$nix_shell$jobs$shell$character
+        $hostname$directory $git_branch$git_state$git_status$git_commit
+        $jobs$character
+      '';
+
+      right_format = ''
+        $java$nodejs$go$zig$php$python$rust$shell$nix_shell
       '';
 
       add_newline = false;
 
-      fill = {
-        symbol = " ";
-        disabled = false;
-      };
-
-      # Core
       username = {
         show_always = true;
         format = "[$user](bold fg:blue)";
@@ -33,6 +31,7 @@
       hostname = {
         format = "[$ssh_symbol$hostname]($style)";
         style = "bold fg:blue";
+        detect_env_vars = [ "SSH_CONNECTION" ];
         ssh_only = true;
       };
 
@@ -51,10 +50,11 @@
       };
 
       shell = {
-        bash_indicator = "$_ ";
+        bash_indicator = "$ ";
         fish_indicator = "󰈺 ";
-        powershell_indicator = "_";
-        unknown_indicator = "mystery shell";
+        nu_indicator = "❯ ";
+        powershell_indicator = "_ ";
+        unknown_indicator = "? ";
         style = "cyan bold";
         disabled = false;
       };
@@ -64,16 +64,20 @@
         symbol = " ";
       };
 
+      # git_state = { };
+
+      # git_status = { };
+
       git_branch = {
-        symbol = "";
-        format = "[$symbol $branch(:$remote_branch)]($style)";
+        # symbol = "";
+        # format = "[$symbol $branch(:$remote_branch)]($style)";
         style = "bold yellow";
       };
 
       rust = {
         format = "[$symbol ($version)]($style)";
         version_format = "\${major}.\${minor}";
-        symbol = "";
+        symbol = " ";
       };
     };
   };

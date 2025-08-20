@@ -11,6 +11,7 @@
     btop
     unixtools.column
     unixtools.xxd
+    parallel
   ];
 
   home = {
