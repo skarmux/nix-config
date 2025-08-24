@@ -5,6 +5,7 @@
         twitch-tui
         ffmpeg-full
         handbrake
+        audacity
     ];
 
     wayland.windowManager.hyprland.settings = {

@@ -21,6 +21,7 @@
         "grayjay"
         "steam" # dependency of lutris
         "steam-unwrapped"
+        "makemkv"
       ];
     };
 
@@ -66,7 +67,8 @@
           extraLibraries = pkgs: [];
           extraPkgs = pkgs: [];
         })
-        
+
+        wev
       ];
     };
 

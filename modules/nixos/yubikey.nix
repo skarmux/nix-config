@@ -123,7 +123,7 @@ in
           matchBlocks = {
             # Instruct SSH to use the `id_yubikey` symlink
             "yubikey-hosts" = {
-              host = "gitlab.com github.com pewku teridax ignika";
+              host = "gitlab.com github.com teridax ignika";
               identitiesOnly = true;
               # `id_yubikey` is a symlink to whichever of multiple
               # yubikeys is connected.

@@ -1,3 +1,6 @@
 {
-  imports = [ ./nix-ssh-serve.nix ];
+  imports = [
+    ./nix-ssh-serve.nix
+    # ./samba-client.nix
+  ];
 }

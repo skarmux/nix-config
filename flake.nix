@@ -10,6 +10,9 @@
         devShells.default = pkgs.mkShell {
           shellHook = ''
           cat <<EOF
+          Deploy to pewku using dedicated ssh key:
+          $ deploy .#pewku --ssh-opts "-i ~/.ssh/pewku-deployment/id_ed25519"
+          
           Building an ISO:
           $ nix build .#nixosConfigurations.iso.config.system.build.isoImage
 

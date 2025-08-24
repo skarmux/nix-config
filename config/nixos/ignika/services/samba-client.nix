@@ -5,7 +5,7 @@
   ];
 
   fileSystems."/mnt/share" = {
-    device = "//whenua/volume1";
+    device = "//whenua/crypt";
     fsType = "cifs";
     options = let
       automount_opts = lib.concatStringsSep "," [
@@ -16,12 +16,16 @@
         "x-systemd.mount-timeout=5s"
       ];
     in [
-      "ro,${automount_opts},credentials=${config.sops.secrets."whenua-smb".path},uid=${toString config.users.users.skarmux.uid}"
+      "${automount_opts},credentials=${config.sops.secrets."whenua-smb".path}"
     ];
   };
 
+  # networking.firewall.extraCommands = ''
+  #   iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns
+  # '';
+
   sops.secrets."whenua-smb" = {
-    owner = "skarmux";
-    mode = "400";
+    # owner = "skarmux";
+    # mode = "400";
   };
 }

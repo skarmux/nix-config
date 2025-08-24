@@ -7,6 +7,7 @@
     ../../../hardware/yubikey
     ../../../hardware/logitech_g502.nix
     ../../../hardware/sony_dualsense.nix
+    ../../../hardware/vocaster.nix
     ./nvidia
     # ./openrgb.nix
     ./disk.nix

@@ -115,6 +115,12 @@
   security = {
     sudo.execWheelOnly = true;
     rtkit.enable = true;
+    # Unlock kwallet with user login
+    # - Has to use same as user password for encryption
+    pam.services.kwallet = {
+      name = "kwallet";
+      enableKwallet = true;
+    };
   };
 
   sops.defaultSopsFile = ./secrets.yaml;

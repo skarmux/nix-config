@@ -12,6 +12,7 @@
     unixtools.column
     unixtools.xxd
     parallel
+    shellcheck
   ];
 
   home = {

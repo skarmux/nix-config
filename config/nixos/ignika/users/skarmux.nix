@@ -20,6 +20,7 @@
       ../../../home/desktop.nix
       ../../../home/work.nix
       ../../../home/streaming.nix
+      ../../../home/disc-backup.nix
     ];
     home = {
       username = "skarmux";
