@@ -61,6 +61,8 @@
           ./global
           ./optional/hyprland.nix
           ./optional/nautilus.nix
+          # ./optional/rustdesk.nix
+          ./optional/tailscale.nix
           ./nixos/ignika
           {
             home-manager.users.skarmux = {
@@ -91,6 +93,8 @@
           ./global
           ./optional/hyprland.nix
           ./optional/nautilus.nix
+          # ./optional/rustdesk.nix
+          ./optional/tailscale.nix
           ./hardware/voyager.nix
           ./hardware/yubikey
           ./hardware/logitech_laser_mouse.nix
@@ -123,6 +127,7 @@
           inputs.sops-nix.nixosModules.sops
           inputs.home-manager.nixosModules.home-manager
           ./global
+          ./optional/tailscale.nix
           ./hardware/yubikey
           ./nixos/pewku
           {

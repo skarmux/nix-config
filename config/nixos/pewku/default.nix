@@ -57,9 +57,6 @@
     # FIXME
     # rsyslogd.enable = true;
 
-    # Use this system as exit-node
-    # tailscale.useRoutingFeatures = "server";
-
     # TODO: Do I need this for resolving DNS?
     #       And does it bite with Tailscale DNS?
     resolved.enable = true;

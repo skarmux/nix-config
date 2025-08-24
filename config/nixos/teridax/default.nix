@@ -53,10 +53,6 @@
   };
 
   services = {
-    tailscale = {
-      enable = true;
-      useRoutingFeatures = "client";
-    };
     displayManager = {
       autoLogin = {
         # After unlocking the luks drive with 2FA,

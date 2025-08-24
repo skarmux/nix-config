@@ -64,10 +64,6 @@
   };
 
   services = {
-    tailscale = {
-      enable = true;
-      useRoutingFeatures = "client";
-    };
     displayManager = {
       autoLogin = {
         enable = true;
