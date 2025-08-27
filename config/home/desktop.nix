@@ -47,6 +47,7 @@
         celluloid # video player
         plexamp # music streaming
         gimp # raster graphics
+        darktable
         inkscape # vector graphics
         grayjay
         vlc
@@ -76,7 +77,7 @@
     dconf = {
         enable = true;
         # NOTE: Disabled in favor of stylix
-        # settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+        settings."org/gnome/desktop/interface".color-scheme = lib.mkForce "prefer-dark";
     };
 
     xdg.mimeApps = {

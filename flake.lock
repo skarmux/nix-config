@@ -442,11 +442,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1724774083,
-        "narHash": "sha256-FQFRZP3NZvyGfIYoZyVZCF2WX5wPsaI8k3g5IDF88pY=",
+        "lastModified": 1756204490,
+        "narHash": "sha256-uOjwIPH6HkVU97DlyVP+4uQHSLCbFtY7FodP2/g2a48=",
         "ref": "refs/heads/main",
-        "rev": "edfdab06b865279779565a7db8eed7b755a76942",
-        "revCount": 13,
+        "rev": "b11c4e4b898ef7ad3066e66d7c5e3036ef1fdaa6",
+        "revCount": 15,
         "type": "git",
         "url": "ssh://git@github.com/skarmux/skarmux.git"
       },
@@ -774,6 +774,22 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/5daf0514482af3f97abaefc78a6606365c9108e2.tar.gz"
       }
     },
+    "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1756125398,
+        "narHash": "sha256-XexyKZpf46cMiO5Vbj+dWSAXOnr285GHsMch8FBoHbc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "3b9f00d7a7bf68acd4c4abb9d43695afb04e03a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1754725699,
@@ -887,6 +903,7 @@
         "hyprland": "hyprland",
         "impermanence": "impermanence",
         "nixpkgs": "nixpkgs_3",
+        "nixpkgs-unstable": "nixpkgs-unstable",
         "quickshell": "quickshell",
         "sops-nix": "sops-nix",
         "stylix": "stylix"

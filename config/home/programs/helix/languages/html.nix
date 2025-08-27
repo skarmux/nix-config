@@ -1,4 +1,3 @@
-{ lib, config, ... }:
 {
   programs.helix.languages = {
     language-server.html-language-server = {
@@ -16,9 +15,7 @@
       language-servers = [
         "vscode-html-language-server"
         "tailwindcss-ls"
-      ] ++ (lib.optionals config.programs.helix.lsp-ai.enable [
-        "lsp-ai"
-      ]);
+      ];
       text-width = 140;
       soft-wrap = {
         enable = true;

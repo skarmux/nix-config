@@ -1,5 +1,10 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
+  home.packages = with pkgs; [
+    slurp
+    hyprpicker
+
+  ];
   wayland.windowManager.hyprland = {
 
     enable = true;
@@ -363,9 +368,6 @@
         # FIXME: The lookahead regex `?!` does not apply in hyprland
         "float, class:steam, title:^(?!Steam$).*"
       
-        "stayfocused, class:io.github.kaii_lb.Overskride"
-        "stayfocused, class:org.pulseaudio.pavucontrol"
-
         "size 50% 50%, class:io.github.kaii_lb.Overskride"
         "size 50% 50%, class:org.pulseaudio.pavucontrol"
         "size 50% 50%, class:org.keepassxc.KeePassXC"

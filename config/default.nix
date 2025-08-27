@@ -51,7 +51,12 @@
       ###########
 
       ignika = inputs.nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit self inputs; };
+        specialArgs = {
+          inherit self inputs;
+          unstable = import inputs.nixpkgs-unstable {
+            system = "x86_64-linux";
+          };
+        };
         system = "x86_64-linux";
         modules = (builtins.attrValues self.nixosModules) ++ [
           inputs.impermanence.nixosModules.impermanence

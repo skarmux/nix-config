@@ -25,6 +25,9 @@
     '';
   };
 
+  # TODO:
+  # Opening a second instance of Alacritty, terminates the session
+  # within the first instance
   programs.fish.shellInit = /* fish */ ''
     if not set -q TMUX
         set -g TMUX tmux new-session -d -s base

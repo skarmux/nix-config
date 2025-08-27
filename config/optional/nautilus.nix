@@ -9,11 +9,18 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    nautilus
-    adwaita-icon-theme # default icon theme
-    gnome-themes-extra
-  ];
+  environment = {
+    sessionVariables = {
+      # Fixes certain desktop apps like nautilus to freeze on close
+      # https://github.com/NixOS/nixpkgs/issues/353990#issuecomment-2551404760
+      GSK_RENDERER = "ngl";
+    };
+    systemPackages = with pkgs; [
+      nautilus
+      adwaita-icon-theme # default icon theme
+      gnome-themes-extra
+    ];
+  };
 
   nixpkgs.overlays = [
     (self: super: {

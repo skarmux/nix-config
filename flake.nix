@@ -6,7 +6,8 @@
         ./modules
       ];
       systems = [ "x86_64-linux" "aarch64-linux" ];
-      perSystem = { pkgs, ... }: {
+      perSystem = { pkgs, ... }:
+      {
         devShells.default = pkgs.mkShell {
           shellHook = ''
           cat <<EOF
@@ -87,7 +88,7 @@
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     impermanence.url = "github:nix-community/impermanence";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";

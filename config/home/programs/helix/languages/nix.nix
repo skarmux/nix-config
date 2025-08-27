@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, ... }:
 {
   programs.helix.languages = {
     language-server.nixd = {
@@ -31,9 +31,7 @@
       };
       language-servers = [
         "nixd"
-      ] ++ (lib.optionals config.programs.helix.lsp-ai.enable [
-        "lsp-ai"
-      ]);
+      ];
     }];
 
     grammar = [{

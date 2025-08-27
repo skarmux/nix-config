@@ -23,7 +23,7 @@
   programs = {
     helix = {
       defaultEditor = true;
-      file-picker = "tmux";
+      # file-picker = "zellij";
     };
     fish.enable = true;
   };

@@ -1,7 +1,7 @@
 {
   imports = [
-    ./helix-lsp-ai
-    ./helix-file-picker.nix
+    # ./helix-lsp-ai
+    # ./helix-file-picker.nix
     ./languages/html.nix
     ./languages/qml.nix
     ./languages/javascript.nix

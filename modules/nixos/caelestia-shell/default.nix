@@ -86,7 +86,7 @@ in
           # Launch quickshell asap
           exec-once = lib.mkBefore [
             # "quickshell --path \"${./quickshell}\""
-            "qs" # I have symlinked the quickshell dir to .config/quickshell for development
+            # "qs" # I have symlinked the quickshell dir to .config/quickshell for development
           ];
         };
       };

@@ -1,4 +1,3 @@
-{ lib, config, ... }:
 {
   programs.helix.languages = {
     language-server.taplo = {
@@ -15,9 +14,7 @@
       auto-format = true;
       language-servers = [
         "taplo"
-      ] ++ (lib.optionals config.programs.helix.lsp-ai.enable [
-        "lsp-ai"
-      ]);
+      ];
       soft-wrap = {
         enable = true;
         wrap-at-text-width = true;

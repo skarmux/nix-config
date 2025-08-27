@@ -1,4 +1,3 @@
-{ lib, config, ... }:
 {
   programs.helix.languages = {
     language = [{
@@ -9,9 +8,7 @@
         tab-width = 4;
         unit = " ";
       };
-      language-servers = [ ] ++ (lib.optionals config.programs.helix.lsp-ai.enable [
-        "lsp-ai"
-      ]);
+      language-servers = [ ];
       soft-wrap.enable = true;
     }];
   };
