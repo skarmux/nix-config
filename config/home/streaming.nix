@@ -6,6 +6,7 @@
         ffmpeg-full
         handbrake
         audacity
+        davinci-resolve
     ];
 
     wayland.windowManager.hyprland.settings = {

@@ -5,6 +5,7 @@
     ./programs/helix
     ./programs/shell
     ./programs/starship.nix
+    ./programs/superfile
   ];
 
   home.packages = with pkgs; [

@@ -22,6 +22,7 @@
         "steam" # dependency of lutris
         "steam-unwrapped"
         "makemkv"
+        "davinci-resolve"
       ];
     };
 
@@ -57,6 +58,8 @@
         libreoffice # office
 
         deluge
+
+        wl-clipboard
 
         # warcraft 3
         # WINEPREFIX=~/.wine winetricks corefonts vcrun6 ffdshow xvid wsh57 wmp9 l3codecx lavfilters binkw32

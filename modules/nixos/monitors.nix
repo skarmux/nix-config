@@ -83,10 +83,10 @@ in
     description = "Monitor configuration.";
   };
 
-  config = let
-    monitorNames = builtins.attrNames cfg;
-  in {
-    assertions = [
+  config = {
+    assertions = let
+      monitorNames = builtins.attrNames cfg;
+    in [
       {
         assertion =
           ((lib.length monitorNames) != 0)

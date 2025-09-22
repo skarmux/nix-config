@@ -34,10 +34,11 @@
     benq = {
       port = "DP-1";
       primary = true;
+      enabled = true;
     };
     lgcx = {
       port = "HDMI-A-1";
-      enabled = false;
+      enabled = true;
     };
   };
 

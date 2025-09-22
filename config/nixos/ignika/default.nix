@@ -108,6 +108,12 @@
     };
   };
 
+  # TODO: Implement ZRAM swap:
+  # https://pocketcasts.com/podcast/linux-matters/057042f0-be09-013b-f3ff-0acc26574db2/a-mini-swap-adventure/361fe2c7-1c9f-4060-91c4-5c4fe9d9d803
+  swapDevices = [
+    { device = "/swapfile"; size = 16 * 1024; /* 16 GB */ }
+  ];
+
   security = {
     sudo.execWheelOnly = true;
     rtkit.enable = true;

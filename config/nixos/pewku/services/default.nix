@@ -1,7 +1,7 @@
 {
     imports = [
         ./nix-serve.nix
-        # ./postgres.nix
+        ./postgres.nix
         ./paperless.nix
         ./vikunja.nix
         ./feaston.nix

@@ -5,7 +5,9 @@
   services.ollama = {
     enable = true;
     loadModels = [
-      "deepseek-coder:33b"
+      # "deepseek-coder:33b"
+      # "qwen3-coder:30b"
+      "hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:UD-Q4_K_XL"
     ];
     acceleration = "cuda";
     # port = 11434;
@@ -16,7 +18,10 @@
   environment.systemPackages = with pkgs; [
     llm
     lsp-ai
-  ] ++ [ unstable.opencode ];
+    llama-cpp
+  ] ++ [
+    unstable.opencode
+  ];
 
   home-manager.users.skarmux = {
 

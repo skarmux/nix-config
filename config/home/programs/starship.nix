@@ -21,7 +21,7 @@
         $java$nodejs$go$zig$php$python$rust$shell$nix_shell
       '';
 
-      add_newline = false;
+      add_newline = true;
 
       username = {
         show_always = true;

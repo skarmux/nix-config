@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   programs.steam = {
     enable = true;
@@ -149,9 +149,10 @@
       # Ensure that more than one core is used for vulkan shader processing
       # Update: Since `fossilize` running in the background is eating up RAM
       #         as well, I'm gonna reduce the thread count from 8 to 4.
-      ".steam/steam/steam_dev.cfg".text = ''
-        unShaderBackgroundProcessingThreads 4
-      '';
+      # FIXME: Deactivated since Fossilize freezes my system while filling up RAM and CPU
+      # ".steam/steam/steam_dev.cfg".text = ''
+      #   unShaderBackgroundProcessingThreads 4
+      # '';
     };
   };
 }
