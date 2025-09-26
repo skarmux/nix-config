@@ -10,15 +10,19 @@
 
   environment = {
     sessionVariables = {
-      XDG_BACKEND = "wayland";
-      XDG_CURRENT_DESKTOP = "Hyprland";
-      XDG_SESSION_TYPE = "wayland";
+      # XDG_BACKEND = "wayland";
+      # XDG_CURRENT_DESKTOP = "Hyprland";
+      # XDG_SESSION_TYPE = "wayland";
+      # XDG_SESSION_DESKTOP = "Hyprland";
 
-      _JAVA_AWT_WM_NONREPARENTING = "1";
+      # GDK_BACKEND = "wayland,x11,*";
 
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      # QT_QPA_PLATFORM = "wayland;xcb";
 
-      LIBSEAT_BACKEND = "logind";
+      # _JAVA_AWT_WM_NONREPARENTING = "1";
+      # QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+
+      # LIBSEAT_BACKEND = "logind";
     };
   };
 
@@ -43,9 +47,9 @@
       #   default = ["hyprland" "gtk"];
       # };
     # };
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-    ];
+    # extraPortals = with pkgs; [
+    #   xdg-desktop-portal-gtk
+    # ];
   };
 
 }

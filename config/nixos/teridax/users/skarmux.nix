@@ -27,6 +27,14 @@
       username = "skarmux";
       stateVersion = config.system.stateVersion;
     };
+    wayland.displayManager.hyprland.settings = {
+      # Battery power optimization
+      misc.vfr = true;
+      decoration = {
+        blur.enabled = false;
+        shadow.enabled = false;
+      };
+    };
   };
 
   sops.secrets."users/skarmux".neededForUsers = true;

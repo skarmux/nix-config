@@ -15,7 +15,7 @@
               # Secrets
               "(org.keepassxc.KeePassXC)"
               # Browser
-              "(brave-browser)"
+              # "(brave-browser)"
               "(firefox)"
               # Messenger
               "(discord)"

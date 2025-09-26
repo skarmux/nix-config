@@ -39,7 +39,7 @@
 
   boot = {
     loader = {
-      timeout = 30; # seconds to wait for nixos generation selection
+      # timeout = 30; # seconds to wait for nixos generation selection
       efi.canTouchEfiVariables = true;
       systemd-boot = {
         enable = true;

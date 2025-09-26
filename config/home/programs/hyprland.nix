@@ -5,6 +5,7 @@
     hyprpicker
 
   ];
+
   wayland.windowManager.hyprland = {
 
     enable = true;
@@ -22,10 +23,10 @@
       #        both ghostty and preview)
       # "$terminal" = "ghostty --gtk-single-instance=true";
       "$terminal" = "alacritty";
-      "$fileManager" = "";
+      "$fileManager" = "nautilus";
       "$launcher" = "pkill wofi || wofi --show drun";
       "$browser" = "brave";
-      "$screenshot" = "grim -g \"$(slurp)\" - | wl-copy";
+      "$screenshot" = "grim -g \"$(slurp)\"";
       "$screenshot_edit" = "wl-paste | swappy -f -";
       # "$dashboard" = "eww open --config ~/.config/eww/dashboard --toggle dashboard";
 
@@ -34,6 +35,7 @@
       #################
 
       exec-once = [
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         # "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
         # (pkgs.writeShellScript "keymapp-silent" ''
         #   #!/usr/bin/env bash
@@ -205,7 +207,6 @@
 
       # https://wiki.hyprland.org/Configuring/Variables/#gestures
       gestures = {
-        workspace_swipe = lib.mkDefault false;
       };
 
       group = {
