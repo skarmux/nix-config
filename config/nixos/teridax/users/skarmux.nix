@@ -27,13 +27,19 @@
       username = "skarmux";
       stateVersion = config.system.stateVersion;
     };
-    wayland.displayManager.hyprland.settings = {
+    wayland.windowManager.hyprland.settings = {
       # Battery power optimization
       misc.vfr = true;
       decoration = {
         blur.enabled = false;
         shadow.enabled = false;
       };
+    };
+    stylix.opacity = {
+      desktop = 1.0;
+      applications = 1.0;
+      terminal = 1.0;
+      popups = 1.0;
     };
   };
 

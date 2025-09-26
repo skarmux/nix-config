@@ -116,7 +116,7 @@
 
         # https://wiki.hyprland.org/Configuring/Variables/#blur
         blur = {
-          enabled = true;
+          enabled = lib.mkDefault true;
           size = 12;
           passes = 3;
           # ignore_opacity
@@ -135,7 +135,7 @@
         };
 
         shadow = {
-          enabled = true;
+          enabled = lib.mkDefault true;
           range = 4;
           render_power = 3;
         };

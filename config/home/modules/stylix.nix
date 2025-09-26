@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 {
   stylix = {
     enable = true;
@@ -7,10 +7,10 @@
     # https://github.com/tinted-theming/schemes/tree/spec-0.11/base16
     base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-dark.yaml";
     opacity = {
-      desktop = 0.8;
-      applications = 0.8;
-      terminal = 0.8;
-      popups = 0.8;
+      desktop = lib.mkDefault 0.8;
+      applications = lib.mkDefault 0.8;
+      terminal = lib.mkDefault 0.8;
+      popups = lib.mkDefault 0.8;
     };
     # List all available font family names with `fc-list`
     fonts = {

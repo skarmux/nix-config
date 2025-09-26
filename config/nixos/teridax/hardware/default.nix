@@ -73,8 +73,6 @@
   home-manager.users.skarmux = {
     wayland.windowManager.hyprland = {
       settings = {
-        gestures.workspace_swipe = "on";
-
         input.touchpad = {
           natural_scroll = "yes";
           disable_while_typing = true;

@@ -45,19 +45,6 @@
         "HYPRCURSOR_THEME,Bibata-Modern-Classic"
         "HYPRCURSOR_SIZE,24"
       ];
-      # TODO: Monitors can be enabled after the fact with hyprland.conf adjustments,
-      #       for example: `hyprctl keyword monitor HDMI-A-1,3840x2160@120,auto-right,1`
-      #       It is to cumbersome to type the entire monitor modeline, so store that in
-      #       a variable in hyprland.conf or make executable scripts (that might be placed)
-      #       in a dashboard.
-      monitor = builtins.attrValues (builtins.mapAttrs (monitorName: attrs: 
-        if attrs.enabled then
-          "${attrs.port}, ${toString attrs.width}x${toString attrs.height}@${toString attrs.refresh}, ${
-          if attrs.primary then "0x0" else "auto-right"}, 1 ${
-          if attrs.vrr then ", vrr, 3" else ""} # ${monitorName}"
-        else
-          "${attrs.port}, disable # ${monitorName}"
-      ) config.monitors);
 
       workspace = [
         # TODO: I want the TV to be "enabled" as soon as Steam gets started
