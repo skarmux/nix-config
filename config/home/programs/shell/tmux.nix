@@ -1,7 +1,8 @@
 { pkgs, ... }:
 {
   programs.tmux = {
-    baseIndex = 0;
+    # Where to start window numbering
+    baseIndex = 1;
     mouse = true;
     disableConfirmationPrompt = true;
     clock24 = false;
@@ -25,10 +26,19 @@
     '';
   };
 
+  # tmux-resurrect
+  # Restore tmux sessions on (system-) restart
+
+  # tmux-continuum
+  # Automatically save sessions periodically, to be (tmux-) resurrected later
+
+  # sesh
+  # Name tmux sessions and jump between them
+
   # TODO:
   # Opening a second instance of Alacritty, terminates the session
   # within the first instance
-  programs.fish.shellInit = /* fish */ ''
+  programs.fish.interactiveShellInit = /* fish */ ''
     if not set -q TMUX
         set -g TMUX tmux new-session -d -s base
         eval $TMUX

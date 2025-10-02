@@ -82,6 +82,19 @@
 
         wev
       ];
+      pointerCursor = {
+        gtk.enable = true;
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Classic";
+        size = 16;
+      };
+    };
+
+    wayland.windowManager.hyprland.settings = {
+      env = [
+        "HYPRCURSOR_THEME,Bibata-Modern-Classic"
+        "HYPRCURSOR_SIZE,24"
+      ];
     };
 
     # Dark Mode for GNOME and GNOME apps

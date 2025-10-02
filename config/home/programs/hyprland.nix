@@ -3,7 +3,6 @@
   home.packages = with pkgs; [
     slurp
     hyprpicker
-
   ];
 
   wayland.windowManager.hyprland = {
@@ -35,7 +34,8 @@
       #################
 
       exec-once = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+        # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+
         # "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
         # (pkgs.writeShellScript "keymapp-silent" ''
         #   #!/usr/bin/env bash
@@ -278,6 +278,9 @@
       ++ (builtins.map(x: "SUPER, ${toString x}, workspace, ${toString x}") [1 2 3 4 5 6 7 8 9 0])
       ++ (builtins.map(x: "SUPER SHIFT, ${toString x}, movetoworkspace, ${toString x}") [1 2 3 4 5 6 7 8 9 0]);
 
+      # passthrough
+      # bindn = [ ];
+
       bindel = [
         # Laptop multimedia keys for volume and LCD brightness
         # ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
@@ -303,6 +306,7 @@
 
       bindm = [
         "SUPER, $mouse_left, movewindow"        
+        "SUPER, $mouse_middle, killactive"
         "SUPER, $mouse_right, resizewindow"
       ];
 
@@ -398,6 +402,10 @@
         # xx_color_management_v4 = true;
       };
     }; # settings
+
+    extraConfig = ''
+      bind = CTRL, B, exec, tmux-hyprfocus
+    '';
 
   };
 }

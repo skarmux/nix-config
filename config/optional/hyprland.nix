@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ inputs, pkgs, config, ... }:
 {
   programs.hyprland = {
     enable = true;
@@ -24,6 +24,47 @@
 
       # LIBSEAT_BACKEND = "logind";
     };
+    systemPackages = [
+      # (pkgs.writeShellApplication {
+      #     name = "hypr-focus-app";
+      #     runtimeInputs = [
+      #       config.programs.hyprland.package
+      #     ];
+      #     text = /* bash */ ''
+      #       # Usage
+      #       if [ $# -lt 2 ]; then
+      #         echo "Usage: $0 <class> <command>"
+      #         exit 1
+      #       fi
+
+      #       APP_CLASS="$1"
+      #       shift
+      #       APP_CMD="$*"
+
+      #       # Check if a window with this class exists
+      #       if hyprctl clients | grep -q "class: $APP_CLASS"; then
+      #         # Focus the first one
+      #         hyprctl dispatch focuswindow "class:$APP_CLASS"
+      #       else
+      #         # Launch it
+      #         $APP_CMD &
+      #       fi
+      #     '';
+      # })
+      (pkgs.writeShellApplication {
+          name = "tmux-hyprfocus";
+          runtimeInputs = [
+            config.programs.hyprland.package
+            pkgs.wtype
+          ];
+          text = ''
+            # Switch to tmux windows from anywhere on the desktop
+            hyprctl dispatch focuswindow class:Alacritty
+            sleep 0.05 # give time to switch focus
+            wtype -M ctrl b
+          '';
+      })
+    ];
   };
 
   ###############
