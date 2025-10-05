@@ -109,5 +109,6 @@
       url = "git+ssh://git@github.com/skarmux/skarmux.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zjstatus.url = "github:dj95/zjstatus";
   };
 }

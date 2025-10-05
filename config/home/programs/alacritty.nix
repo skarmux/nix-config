@@ -2,6 +2,10 @@
   programs.alacritty = {
     enable = true;
     settings = {
+      terminal.shell = {
+        program = "zellij";
+        # args = [ "-l" "welcome"];
+      };
       general = {
         live_config_reload = false;
       };
@@ -11,7 +15,11 @@
         blur = false; # Done by hyprland
       };
       cursor = {
-        style = "Beam"; # Block | Underline | Beam
+        # style = { <shape>, <blinking> };
+        style = {
+          shape = "Block"; # Block | Underline | Beam
+          blinking = "On";
+        };
         unfocused_hollow = true;
       };
       selection = {

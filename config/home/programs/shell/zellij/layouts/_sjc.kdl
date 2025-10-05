@@ -1,0 +1,21 @@
+layout {
+  cwd "/home/skarmux/Documents/hzhg/sjc"
+  tab name="term" {
+    pane command="fish"
+  }
+  tab name="src" {
+    pane command="nix" {
+      args "develop" "--command" "bash" "-c" "hx src/main.rs"
+    }
+  }
+  tab name="dx" focus=true {
+    pane command="nix" {
+      args "develop" "--command" "bash" "-c" "dx serve --platform web"
+    }
+  }
+  tab name="css" {
+    pane command="nix" {
+      args "develop" "--command" "bash" "-c" "tailwindcss -i tailwindcss/input.css -c tailwindcss/tailwind.config.js -o assets/tailwind.css"
+    }
+  }
+}

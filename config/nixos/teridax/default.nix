@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 # TODO: Lock screen and suspend on lid close
 {
   imports = [
@@ -21,6 +21,36 @@
       # };
     };
     networkmanager.enable = true;
+
+    wg-quick.interfaces = {
+      wg0 = {
+        address = [
+          "fdff:6b24:52ad::203/64"
+          "192.168.178.203/24"
+        ];
+        dns = [
+          "127.0.0.1"
+          "192.168.178.1"
+          "fdff:6b24:52ad::3e37:12ff:fe97:e724"
+          "fritz.box"
+        ];
+        privateKeyFile = config.sops.secrets."wireguard/private".path;
+        peers = [
+          {
+            publicKey = "mydye9u8xkPXtxfEbLQ/hrbTX7moTPbmJXhd+vDQwnc=";
+            presharedKeyFile = config.sops.secrets."wireguard/preshared".path;
+            allowedIPs = [
+              "192.168.178.0/24"
+              "0.0.0.0/0"
+              "fdff:6b24:52ad::/64"
+              "::/0"
+            ];
+            endpoint = "5ehy71rcjgchb3e5.myfritz.net:56998";
+            persistentKeepalive = 25;
+          }
+        ];
+      };
+    };
   };
 
   yubico = {
@@ -109,5 +139,14 @@
     rtkit.enable = true;
   };
 
-  sops.defaultSopsFile = ./secrets.yaml;
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    secrets = {
+      # "wireguard" = {
+      #   mode = "400";
+      #   owner = "skarmux";
+      #   group = config.users.users.skarmux.group;
+      # };
+    };
+  };
 }

@@ -13,20 +13,14 @@
     settings = {
 
       format = ''
-        $hostname$directory $git_branch$git_state$git_status$git_commit
+        $hostname$directory$fill$nix_shell
         $jobs$character
       '';
 
-      right_format = ''
-        $java$nodejs$go$zig$php$python$rust$shell$nix_shell
-      '';
+      # right_format = ''
+      # '';
 
-      add_newline = true;
-
-      username = {
-        show_always = true;
-        format = "[$user](bold fg:blue)";
-      };
+      add_newline = false;
 
       hostname = {
         format = "[$ssh_symbol$hostname]($style)";
@@ -55,12 +49,12 @@
         nu_indicator = "❯ ";
         powershell_indicator = "_ ";
         unknown_indicator = "? ";
-        style = "cyan bold";
+        style = "blue bold";
         disabled = false;
       };
 
       nix_shell = {
-        format = "[$symbol]($style)";
+        format = "[$symbol](blue)";
         symbol = " ";
       };
 
@@ -69,9 +63,9 @@
       # git_status = { };
 
       git_branch = {
-        # symbol = "";
-        # format = "[$symbol $branch(:$remote_branch)]($style)";
-        style = "bold yellow";
+        symbol = "";
+        format = "[$branch(:$remote_branch)]($style)";
+        style = "bold magenta";
       };
 
       rust = {

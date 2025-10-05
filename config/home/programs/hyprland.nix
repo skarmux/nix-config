@@ -90,9 +90,9 @@
 
       # https://wiki.hyprland.org/Configuring/Variables/#general
       general = {
-        gaps_in = lib.mkDefault 20;
-        gaps_out = lib.mkDefault 40;
-        border_size = 2;
+        gaps_in = lib.mkDefault 10;
+        gaps_out = lib.mkDefault 20;
+        border_size = 3;
 
         # Set to true enable resizing windows by clicking and dragging on borders and gaps
         resize_on_border = false;
@@ -248,6 +248,7 @@
         "SUPER, Q, exec, $terminal"
         "SUPER, W, exec, $browser"
         "SUPER, K, killactive,"
+        "SUPER, $mouse_middle, killactive"
         "SUPER, M, exit,"
         "SUPER, E, exec, $fileManager"
         "SUPER, V, togglefloating,"
@@ -306,7 +307,6 @@
 
       bindm = [
         "SUPER, $mouse_left, movewindow"        
-        "SUPER, $mouse_middle, killactive"
         "SUPER, $mouse_right, resizewindow"
       ];
 
@@ -403,9 +403,10 @@
       };
     }; # settings
 
-    extraConfig = ''
-      bind = CTRL, B, exec, tmux-hyprfocus
-    '';
+    # FIXME
+    # extraConfig = ''
+    #   bind = CTRL, B, exec, tmux-hyprfocus
+    # '';
 
   };
 }

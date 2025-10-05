@@ -9,7 +9,7 @@
     opacity = {
       desktop = lib.mkDefault 0.8;
       applications = lib.mkDefault 0.8;
-      terminal = lib.mkDefault 0.8;
+      terminal = lib.mkDefault 1.0;
       popups = lib.mkDefault 0.8;
     };
     # List all available font family names with `fc-list`

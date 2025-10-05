@@ -28,6 +28,7 @@ in
     ./fish.nix
     ./nushell.nix
     ./tmux.nix
+    ./zellij
     ./yazi.nix
     ./zoxide.nix
   ];
@@ -44,7 +45,8 @@ in
     bash = { shellAliases = shellAliases // shellAbbrs; };
     nushell = { shellAliases = shellAliases // shellAbbrs; };
     bat.enable = true;
-    tmux.enable = true;
+    # tmux.enable = true;
+    zellij.enable = true;
     eza.enable = true;
     yazi.enable = true;
     zoxide.enable = true;

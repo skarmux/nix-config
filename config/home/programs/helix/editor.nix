@@ -18,14 +18,14 @@
   auto-info = true;
   true-color = true;
   undercurl = false;
-  rulers = [ ];
+  rulers = [];
   bufferline = "never"; # always | never | multiple
   color-modes = true;
-  text-width = 80;
+  text-width = 120;
   default-line-ending = "lf";
-  insert-final-newline = false;
+  insert-final-newline = true;
 
-  clipboard-provider = "tmux";
+  clipboard-provider = "wayland";
 
   statusline = {
     left = [ "mode" "diagnostics" ];
@@ -39,9 +39,9 @@
       "position"
     ];
     separator = "|";
-    mode.normal = "NORMAL";
-    mode.insert = "INSERT";
-    mode.select = "VISUAL";
+    # mode.normal = " ";
+    # mode.insert = " ";
+    # mode.select = " ";
   };
 
   lsp = {
@@ -95,8 +95,8 @@
   };
 
   indent-guides = {
-    render = false;
-    character = "│"; # Some characters that work well: "▏", "┆", "┊", "⸽"
+    render = true;
+    character = "┊"; # Some characters that work well: "▏", "┆", "┊", "⸽"
     skip-levels = 0;
   };
 
