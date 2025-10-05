@@ -117,6 +117,11 @@
                 ./home/desktop.nix
                 ./home/hackthebox.nix
               ];
+              nixpkgs.overlays = [
+                (final: prev: {
+                  zjstatus = inputs.zjstatus.packages.${prev.system}.default;
+                })
+              ];
             };
           }
         ];

@@ -34,6 +34,10 @@
         blur.enabled = false;
         shadow.enabled = false;
       };
+      general = {
+        gaps_in = 0;
+        gaps_out = 0;
+      };
     };
     stylix.opacity = {
       desktop = 1.0;

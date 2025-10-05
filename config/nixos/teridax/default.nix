@@ -142,11 +142,8 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = {
-      # "wireguard" = {
-      #   mode = "400";
-      #   owner = "skarmux";
-      #   group = config.users.users.skarmux.group;
-      # };
+      "wireguard/private" = { };
+      "wireguard/preshared" = { };
     };
   };
 }
